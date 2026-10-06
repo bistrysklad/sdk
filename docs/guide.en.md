@@ -272,4 +272,7 @@ changing the mode with the same key yields `IDEMPOTENCY_CONFLICT`.
 
 `COMPACT_RESPONSE_UNSUPPORTED` means an older server returned a full response.
 The write may already have committed. Check current data and keep the reported
-idempotency key; do not blindly issue a new write with a new key.
+idempotency key. An older server may have stored a full response; retrieve it
+with a `full` client using the same key and body after the server is upgraded.
+Replaying that key as `minimal` may yield `IDEMPOTENCY_CONFLICT`. Do not blindly
+issue a new write with a new key.
