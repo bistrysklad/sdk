@@ -274,3 +274,22 @@ test("browser bundle excludes Node/WebSocket modules; separate CJS Node export l
     "function",
   );
 });
+
+test("WebSocket bounds a slow consumer's queue and reconnects from the consumed cursor", {timeout:10000}, async () => {
+  const f=await fixture((_q,r)=>r.end());let connections=0;const urls=[];
+  f.server.on("upgrade",(req,socket,head)=>{urls.push(req.url);f.ws.handleUpgrade(req,socket,head,ws=>{
+    connections++;
+    ws.send(JSON.stringify({type:"ready",cursor:"synthetic-company:0"}));
+    ws.send(JSON.stringify(event(connections===1?1:2)));
+    if(connections===1)setTimeout(()=>{for(let n=2;n<600;n++)if(ws.readyState===ws.OPEN)ws.send(JSON.stringify(event(n)));},20);
+  });});
+  const stop=new AbortController();
+  try{
+    const iterator=websocket({baseUrl:f.baseUrl,token:"synthetic"},{...options,signal:stop.signal})[Symbol.asyncIterator]();
+    assert.equal((await iterator.next()).value.cursor,"synthetic-company:1");
+    await delay(100);
+    assert.equal((await iterator.next()).value.cursor,"synthetic-company:2");
+    assert.equal(connections,2);assert.match(urls[1],/after=synthetic-company%3A1/);
+    stop.abort();await iterator.return();
+  }finally{stop.abort();await f.close();}
+});

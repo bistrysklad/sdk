@@ -120,6 +120,7 @@ async function* socketFrames(
     );
   });
   socket.on("message", (data, binary) => {
+    if (closed) return;
     try {
       if (binary)
         throw streamError("EVENT_PROTOCOL_INVALID", "Expected a text frame");
