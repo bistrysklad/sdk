@@ -1,0 +1,14 @@
+# Changelog
+
+## 0.1.0-beta.4
+
+- Standalone public repository and self-contained OpenAPI generation.
+- Typed event catchup, SSE subscriptions and separate Node WebSocket transport.
+- Cursor-based reconnect, cancellation, frame validation and bounded buffers.
+- Realtime protocol guide and backend-to-browser SSE example.
+
+## 0.1.0-beta.3
+
+- Catalog profiles, publication/order and typed profile catalog pagination.
+- Company custom field generator, ESM/CJS, automatic command idempotency.
+- Scheduled orders, custom sales workflows, photos and procurement files.
