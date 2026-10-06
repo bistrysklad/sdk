@@ -6,7 +6,7 @@
 Есть realtime-подписки через SSE и WebSocket и генератор типов вашей компании.
 
 **Версия: 0.1.0-beta.4.** Это отдельный репозиторий пакета. Публикация в npm
-пока не выполнена: используйте собранный архив. Node.js ≥22.18 нужен для CLI
+пока не выполнена: используйте [проверенный архив релиза](https://github.com/bistrysklad/sdk/releases/tag/v0.1.0-beta.4). Node.js ≥22.18 нужен для CLI
 и WebSocket; основной клиент собирается для современных браузеров.
 Лицензия пока `UNLICENSED`: публичный исходный код сам по себе не предоставляет
 лицензию на распространение и изменение.
@@ -14,14 +14,7 @@
 ## Установка и первый запрос
 
 ```sh
-git clone https://github.com/bistrysklad/sdk.git
-cd sdk
-npm ci
-npm run generate:check
-npm test
-npm pack
-# В вашем проекте:
-npm install /path/to/sdk/bistrysklad-sdk-0.1.0-beta.4.tgz
+npm install https://github.com/bistrysklad/sdk/releases/download/v0.1.0-beta.4/bistrysklad-sdk-0.1.0-beta.4.tgz
 ```
 
 Владелец склада выпускает токен в «Настройки → API-токены». Передайте его
@@ -150,6 +143,8 @@ npm run generate:check
 npm test
 npm pack
 ```
+
+Для сборки своего архива клонируйте репозиторий и выполните команды выше.
 
 `contract/openapi.json` — публичный снимок контракта, генерация не требует
 репозитория backend. При обновлении контракта выполните `npm run generate`.
