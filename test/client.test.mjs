@@ -11,6 +11,23 @@ const opts = (fetch) => ({
   token: "synthetic-sdk-token",
   fetch,
 });
+test("minimal clients negotiate only command responses and keep the response mode across retries",async()=>{
+  const calls=[];
+  const client=createBistryskladClient({...opts(async request=>{
+    calls.push({path:new URL(request.url).pathname,prefer:request.headers.get("Prefer"),key:request.headers.get("Idempotency-Key")});
+    if(calls.length===1)return json({error:{code:'UNAVAILABLE',message:'Retry'}},503);
+    return json(request.method==='GET'?{products:[]}:{result:{id:'synthetic'},revision:'company:1'},200,{'Preference-Applied':'return=minimal'});
+  }),responseMode:'minimal'});
+  assert.equal((await client.products.create({name:'Synthetic'},{retry:{maxAttempts:2,baseDelayMs:1,maxDelayMs:1}})).revision,'company:1');
+  await client.catalog.list();
+  assert.equal(calls[0].prefer,'return=minimal');assert.equal(calls[1].prefer,'return=minimal');assert.equal(calls[0].key,calls[1].key);assert.equal(calls[2].prefer,null);
+  const ordinary=createBistryskladClient(opts(async request=>{assert.equal(request.headers.get('Prefer'),null);return json({result:{id:'full'},state:{products:[]}});}));
+  assert.deepEqual((await ordinary.products.create({name:'Full'})).state,{products:[]});
+});
+test("minimal clients reject a legacy server response without silently claiming a typed revision",async()=>{
+  const client=createBistryskladClient({...opts(async()=>json({result:{id:'committed'},state:{products:[]}})),responseMode:'minimal'});
+  await assert.rejects(client.products.create({name:'Synthetic'}),error=>error instanceof BistryskladError&&error.code==='COMPACT_RESPONSE_UNSUPPORTED'&&typeof error.idempotencyKey==='string');
+});
 test("profile catalogs encode batch IDs and finite sorts; presentation saves use an automatic replay key", async () => {
   const calls = [];
   const client = createBistryskladClient(

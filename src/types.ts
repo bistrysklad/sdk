@@ -1,3 +1,4 @@
+import type { ResponseMode } from "./transport.js";
 import type { operations } from "./schema.js";
 export type EntityKind =
   | "product"
@@ -57,10 +58,18 @@ export type TypedRead<T, S extends FieldTypes> = T extends Blob
             : TypedRead<T[K], S>;
         }
       : T;
+export type SelectResponse<T, M extends ResponseMode = "full"> = T extends {
+  result: unknown;
+}
+  ? M extends "minimal"
+    ? Extract<T, { revision: string }>
+    : Extract<T, { state: object }>
+  : T;
 export type SdkResponse<
   S extends FieldTypes,
   I extends keyof operations,
-> = TypedRead<Success<operations[I]>, S>;
+  M extends ResponseMode = "full",
+> = TypedRead<SelectResponse<Success<operations[I]>, M>, S>;
 type BaseBody<I extends keyof operations> = operations[I] extends {
   requestBody: infer B;
 }

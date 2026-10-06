@@ -15,7 +15,7 @@ const config = {
   baseUrl: process.env.BISTRYSKLAD_URL ?? "https://bistrysklad.ru",
   token,
 };
-const sklad = createBistryskladClient(config);
+const sklad = createBistryskladClient({ ...config, responseMode: "minimal" });
 const stop = new AbortController();
 const browsers = new Set<ServerResponse>();
 let snapshot: {

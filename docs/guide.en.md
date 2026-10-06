@@ -1,7 +1,7 @@
 # @bistrysklad/sdk
 
 Typed SDK for the existing Bistry Sklad Bearer API. The first delivery is a local
-`0.1.0-beta.4` tarball; it has not been published to the public npm registry.
+`0.1.0-beta.5` tarball; it has not been published to the public npm registry.
 Node22.18+ is required for the CLI and Node client. The client entrypoint also
 bundles for modern browsers with fetch, crypto.randomUUID and AbortSignal.any;
 use a server integration to keep service tokens private.
@@ -9,7 +9,7 @@ use a server integration to keep service tokens private.
 ## Install and make the first call
 
 ```sh
-npm install /path/to/bistrysklad-sdk-0.1.0-beta.4.tgz
+npm install /path/to/bistrysklad-sdk-0.1.0-beta.5.tgz
 ```
 
 ```ts
@@ -256,3 +256,20 @@ Mutation idempotency keys are generated automatically by the existing transport.
 Private image URLs require authentication; proxy images on your server and keep
 warehouse tokens out of the storefront browser. This package is distributed as
 a workspace tarball; public npm publication remains a separate action.
+
+## Compact command receipts
+
+Set `responseMode: "minimal"` on `createBistryskladClient` or the generated
+`createCompanyClient`. Commands send `Prefer: return=minimal` and resolve to
+`{ result, revision }`; `state` is absent from both the wire response and the
+inferred TypeScript type. Read methods retain their response types. The default
+`full` mode retains `{ result, state }` for existing integrations.
+
+A receipt is returned after commit. Its workspace revision is not an event
+cursor. If a read is needed, request the relevant card or paginated catalog
+separately. Keep the response mode and idempotency key unchanged during retries;
+changing the mode with the same key yields `IDEMPOTENCY_CONFLICT`.
+
+`COMPACT_RESPONSE_UNSUPPORTED` means an older server returned a full response.
+The write may already have committed. Check current data and keep the reported
+idempotency key; do not blindly issue a new write with a new key.

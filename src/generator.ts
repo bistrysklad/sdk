@@ -54,12 +54,12 @@ function clientTypes(spec: Record<string, unknown>, origin: string) {
   // Local DTO signatures follow the downloaded contract. Runtime routes must be supported by this SDK version.
   const base = `/** Generated factory and methods typed from local api.ts. */
 import { createBistryskladClient } from "@bistrysklad/sdk";
-import type { ClientOptions, CallOptions, TypedRead, ProcurementKind, SubscribeOptions, WarehouseEvent } from "@bistrysklad/sdk";
+import type { ClientOptions, CallOptions, ResponseMode, SelectResponse, TypedRead, ProcurementKind, SubscribeOptions, WarehouseEvent } from "@bistrysklad/sdk";
 import type { operations } from "./api.js";
 import { companySchema } from "./fields.js";
 import type { CompanyFieldTypes } from "./fields.js";
 type Content<T> = T extends { content: infer C } ? C extends { "application/json": infer J } ? J : Blob : never;
-type Response<I extends keyof operations> = operations[I] extends {responses: infer R} ? TypedRead<Content<R[Extract<keyof R,200|201|202|204>]>,CompanyFieldTypes> : never;
+type Response<I extends keyof operations, M extends ResponseMode> = operations[I] extends {responses: infer R} ? TypedRead<SelectResponse<Content<R[Extract<keyof R,200|201|202|204>]>,M>,CompanyFieldTypes> : never;
 type BaseBody<I extends keyof operations> = operations[I] extends {requestBody: infer B} ? B extends {content: {"application/json": infer T}} ? T : Blob | ArrayBuffer | Uint8Array : never;
 type Custom<T,V> = Omit<T,"customValues"> & {customValues?: V};
 type Procurement<T> = {[K in ProcurementKind]: Omit<T,"kind"|"customValues"> & {kind: K; customValues?: CompanyFieldTypes[K]["write"]}}[ProcurementKind];
@@ -119,7 +119,8 @@ type Query<I extends keyof operations> = operations[I]["parameters"]["query"];
   const paths = spec.paths as Record<string, Record<string, Operation>>;
   for (const [path, verbs] of Object.entries(paths))
     for (const [verb, op] of Object.entries(verbs)) {
-      if (op["x-sdk-stream"] || !op.security?.some((s) => "bearerAuth" in s)) continue;
+      if (op["x-sdk-stream"] || !op.security?.some((s) => "bearerAuth" in s))
+        continue;
       const id = op.operationId!;
       if (seen.has(id)) throw new Error("Duplicate public operation ID");
       seen.add(id);
@@ -160,10 +161,14 @@ type Query<I extends keyof operations> = operations[I]["parameters"]["query"];
       groups
         .get(group)!
         .push(
-          `${name}: (${args.join(", ")}) => Promise<Response<${quoted(id)}>>`,
+          `${name}: (${args.join(", ")}) => Promise<Response<${quoted(id)},M>>`,
         );
     }
-  groups.get("events")!.push("subscribe: (options?: SubscribeOptions) => AsyncIterable<WarehouseEvent>");
+  groups
+    .get("events")!
+    .push(
+      "subscribe: (options?: SubscribeOptions) => AsyncIterable<WarehouseEvent>",
+    );
   if (Object.keys(metadata).some((id) => !seen.has(id)))
     throw new Error("API contract is incomplete or incompatible with this SDK");
   const schemas = (
@@ -183,7 +188,7 @@ type Query<I extends keyof operations> = operations[I]["parameters"]["query"];
     throw new Error("API response schemas are incomplete");
   return (
     base +
-    `export interface CompanyClient {\n${[...groups].map(([group, methods]) => `${group}: {${methods.join(";\n")}}`).join(";\n")}\n}\nexport function createCompanyClient(options: Omit<ClientOptions,"baseUrl"> & {baseUrl?: string}): CompanyClient { return createBistryskladClient<CompanyFieldTypes>({...options,baseUrl:options.baseUrl ?? ${quoted(origin)}},companySchema) as unknown as CompanyClient; }\n`
+    `export interface CompanyClient<M extends ResponseMode = "full"> {\n${[...groups].map(([group, methods]) => `${group}: {${methods.join(";\n")}}`).join(";\n")}\n}\nexport function createCompanyClient<M extends ResponseMode = "full">(options: Omit<ClientOptions,"baseUrl"|"responseMode"> & {baseUrl?: string;responseMode?: M}): CompanyClient<M> { return createBistryskladClient<CompanyFieldTypes,M>({...options,baseUrl:options.baseUrl ?? ${quoted(origin)}},companySchema) as unknown as CompanyClient<M>; }\n`
   );
 }
 async function fetchJson(url: string, token?: string): Promise<unknown> {

@@ -19,7 +19,9 @@ export interface RateLimit {
   remaining: number | null;
   retryAfterMs: number | null;
 }
+export type ResponseMode = "full" | "minimal";
 export interface ClientOptions {
+  responseMode?: ResponseMode;
   baseUrl: string;
   token: string | (() => string | Promise<string>);
   fetch?: typeof fetch;
@@ -112,6 +114,7 @@ export class Transport {
     body: unknown,
     query: unknown,
     options: CallOptions = {},
+    minimal = false,
   ): Promise<unknown> {
     const write = method !== "get";
     const key = write
@@ -184,6 +187,7 @@ export class Transport {
     });
     const headers: Record<string, string> = {
       Authorization: `Bearer ${token}`,
+      ...(minimal ? { Prefer: "return=minimal" } : {}),
       ...(key ? { "Idempotency-Key": key } : {}),
       ...(this.options.companyId
         ? { "X-Bistrysklad-Company": this.options.companyId }
@@ -254,6 +258,27 @@ export class Transport {
                 latest,
                 payload,
               );
+            }
+            if (minimal) {
+              let compact: unknown;
+              try {
+                compact = JSON.parse(new TextDecoder().decode(data));
+              } catch {}
+              if (
+                !compact ||
+                typeof compact !== "object" ||
+                !("revision" in compact) ||
+                typeof compact.revision !== "string" ||
+                !("result" in compact) ||
+                "state" in compact
+              )
+                throw new BistryskladError(
+                  "Server did not return the requested compact response. The command may already be committed; retain its idempotency key.",
+                  response.status,
+                  "COMPACT_RESPONSE_UNSUPPORTED",
+                  key,
+                  latest,
+                );
             }
             return new Response(response.status === 204 ? null : data, {
               status: response.status,

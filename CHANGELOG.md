@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.0-beta.5
+
+- Opt-in typed compact command responses with `responseMode: "minimal"`.
+- `Prefer: return=minimal` is preserved across command retries and included in idempotency identity.
+- Receipts contain `result` and the committed workspace `revision`; reads and custom field typing retain their contracts.
+- Explicit error when an older backend returns an incompatible full response.
+
 ## 0.1.0-beta.4
 
 - Standalone public repository and self-contained OpenAPI generation.

@@ -2316,6 +2316,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -2349,11 +2351,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -2485,6 +2491,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -2522,11 +2530,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -2779,6 +2791,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -2819,11 +2833,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -2955,6 +2973,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -2984,11 +3004,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -3120,6 +3144,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -3146,11 +3172,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -3282,6 +3312,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -3315,11 +3347,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -3451,6 +3487,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -3478,11 +3516,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -3614,6 +3656,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -3640,11 +3684,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -3776,6 +3824,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -3807,11 +3857,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -3943,6 +3997,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -3972,11 +4028,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -4108,6 +4168,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -4135,11 +4197,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -4271,6 +4337,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -4303,11 +4371,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -4439,6 +4511,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -4529,11 +4603,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -4665,6 +4743,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -4691,11 +4771,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -4827,6 +4911,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -4921,11 +5007,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -5057,6 +5147,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -5084,11 +5176,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -5220,6 +5316,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -5298,11 +5396,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -5434,6 +5536,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -5460,11 +5564,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -5596,6 +5704,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -5660,11 +5770,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -5796,6 +5910,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -5829,11 +5945,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -5965,6 +6085,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -6007,11 +6129,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -6143,6 +6269,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -6169,11 +6297,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -6305,6 +6437,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -6351,11 +6485,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -6487,6 +6625,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -6526,11 +6666,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -6662,6 +6806,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -6688,11 +6834,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -6824,6 +6974,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -6867,11 +7019,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -7003,6 +7159,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -7043,11 +7201,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -7179,6 +7341,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -7205,11 +7369,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -7341,6 +7509,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -7373,11 +7543,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -7617,6 +7791,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -7650,11 +7826,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -7786,6 +7966,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -7819,11 +8001,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -7955,6 +8141,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -7981,11 +8169,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -8117,6 +8309,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -8154,11 +8348,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -8290,6 +8488,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -8329,11 +8529,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -8465,6 +8669,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -8491,11 +8697,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -8627,6 +8837,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -8697,11 +8909,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -8833,6 +9049,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -8859,11 +9077,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -8995,6 +9217,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -9067,11 +9291,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -9203,6 +9431,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -9232,11 +9462,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -9368,6 +9602,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -9394,11 +9630,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -9530,6 +9770,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -9556,11 +9798,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -9692,6 +9938,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -9764,11 +10012,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -9900,6 +10152,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -9948,11 +10202,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -10084,6 +10342,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -10110,11 +10370,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -10246,6 +10510,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -10296,11 +10562,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -10432,6 +10702,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -10461,11 +10733,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -10597,6 +10873,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -10667,11 +10945,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -10803,6 +11085,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -10832,11 +11116,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -10968,6 +11256,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -10997,11 +11287,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -11133,6 +11427,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -11167,11 +11463,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -11303,6 +11603,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -11329,11 +11631,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -11465,6 +11771,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -11517,11 +11825,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -11653,6 +11965,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -11679,11 +11993,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -11815,6 +12133,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -11873,11 +12193,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -12009,6 +12333,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -12038,11 +12364,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -12174,6 +12504,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -12215,11 +12547,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -12351,6 +12687,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -12386,11 +12724,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -12522,6 +12864,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -12557,11 +12901,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -12693,6 +13041,8 @@ export interface operations {
             header: {
                 /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -12729,11 +13079,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -13531,6 +13885,8 @@ export interface operations {
             header: {
                 "Idempotency-Key": string;
                 "X-File-Name"?: string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -13557,11 +13913,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };
@@ -13770,6 +14130,8 @@ export interface operations {
             query?: never;
             header: {
                 "Idempotency-Key": string;
+                /** @description return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries. */
+                Prefer?: "return=minimal" | "return=representation";
                 /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
                 "X-Bistrysklad-Company"?: string;
             };
@@ -13798,11 +14160,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    "application/json": ({
                         result: components["schemas"]["IdResult"];
                         state: components["schemas"]["WarehouseState"];
                     } & {
                         [key: string]: unknown;
+                    }) | {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
                     };
                 };
             };

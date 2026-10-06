@@ -91,6 +91,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -148,20 +161,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -426,7 +460,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       },
       "get": {
         "operationId": "catalog_profile.list",
@@ -714,6 +749,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -776,20 +824,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -1054,7 +1123,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/catalog-presentations/{scopeId}": {
@@ -1094,6 +1164,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -1207,20 +1290,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -1485,7 +1589,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       },
       "get": {
         "operationId": "catalog_presentation.get",
@@ -1763,6 +1868,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -1805,20 +1923,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -2083,7 +2222,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/price-types/{priceTypeId}": {
@@ -2126,6 +2266,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -2175,20 +2328,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -2453,7 +2627,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       },
       "delete": {
         "operationId": "price_type.delete",
@@ -2494,6 +2669,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -2521,20 +2709,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -2799,7 +3008,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/filters": {
@@ -2828,6 +3038,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -2867,20 +3090,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -3145,7 +3389,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/filters/{filterId}": {
@@ -3185,6 +3430,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -3231,20 +3489,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -3509,7 +3788,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       },
       "delete": {
         "operationId": "filter.delete",
@@ -3550,6 +3830,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -3577,20 +3870,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -3855,7 +4169,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/filters/{filterId}/values": {
@@ -3898,6 +4213,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -3934,20 +4262,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -4212,7 +4561,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/filters/{filterId}/values/{valueId}": {
@@ -4266,6 +4616,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -4309,20 +4672,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -4587,7 +4971,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       },
       "delete": {
         "operationId": "filter_value.delete",
@@ -4639,6 +5024,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -4666,20 +5064,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -4944,7 +5363,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/products": {
@@ -4973,6 +5393,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -5295,20 +5728,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -5573,7 +6027,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/products/{productId}": {
@@ -5613,6 +6068,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -5941,20 +6409,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -6219,7 +6708,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       },
       "delete": {
         "operationId": "product.delete",
@@ -6260,6 +6750,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -6287,20 +6790,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -6565,7 +7089,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/products/{productId}/images/{imageId}": {
@@ -6619,6 +7144,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -6646,20 +7184,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -6924,7 +7483,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/partners": {
@@ -6953,6 +7513,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -7176,20 +7749,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -7454,7 +8048,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/partners/{partnerId}": {
@@ -7494,6 +8089,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -7659,20 +8267,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -7937,7 +8566,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       },
       "delete": {
         "operationId": "partner.delete",
@@ -7978,6 +8608,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -8005,20 +8648,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -8283,7 +8947,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/partners/resolve": {
@@ -8312,6 +8977,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -8390,20 +9068,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -8668,7 +9367,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/organizations": {
@@ -8697,6 +9397,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -8784,20 +9497,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -9062,7 +9796,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/organizations/{organizationId}": {
@@ -9102,6 +9837,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -9193,20 +9941,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -9471,7 +10240,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       },
       "delete": {
         "operationId": "organization.delete",
@@ -9512,6 +10282,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -9539,20 +10322,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -9817,7 +10621,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/contracts": {
@@ -9846,6 +10651,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -9926,20 +10744,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -10204,7 +11043,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/contracts/{contractId}": {
@@ -10244,6 +11084,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -10326,20 +11179,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -10604,7 +11478,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       },
       "delete": {
         "operationId": "contract.delete",
@@ -10645,6 +11520,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -10672,20 +11560,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -10950,7 +11859,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/custom-fields": {
@@ -10979,6 +11889,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -11063,20 +11986,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -11341,7 +12285,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/custom-fields/{fieldId}": {
@@ -11381,6 +12326,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -11433,20 +12391,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -11711,7 +12690,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       },
       "delete": {
         "operationId": "custom_field.delete",
@@ -11752,6 +12732,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -11779,20 +12772,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -12057,7 +13071,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/external-links": {
@@ -12086,6 +13101,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -12148,20 +13176,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -12426,7 +13475,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       },
       "get": {
         "operationId": "get_external_links",
@@ -12698,6 +13748,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -12752,20 +13815,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -13030,7 +14114,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/warehouses/{warehouseId}": {
@@ -13070,6 +14155,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -13136,20 +14234,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -13414,7 +14533,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       },
       "delete": {
         "operationId": "warehouse.delete",
@@ -13455,6 +14575,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -13482,20 +14615,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -13760,7 +14914,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/purchases": {
@@ -13789,6 +14944,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -13871,20 +15039,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -14149,7 +15338,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/purchases/{purchaseId}": {
@@ -14192,6 +15382,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -14219,20 +15422,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -14497,7 +15721,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/procurement/documents": {
@@ -14526,6 +15751,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -14736,20 +15974,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -15014,7 +16273,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/procurement/documents/{documentId}": {
@@ -15057,6 +16317,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -15261,20 +16534,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -15539,7 +16833,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       },
       "delete": {
         "operationId": "procurement.delete",
@@ -15580,6 +16875,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -15607,20 +16915,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -15885,7 +17214,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/procurement/documents/{documentId}/status": {
@@ -15928,6 +17258,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -15966,20 +17309,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -16244,7 +17608,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/procurement/imports/{importId}/recognize": {
@@ -16287,6 +17652,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -16314,20 +17692,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -16592,7 +17991,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/procurement/imports/{importId}": {
@@ -16635,6 +18035,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -16662,20 +18075,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -16940,7 +18374,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/procurement/imports/{importId}/document": {
@@ -16980,6 +18415,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -17190,20 +18638,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -17468,7 +18937,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/procurement/payments": {
@@ -17497,6 +18967,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -17612,20 +19095,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -17890,7 +19394,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/procurement/payments/{paymentId}": {
@@ -17930,6 +19435,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -18040,20 +19558,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -18318,7 +19857,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       },
       "delete": {
         "operationId": "procurement_payment.delete",
@@ -18359,6 +19899,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -18386,20 +19939,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -18664,7 +20238,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/procurement/payments/{paymentId}/status": {
@@ -18707,6 +20282,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -18744,20 +20332,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -19022,7 +20631,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/orders": {
@@ -19051,6 +20661,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -19220,20 +20843,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -19498,7 +21142,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/orders/{orderId}/status": {
@@ -19541,6 +21186,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -19580,20 +21238,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -19858,7 +21537,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/orders/{orderId}/reservation": {
@@ -19901,6 +21581,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -19939,20 +21632,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -20217,7 +21931,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/orders/{orderId}/schedule": {
@@ -20257,6 +21972,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -20309,20 +22037,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -20587,7 +22336,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/orders/{orderId}": {
@@ -20630,6 +22380,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -20657,20 +22420,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -20935,7 +22719,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/sales-workflows": {
@@ -20964,6 +22749,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -21124,20 +22922,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -21402,7 +23221,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/sales-workflows/{workflowId}": {
@@ -21442,6 +23262,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -21614,20 +23447,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -21892,7 +23746,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       },
       "delete": {
         "operationId": "sales_workflow.delete",
@@ -21933,6 +23788,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -21960,20 +23828,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -22238,7 +24127,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/orders/{orderId}/transition": {
@@ -22281,6 +24171,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -22317,20 +24220,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -22595,7 +24519,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/stock/receipt": {
@@ -22624,6 +24549,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -22716,20 +24654,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -22994,7 +24953,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/stock/writeoff": {
@@ -23023,6 +24983,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -23091,20 +25064,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -23369,7 +25363,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/stock/transfer": {
@@ -23398,6 +25393,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -23466,20 +25474,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -23744,7 +25773,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/settings": {
@@ -23773,6 +25803,19 @@
               "minLength": 8,
               "maxLength": 120
             }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
           },
           {
             "in": "header",
@@ -23835,20 +25878,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -24113,7 +26177,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/catalog/view": {
@@ -25507,6 +27572,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -25544,20 +27622,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -25762,7 +27861,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/procurement/imports/{importId}/file": {
@@ -26033,6 +28133,19 @@
           },
           {
             "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal",
+                "return=representation"
+              ]
+            },
+            "description": "return=minimal returns result + committed revision without reading/storing the full workspace. Default is result + state. Response mode is part of idempotency identity; reuse the same mode on retries."
+          },
+          {
+            "in": "header",
             "name": "X-Bistrysklad-Company",
             "required": false,
             "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
@@ -26070,20 +28183,41 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "result",
-                    "state"
-                  ],
-                  "properties": {
-                    "result": {
-                      "$ref": "#/components/schemas/IdResult"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "state"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "state": {
+                          "$ref": "#/components/schemas/WarehouseState"
+                        }
+                      },
+                      "additionalProperties": true
                     },
-                    "state": {
-                      "$ref": "#/components/schemas/WarehouseState"
+                    {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "revision"
+                      ],
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/IdResult"
+                        },
+                        "revision": {
+                          "type": "string",
+                          "description": "Committed workspace revision, distinct from the event cursor"
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  },
-                  "additionalProperties": true
+                  ]
                 }
               }
             },
@@ -26228,7 +28362,8 @@
               }
             }
           }
-        }
+        },
+        "x-sdk-command": true
       }
     },
     "/api/v1/catalog-profiles/{profileId}/catalog": {

@@ -55,6 +55,31 @@ async function reads() {
   void wrong;
 }
 void reads;
+const compact = createBistryskladClient<Fields, "minimal">({
+  baseUrl: "https://example.test",
+  token: "synthetic",
+  responseMode: "minimal",
+});
+async function compactReads() {
+  const result = await compact.products.create({
+    name: "Typed compact",
+    customValues: { material: "Cotton" },
+  });
+  const revision: string = result.revision;
+  const id: string = result.result.id;
+  // @ts-expect-error compact commands do not return a full state
+  result.state;
+  const state = await compact.state.get();
+  const weight: number | null | undefined =
+    state.products[0].customValues.weight;
+  const legacy = await client.products.create({ name: "Legacy" });
+  legacy.state.products;
+  // @ts-expect-error full responses do not promise a compact revision
+  const impossible: string = legacy.revision;
+  void impossible;
+  void [revision, id, weight];
+}
+void compactReads;
 
 client.catalogProfiles.create({
   name: "Store",
@@ -128,15 +153,25 @@ client.salesWorkflows.create({
   },
 });
 
-async function realtimeTypes(){
- const page=await client.events.list({after:"synthetic-company:1",limit:100});
- const cursor:string=page.cursor;
- for await(const event of client.events.subscribe({after:cursor,signal:new AbortController().signal})){
-  const id:string|null=event.entityId;
-  const type:"product.created"|"product.updated"|"product.deleted"|"catalog.invalidated"=event.type;
-  void[id,type];
- }
+async function realtimeTypes() {
+  const page = await client.events.list({
+    after: "synthetic-company:1",
+    limit: 100,
+  });
+  const cursor: string = page.cursor;
+  for await (const event of client.events.subscribe({
+    after: cursor,
+    signal: new AbortController().signal,
+  })) {
+    const id: string | null = event.entityId;
+    const type:
+      | "product.created"
+      | "product.updated"
+      | "product.deleted"
+      | "catalog.invalidated" = event.type;
+    void [id, type];
+  }
 }
 void realtimeTypes;
 // @ts-expect-error subscriptions have no idempotency key
-client.events.subscribe({idempotencyKey:"unused"});
+client.events.subscribe({ idempotencyKey: "unused" });

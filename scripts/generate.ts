@@ -2,11 +2,18 @@ import { readFile, writeFile } from "node:fs/promises";
 import openapiTS, { astToString } from "openapi-typescript";
 import { format } from "prettier";
 interface Operation {
- operationId?:string; security?:Record<string,string[]>[]; "x-sdk-stream"?:boolean;
- requestBody?:{content:Record<string,{schema:{type?:string;properties?:object}}>};
- parameters?:{in?:string;required?:boolean}[];
+  operationId?: string;
+  security?: Record<string, string[]>[];
+  "x-sdk-stream"?: boolean;
+  "x-sdk-command"?: boolean;
+  requestBody?: {
+    content: Record<string, { schema: { type?: string; properties?: object } }>;
+  };
+  parameters?: { in?: string; required?: boolean }[];
 }
-const spec = JSON.parse(await readFile(new URL("../contract/openapi.json",import.meta.url),"utf8")) as {paths:Record<string,Record<string,Operation>>};
+const spec = JSON.parse(
+  await readFile(new URL("../contract/openapi.json", import.meta.url), "utf8"),
+) as { paths: Record<string, Record<string, Operation>> };
 const check = process.argv.includes("--check");
 const camel = (value: string) =>
   value.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
@@ -47,12 +54,13 @@ const reads: Record<string, [string, string]> = {
 };
 const metadata: Record<
   string,
-  { method: string; path: string; binary: boolean }
+  { method: string; path: string; binary: boolean; "x-sdk-command": boolean }
 > = {};
 const methods = new Map<string, string[]>();
 for (const [path, verbs] of Object.entries(spec.paths))
   for (const [method, op] of Object.entries(verbs)) {
-    if (op["x-sdk-stream"] || !op.security?.some((s) => "bearerAuth" in s)) continue;
+    if (op["x-sdk-stream"] || !op.security?.some((s) => "bearerAuth" in s))
+      continue;
     const id = op.operationId!;
     const [prefix, action] = id.split(".");
     const [group, name] = reads[id] ?? [groups[prefix], camel(action)];
@@ -69,7 +77,12 @@ for (const [path, verbs] of Object.entries(spec.paths))
       );
     const binary = !!contents && !("application/json" in contents);
     const hasQuery = op.parameters?.some((p) => p.in === "query");
-    metadata[id] = { method, path, binary };
+    metadata[id] = {
+      method,
+      path,
+      binary,
+      "x-sdk-command": !!op["x-sdk-command"],
+    };
     const args = [
       ...params.map((p) => `${p}: string`),
       ...(hasBody ? [`body: SdkBody<S,${JSON.stringify(id)}>`] : []),
@@ -82,11 +95,15 @@ for (const [path, verbs] of Object.entries(spec.paths))
         ? `options: CallOptions & { contentType: ${Object.keys(contents!).map(JSON.stringify).join(" | ")} }`
         : "options?: CallOptions",
     ];
-    const fn = `${name}: (${args.join(", ")}): Promise<SdkResponse<S,${JSON.stringify(id)}>> => invoke(${JSON.stringify(id)}, {${params.join(", ")}}, ${hasBody ? "body" : method !== "get" ? "{}" : "undefined"}, ${hasQuery ? "query" : "undefined"}, options) as Promise<SdkResponse<S,${JSON.stringify(id)}>>`;
+    const fn = `${name}: (${args.join(", ")}): Promise<SdkResponse<S,${JSON.stringify(id)},M>> => invoke(${JSON.stringify(id)}, {${params.join(", ")}}, ${hasBody ? "body" : method !== "get" ? "{}" : "undefined"}, ${hasQuery ? "query" : "undefined"}, options) as Promise<SdkResponse<S,${JSON.stringify(id)},M>>`;
     if (!methods.has(group)) methods.set(group, []);
     methods.get(group)!.push(fn);
   }
-methods.get("events")!.push("subscribe: (options?: SubscribeOptions) => subscribeToEvents(transport.options, options)");
+methods
+  .get("events")!
+  .push(
+    "subscribe: (options?: SubscribeOptions) => subscribeToEvents(transport.options, options)",
+  );
 const files = new Map([
   ["schema.ts", astToString(await openapiTS(spec as never))],
   [
@@ -99,18 +116,18 @@ const files = new Map([
 import { Transport } from "./transport.js";
 import { subscribeToEvents } from "./events.js";
 import type { SubscribeOptions } from "./event-protocol.js";
-import type { ClientOptions, CallOptions } from "./transport.js";
+import type { ClientOptions, CallOptions, ResponseMode } from "./transport.js";
 import type { CompanySnapshot, DefaultFields, FieldTypes, EntityKind, SdkBody, SdkQuery, SdkResponse } from "./types.js";
 import { metadata } from "./metadata.js";
 import { encodeCustom, decodeCustom } from "./custom-fields.js";
-export function createBistryskladClient<S extends FieldTypes = DefaultFields>(options: ClientOptions, snapshot?: CompanySnapshot) {
+export function createBistryskladClient<S extends FieldTypes = DefaultFields, M extends ResponseMode = "full">(options: Omit<ClientOptions,"responseMode"> & {responseMode?:M}, snapshot?: CompanySnapshot) {
   if (snapshot && options.companyId && snapshot.companyId !== options.companyId) throw new Error("Company ID differs from generated schema");
   const transport = new Transport({...options, companyId: snapshot?.companyId ?? options.companyId});
   const invoke = async (id: keyof typeof metadata, path: Record<string,string>, body: unknown, query: unknown, opts?: CallOptions) => {
     const op = metadata[id];
     const entity = id.startsWith("product.") ? "product" : id.startsWith("partner.") ? "partner" : id === "procurement.create" || id === "procurement.update" ? (body as {kind?: EntityKind})?.kind : undefined;
     if (snapshot && id === "procurement.update" && body && typeof body === "object" && "customValues" in body && !entity) throw new Error("kind is required when updating procurement customValues");
-    return decodeCustom(snapshot, await transport.invoke(op.method, op.path, path, encodeCustom(snapshot,entity,body),query,opts));
+    return decodeCustom(snapshot, await transport.invoke(op.method, op.path, path, encodeCustom(snapshot,entity,body),query,opts,options.responseMode === "minimal" && op["x-sdk-command"]));
   };
   return { ${[...methods].map(([group, fns]) => `${group}: { ${fns.join(",\n")} }`).join(",\n")} };
 }

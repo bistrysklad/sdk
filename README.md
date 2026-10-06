@@ -5,8 +5,8 @@
 поля — через один клиент. `Idempotency-Key` для команд создаётся автоматически.
 Есть realtime-подписки через SSE и WebSocket и генератор типов вашей компании.
 
-**Версия: 0.1.0-beta.4.** Это отдельный репозиторий пакета. Публикация в npm
-пока не выполнена: используйте [проверенный архив релиза](https://github.com/bistrysklad/sdk/releases/tag/v0.1.0-beta.4). Node.js ≥22.18 нужен для CLI
+**Версия: 0.1.0-beta.5.** Это отдельный репозиторий пакета. Публикация в npm
+пока не выполнена: используйте [проверенный архив релиза](https://github.com/bistrysklad/sdk/releases/tag/v0.1.0-beta.5). Node.js ≥22.18 нужен для CLI
 и WebSocket; основной клиент собирается для современных браузеров.
 Лицензия пока `UNLICENSED`: публичный исходный код сам по себе не предоставляет
 лицензию на распространение и изменение.
@@ -14,7 +14,7 @@
 ## Установка и первый запрос
 
 ```sh
-npm install https://github.com/bistrysklad/sdk/releases/download/v0.1.0-beta.4/bistrysklad-sdk-0.1.0-beta.4.tgz
+npm install https://github.com/bistrysklad/sdk/releases/download/v0.1.0-beta.5/bistrysklad-sdk-0.1.0-beta.5.tgz
 ```
 
 Владелец склада выпускает токен в «Настройки → API-токены». Передайте его
@@ -111,6 +111,35 @@ for await (const event of subscribeToEvents(
 Готовый [пример backend → браузер через SSE](examples/README.md) держит один
 WebSocket со складом, обновляет опубликованный каталог выбранной витрины и
 уведомляет браузеры о новой версии. Складской токен остаётся на backend.
+
+## Быстрые ответы команд
+
+Для серверной интеграции можно получать короткое подтверждение сохранения:
+
+```ts
+const sklad = createBistryskladClient({
+  baseUrl: "https://bistrysklad.ru",
+  token: process.env.BISTRYSKLAD_TOKEN!,
+  responseMode: "minimal",
+});
+const saved = await sklad.products.create({ name: "Коробка" });
+console.log(saved.result.id, saved.revision);
+// saved.state отсутствует и не доступен в типах.
+const catalog = await sklad.catalog.list(); // тип и формат чтения сохранены
+```
+
+В этом режиме команды передают `Prefer: return=minimal`. Сервер подтверждает
+транзакцию до ответа, возвращает `{ result, revision }` и сохраняет компактное
+подтверждение для повторов. Полный снимок рабочего пространства не строится
+внутри транзакции. `revision` — версия данных компании; она не является курсором
+realtime-потока. Генерируемый `createCompanyClient` принимает ту же настройку.
+
+По умолчанию остаётся режим `full` с `{ result, state }`. Не меняйте режим при
+повторе команды с тем же ключом: сервер вернёт `IDEMPOTENCY_CONFLICT`. Если
+старый сервер не поддерживает компактные ответы, SDK выдаёт
+`COMPACT_RESPONSE_UNSUPPORTED` с ключом команды. Операция могла сохраниться:
+проверьте актуальные данные или повторите с тем же ключом и режимом после
+обновления сервера. Новый ключ может создать вторую операцию.
 
 ## Команды, ошибки и возможности
 

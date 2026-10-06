@@ -2,7 +2,7 @@
 import { Transport } from "./transport.js";
 import { subscribeToEvents } from "./events.js";
 import type { SubscribeOptions } from "./event-protocol.js";
-import type { ClientOptions, CallOptions } from "./transport.js";
+import type { ClientOptions, CallOptions, ResponseMode } from "./transport.js";
 import type {
   CompanySnapshot,
   DefaultFields,
@@ -14,8 +14,11 @@ import type {
 } from "./types.js";
 import { metadata } from "./metadata.js";
 import { encodeCustom, decodeCustom } from "./custom-fields.js";
-export function createBistryskladClient<S extends FieldTypes = DefaultFields>(
-  options: ClientOptions,
+export function createBistryskladClient<
+  S extends FieldTypes = DefaultFields,
+  M extends ResponseMode = "full",
+>(
+  options: Omit<ClientOptions, "responseMode"> & { responseMode?: M },
   snapshot?: CompanySnapshot,
 ) {
   if (snapshot && options.companyId && snapshot.companyId !== options.companyId)
@@ -59,6 +62,7 @@ export function createBistryskladClient<S extends FieldTypes = DefaultFields>(
         encodeCustom(snapshot, entity, body),
         query,
         opts,
+        options.responseMode === "minimal" && op["x-sdk-command"],
       ),
     );
   };
@@ -67,791 +71,795 @@ export function createBistryskladClient<S extends FieldTypes = DefaultFields>(
       create: (
         body: SdkBody<S, "catalog_profile.create">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "catalog_profile.create">> =>
+      ): Promise<SdkResponse<S, "catalog_profile.create", M>> =>
         invoke(
           "catalog_profile.create",
           {},
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "catalog_profile.create">>,
+        ) as Promise<SdkResponse<S, "catalog_profile.create", M>>,
       list: (
         query?: SdkQuery<"catalog_profile.list">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "catalog_profile.list">> =>
+      ): Promise<SdkResponse<S, "catalog_profile.list", M>> =>
         invoke(
           "catalog_profile.list",
           {},
           undefined,
           query,
           options,
-        ) as Promise<SdkResponse<S, "catalog_profile.list">>,
+        ) as Promise<SdkResponse<S, "catalog_profile.list", M>>,
       update: (
         profileId: string,
         body: SdkBody<S, "catalog_profile.update">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "catalog_profile.update">> =>
+      ): Promise<SdkResponse<S, "catalog_profile.update", M>> =>
         invoke(
           "catalog_profile.update",
           { profileId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "catalog_profile.update">>,
+        ) as Promise<SdkResponse<S, "catalog_profile.update", M>>,
       catalog: (
         profileId: string,
         query?: SdkQuery<"catalog_profile.catalog">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "catalog_profile.catalog">> =>
+      ): Promise<SdkResponse<S, "catalog_profile.catalog", M>> =>
         invoke(
           "catalog_profile.catalog",
           { profileId },
           undefined,
           query,
           options,
-        ) as Promise<SdkResponse<S, "catalog_profile.catalog">>,
+        ) as Promise<SdkResponse<S, "catalog_profile.catalog", M>>,
       product: (
         profileId: string,
         productId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "catalog_profile.product">> =>
+      ): Promise<SdkResponse<S, "catalog_profile.product", M>> =>
         invoke(
           "catalog_profile.product",
           { profileId, productId },
           undefined,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "catalog_profile.product">>,
+        ) as Promise<SdkResponse<S, "catalog_profile.product", M>>,
     },
     catalogPresentations: {
       update: (
         scopeId: string,
         body: SdkBody<S, "catalog_presentation.update">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "catalog_presentation.update">> =>
+      ): Promise<SdkResponse<S, "catalog_presentation.update", M>> =>
         invoke(
           "catalog_presentation.update",
           { scopeId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "catalog_presentation.update">>,
+        ) as Promise<SdkResponse<S, "catalog_presentation.update", M>>,
       get: (
         scopeId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "catalog_presentation.get">> =>
+      ): Promise<SdkResponse<S, "catalog_presentation.get", M>> =>
         invoke(
           "catalog_presentation.get",
           { scopeId },
           undefined,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "catalog_presentation.get">>,
+        ) as Promise<SdkResponse<S, "catalog_presentation.get", M>>,
     },
     priceTypes: {
       create: (
         body: SdkBody<S, "price_type.create">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "price_type.create">> =>
+      ): Promise<SdkResponse<S, "price_type.create", M>> =>
         invoke("price_type.create", {}, body, undefined, options) as Promise<
-          SdkResponse<S, "price_type.create">
+          SdkResponse<S, "price_type.create", M>
         >,
       update: (
         priceTypeId: string,
         body: SdkBody<S, "price_type.update">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "price_type.update">> =>
+      ): Promise<SdkResponse<S, "price_type.update", M>> =>
         invoke(
           "price_type.update",
           { priceTypeId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "price_type.update">>,
+        ) as Promise<SdkResponse<S, "price_type.update", M>>,
       delete: (
         priceTypeId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "price_type.delete">> =>
+      ): Promise<SdkResponse<S, "price_type.delete", M>> =>
         invoke(
           "price_type.delete",
           { priceTypeId },
           {},
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "price_type.delete">>,
+        ) as Promise<SdkResponse<S, "price_type.delete", M>>,
     },
     filters: {
       create: (
         body: SdkBody<S, "filter.create">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "filter.create">> =>
+      ): Promise<SdkResponse<S, "filter.create", M>> =>
         invoke("filter.create", {}, body, undefined, options) as Promise<
-          SdkResponse<S, "filter.create">
+          SdkResponse<S, "filter.create", M>
         >,
       update: (
         filterId: string,
         body: SdkBody<S, "filter.update">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "filter.update">> =>
+      ): Promise<SdkResponse<S, "filter.update", M>> =>
         invoke(
           "filter.update",
           { filterId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "filter.update">>,
+        ) as Promise<SdkResponse<S, "filter.update", M>>,
       delete: (
         filterId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "filter.delete">> =>
+      ): Promise<SdkResponse<S, "filter.delete", M>> =>
         invoke(
           "filter.delete",
           { filterId },
           {},
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "filter.delete">>,
+        ) as Promise<SdkResponse<S, "filter.delete", M>>,
     },
     filterValues: {
       create: (
         filterId: string,
         body: SdkBody<S, "filter_value.create">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "filter_value.create">> =>
+      ): Promise<SdkResponse<S, "filter_value.create", M>> =>
         invoke(
           "filter_value.create",
           { filterId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "filter_value.create">>,
+        ) as Promise<SdkResponse<S, "filter_value.create", M>>,
       update: (
         filterId: string,
         valueId: string,
         body: SdkBody<S, "filter_value.update">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "filter_value.update">> =>
+      ): Promise<SdkResponse<S, "filter_value.update", M>> =>
         invoke(
           "filter_value.update",
           { filterId, valueId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "filter_value.update">>,
+        ) as Promise<SdkResponse<S, "filter_value.update", M>>,
       delete: (
         filterId: string,
         valueId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "filter_value.delete">> =>
+      ): Promise<SdkResponse<S, "filter_value.delete", M>> =>
         invoke(
           "filter_value.delete",
           { filterId, valueId },
           {},
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "filter_value.delete">>,
+        ) as Promise<SdkResponse<S, "filter_value.delete", M>>,
     },
     products: {
       create: (
         body: SdkBody<S, "product.create">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "product.create">> =>
+      ): Promise<SdkResponse<S, "product.create", M>> =>
         invoke("product.create", {}, body, undefined, options) as Promise<
-          SdkResponse<S, "product.create">
+          SdkResponse<S, "product.create", M>
         >,
       update: (
         productId: string,
         body: SdkBody<S, "product.update">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "product.update">> =>
+      ): Promise<SdkResponse<S, "product.update", M>> =>
         invoke(
           "product.update",
           { productId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "product.update">>,
+        ) as Promise<SdkResponse<S, "product.update", M>>,
       delete: (
         productId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "product.delete">> =>
+      ): Promise<SdkResponse<S, "product.delete", M>> =>
         invoke(
           "product.delete",
           { productId },
           {},
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "product.delete">>,
+        ) as Promise<SdkResponse<S, "product.delete", M>>,
     },
     productImages: {
       delete: (
         productId: string,
         imageId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "product_image.delete">> =>
+      ): Promise<SdkResponse<S, "product_image.delete", M>> =>
         invoke(
           "product_image.delete",
           { productId, imageId },
           {},
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "product_image.delete">>,
+        ) as Promise<SdkResponse<S, "product_image.delete", M>>,
       create: (
         productId: string,
         body: SdkBody<S, "product_image.create">,
         options: CallOptions & {
           contentType: "image/jpeg" | "image/png" | "image/webp";
         },
-      ): Promise<SdkResponse<S, "product_image.create">> =>
+      ): Promise<SdkResponse<S, "product_image.create", M>> =>
         invoke(
           "product_image.create",
           { productId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "product_image.create">>,
+        ) as Promise<SdkResponse<S, "product_image.create", M>>,
     },
     partners: {
       create: (
         body: SdkBody<S, "partner.create">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "partner.create">> =>
+      ): Promise<SdkResponse<S, "partner.create", M>> =>
         invoke("partner.create", {}, body, undefined, options) as Promise<
-          SdkResponse<S, "partner.create">
+          SdkResponse<S, "partner.create", M>
         >,
       update: (
         partnerId: string,
         body: SdkBody<S, "partner.update">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "partner.update">> =>
+      ): Promise<SdkResponse<S, "partner.update", M>> =>
         invoke(
           "partner.update",
           { partnerId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "partner.update">>,
+        ) as Promise<SdkResponse<S, "partner.update", M>>,
       delete: (
         partnerId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "partner.delete">> =>
+      ): Promise<SdkResponse<S, "partner.delete", M>> =>
         invoke(
           "partner.delete",
           { partnerId },
           {},
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "partner.delete">>,
+        ) as Promise<SdkResponse<S, "partner.delete", M>>,
       resolve: (
         body: SdkBody<S, "partner.resolve">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "partner.resolve">> =>
+      ): Promise<SdkResponse<S, "partner.resolve", M>> =>
         invoke("partner.resolve", {}, body, undefined, options) as Promise<
-          SdkResponse<S, "partner.resolve">
+          SdkResponse<S, "partner.resolve", M>
         >,
     },
     organizations: {
       create: (
         body: SdkBody<S, "organization.create">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "organization.create">> =>
+      ): Promise<SdkResponse<S, "organization.create", M>> =>
         invoke("organization.create", {}, body, undefined, options) as Promise<
-          SdkResponse<S, "organization.create">
+          SdkResponse<S, "organization.create", M>
         >,
       update: (
         organizationId: string,
         body: SdkBody<S, "organization.update">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "organization.update">> =>
+      ): Promise<SdkResponse<S, "organization.update", M>> =>
         invoke(
           "organization.update",
           { organizationId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "organization.update">>,
+        ) as Promise<SdkResponse<S, "organization.update", M>>,
       delete: (
         organizationId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "organization.delete">> =>
+      ): Promise<SdkResponse<S, "organization.delete", M>> =>
         invoke(
           "organization.delete",
           { organizationId },
           {},
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "organization.delete">>,
+        ) as Promise<SdkResponse<S, "organization.delete", M>>,
     },
     contracts: {
       create: (
         body: SdkBody<S, "contract.create">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "contract.create">> =>
+      ): Promise<SdkResponse<S, "contract.create", M>> =>
         invoke("contract.create", {}, body, undefined, options) as Promise<
-          SdkResponse<S, "contract.create">
+          SdkResponse<S, "contract.create", M>
         >,
       update: (
         contractId: string,
         body: SdkBody<S, "contract.update">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "contract.update">> =>
+      ): Promise<SdkResponse<S, "contract.update", M>> =>
         invoke(
           "contract.update",
           { contractId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "contract.update">>,
+        ) as Promise<SdkResponse<S, "contract.update", M>>,
       delete: (
         contractId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "contract.delete">> =>
+      ): Promise<SdkResponse<S, "contract.delete", M>> =>
         invoke(
           "contract.delete",
           { contractId },
           {},
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "contract.delete">>,
+        ) as Promise<SdkResponse<S, "contract.delete", M>>,
     },
     customFields: {
       create: (
         body: SdkBody<S, "custom_field.create">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "custom_field.create">> =>
+      ): Promise<SdkResponse<S, "custom_field.create", M>> =>
         invoke("custom_field.create", {}, body, undefined, options) as Promise<
-          SdkResponse<S, "custom_field.create">
+          SdkResponse<S, "custom_field.create", M>
         >,
       update: (
         fieldId: string,
         body: SdkBody<S, "custom_field.update">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "custom_field.update">> =>
+      ): Promise<SdkResponse<S, "custom_field.update", M>> =>
         invoke(
           "custom_field.update",
           { fieldId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "custom_field.update">>,
+        ) as Promise<SdkResponse<S, "custom_field.update", M>>,
       delete: (
         fieldId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "custom_field.delete">> =>
+      ): Promise<SdkResponse<S, "custom_field.delete", M>> =>
         invoke(
           "custom_field.delete",
           { fieldId },
           {},
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "custom_field.delete">>,
+        ) as Promise<SdkResponse<S, "custom_field.delete", M>>,
     },
     externalLinks: {
       create: (
         body: SdkBody<S, "external_link.create">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "external_link.create">> =>
+      ): Promise<SdkResponse<S, "external_link.create", M>> =>
         invoke("external_link.create", {}, body, undefined, options) as Promise<
-          SdkResponse<S, "external_link.create">
+          SdkResponse<S, "external_link.create", M>
         >,
       find: (
         query: SdkQuery<"get_external_links">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "get_external_links">> =>
+      ): Promise<SdkResponse<S, "get_external_links", M>> =>
         invoke("get_external_links", {}, undefined, query, options) as Promise<
-          SdkResponse<S, "get_external_links">
+          SdkResponse<S, "get_external_links", M>
         >,
     },
     warehouses: {
       create: (
         body: SdkBody<S, "warehouse.create">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "warehouse.create">> =>
+      ): Promise<SdkResponse<S, "warehouse.create", M>> =>
         invoke("warehouse.create", {}, body, undefined, options) as Promise<
-          SdkResponse<S, "warehouse.create">
+          SdkResponse<S, "warehouse.create", M>
         >,
       update: (
         warehouseId: string,
         body: SdkBody<S, "warehouse.update">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "warehouse.update">> =>
+      ): Promise<SdkResponse<S, "warehouse.update", M>> =>
         invoke(
           "warehouse.update",
           { warehouseId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "warehouse.update">>,
+        ) as Promise<SdkResponse<S, "warehouse.update", M>>,
       delete: (
         warehouseId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "warehouse.delete">> =>
+      ): Promise<SdkResponse<S, "warehouse.delete", M>> =>
         invoke(
           "warehouse.delete",
           { warehouseId },
           {},
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "warehouse.delete">>,
+        ) as Promise<SdkResponse<S, "warehouse.delete", M>>,
     },
     purchases: {
       create: (
         body: SdkBody<S, "purchase.create">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "purchase.create">> =>
+      ): Promise<SdkResponse<S, "purchase.create", M>> =>
         invoke("purchase.create", {}, body, undefined, options) as Promise<
-          SdkResponse<S, "purchase.create">
+          SdkResponse<S, "purchase.create", M>
         >,
       delete: (
         purchaseId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "purchase.delete">> =>
+      ): Promise<SdkResponse<S, "purchase.delete", M>> =>
         invoke(
           "purchase.delete",
           { purchaseId },
           {},
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "purchase.delete">>,
+        ) as Promise<SdkResponse<S, "purchase.delete", M>>,
     },
     procurement: {
       create: (
         body: SdkBody<S, "procurement.create">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "procurement.create">> =>
+      ): Promise<SdkResponse<S, "procurement.create", M>> =>
         invoke("procurement.create", {}, body, undefined, options) as Promise<
-          SdkResponse<S, "procurement.create">
+          SdkResponse<S, "procurement.create", M>
         >,
       update: (
         documentId: string,
         body: SdkBody<S, "procurement.update">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "procurement.update">> =>
+      ): Promise<SdkResponse<S, "procurement.update", M>> =>
         invoke(
           "procurement.update",
           { documentId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "procurement.update">>,
+        ) as Promise<SdkResponse<S, "procurement.update", M>>,
       delete: (
         documentId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "procurement.delete">> =>
+      ): Promise<SdkResponse<S, "procurement.delete", M>> =>
         invoke(
           "procurement.delete",
           { documentId },
           {},
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "procurement.delete">>,
+        ) as Promise<SdkResponse<S, "procurement.delete", M>>,
       status: (
         documentId: string,
         body: SdkBody<S, "procurement.status">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "procurement.status">> =>
+      ): Promise<SdkResponse<S, "procurement.status", M>> =>
         invoke(
           "procurement.status",
           { documentId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "procurement.status">>,
+        ) as Promise<SdkResponse<S, "procurement.status", M>>,
     },
     procurementImports: {
       retry: (
         importId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "procurement_import.retry">> =>
+      ): Promise<SdkResponse<S, "procurement_import.retry", M>> =>
         invoke(
           "procurement_import.retry",
           { importId },
           {},
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "procurement_import.retry">>,
+        ) as Promise<SdkResponse<S, "procurement_import.retry", M>>,
       reject: (
         importId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "procurement_import.reject">> =>
+      ): Promise<SdkResponse<S, "procurement_import.reject", M>> =>
         invoke(
           "procurement_import.reject",
           { importId },
           {},
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "procurement_import.reject">>,
+        ) as Promise<SdkResponse<S, "procurement_import.reject", M>>,
       document: (
         importId: string,
         body: SdkBody<S, "procurement_import.document">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "procurement_import.document">> =>
+      ): Promise<SdkResponse<S, "procurement_import.document", M>> =>
         invoke(
           "procurement_import.document",
           { importId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "procurement_import.document">>,
+        ) as Promise<SdkResponse<S, "procurement_import.document", M>>,
       list: (
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "get_procurement_imports">> =>
+      ): Promise<SdkResponse<S, "get_procurement_imports", M>> =>
         invoke(
           "get_procurement_imports",
           {},
           undefined,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "get_procurement_imports">>,
+        ) as Promise<SdkResponse<S, "get_procurement_imports", M>>,
       create: (
         body: SdkBody<S, "procurement_import.create">,
         options: CallOptions & {
           contentType: "image/jpeg" | "image/png" | "image/webp";
         },
-      ): Promise<SdkResponse<S, "procurement_import.create">> =>
+      ): Promise<SdkResponse<S, "procurement_import.create", M>> =>
         invoke(
           "procurement_import.create",
           {},
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "procurement_import.create">>,
+        ) as Promise<SdkResponse<S, "procurement_import.create", M>>,
       download: (
         importId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "get_procurement_imports_importId_file">> =>
+      ): Promise<SdkResponse<S, "get_procurement_imports_importId_file", M>> =>
         invoke(
           "get_procurement_imports_importId_file",
           { importId },
           undefined,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "get_procurement_imports_importId_file">>,
+        ) as Promise<
+          SdkResponse<S, "get_procurement_imports_importId_file", M>
+        >,
     },
     procurementPayments: {
       create: (
         body: SdkBody<S, "procurement_payment.create">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "procurement_payment.create">> =>
+      ): Promise<SdkResponse<S, "procurement_payment.create", M>> =>
         invoke(
           "procurement_payment.create",
           {},
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "procurement_payment.create">>,
+        ) as Promise<SdkResponse<S, "procurement_payment.create", M>>,
       update: (
         paymentId: string,
         body: SdkBody<S, "procurement_payment.update">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "procurement_payment.update">> =>
+      ): Promise<SdkResponse<S, "procurement_payment.update", M>> =>
         invoke(
           "procurement_payment.update",
           { paymentId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "procurement_payment.update">>,
+        ) as Promise<SdkResponse<S, "procurement_payment.update", M>>,
       delete: (
         paymentId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "procurement_payment.delete">> =>
+      ): Promise<SdkResponse<S, "procurement_payment.delete", M>> =>
         invoke(
           "procurement_payment.delete",
           { paymentId },
           {},
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "procurement_payment.delete">>,
+        ) as Promise<SdkResponse<S, "procurement_payment.delete", M>>,
       status: (
         paymentId: string,
         body: SdkBody<S, "procurement_payment.status">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "procurement_payment.status">> =>
+      ): Promise<SdkResponse<S, "procurement_payment.status", M>> =>
         invoke(
           "procurement_payment.status",
           { paymentId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "procurement_payment.status">>,
+        ) as Promise<SdkResponse<S, "procurement_payment.status", M>>,
     },
     orders: {
       create: (
         body: SdkBody<S, "order.create">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "order.create">> =>
+      ): Promise<SdkResponse<S, "order.create", M>> =>
         invoke("order.create", {}, body, undefined, options) as Promise<
-          SdkResponse<S, "order.create">
+          SdkResponse<S, "order.create", M>
         >,
       status: (
         orderId: string,
         body: SdkBody<S, "order.status">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "order.status">> =>
+      ): Promise<SdkResponse<S, "order.status", M>> =>
         invoke(
           "order.status",
           { orderId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "order.status">>,
+        ) as Promise<SdkResponse<S, "order.status", M>>,
       reserve: (
         orderId: string,
         body: SdkBody<S, "order.reserve">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "order.reserve">> =>
+      ): Promise<SdkResponse<S, "order.reserve", M>> =>
         invoke(
           "order.reserve",
           { orderId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "order.reserve">>,
+        ) as Promise<SdkResponse<S, "order.reserve", M>>,
       schedule: (
         orderId: string,
         body: SdkBody<S, "order.schedule">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "order.schedule">> =>
+      ): Promise<SdkResponse<S, "order.schedule", M>> =>
         invoke(
           "order.schedule",
           { orderId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "order.schedule">>,
+        ) as Promise<SdkResponse<S, "order.schedule", M>>,
       delete: (
         orderId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "order.delete">> =>
+      ): Promise<SdkResponse<S, "order.delete", M>> =>
         invoke("order.delete", { orderId }, {}, undefined, options) as Promise<
-          SdkResponse<S, "order.delete">
+          SdkResponse<S, "order.delete", M>
         >,
       transition: (
         orderId: string,
         body: SdkBody<S, "order.transition">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "order.transition">> =>
+      ): Promise<SdkResponse<S, "order.transition", M>> =>
         invoke(
           "order.transition",
           { orderId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "order.transition">>,
+        ) as Promise<SdkResponse<S, "order.transition", M>>,
     },
     salesWorkflows: {
       create: (
         body: SdkBody<S, "sales_workflow.create">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "sales_workflow.create">> =>
+      ): Promise<SdkResponse<S, "sales_workflow.create", M>> =>
         invoke(
           "sales_workflow.create",
           {},
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "sales_workflow.create">>,
+        ) as Promise<SdkResponse<S, "sales_workflow.create", M>>,
       update: (
         workflowId: string,
         body: SdkBody<S, "sales_workflow.update">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "sales_workflow.update">> =>
+      ): Promise<SdkResponse<S, "sales_workflow.update", M>> =>
         invoke(
           "sales_workflow.update",
           { workflowId },
           body,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "sales_workflow.update">>,
+        ) as Promise<SdkResponse<S, "sales_workflow.update", M>>,
       delete: (
         workflowId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "sales_workflow.delete">> =>
+      ): Promise<SdkResponse<S, "sales_workflow.delete", M>> =>
         invoke(
           "sales_workflow.delete",
           { workflowId },
           {},
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "sales_workflow.delete">>,
+        ) as Promise<SdkResponse<S, "sales_workflow.delete", M>>,
     },
     stock: {
       receipt: (
         body: SdkBody<S, "stock.receipt">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "stock.receipt">> =>
+      ): Promise<SdkResponse<S, "stock.receipt", M>> =>
         invoke("stock.receipt", {}, body, undefined, options) as Promise<
-          SdkResponse<S, "stock.receipt">
+          SdkResponse<S, "stock.receipt", M>
         >,
       writeoff: (
         body: SdkBody<S, "stock.writeoff">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "stock.writeoff">> =>
+      ): Promise<SdkResponse<S, "stock.writeoff", M>> =>
         invoke("stock.writeoff", {}, body, undefined, options) as Promise<
-          SdkResponse<S, "stock.writeoff">
+          SdkResponse<S, "stock.writeoff", M>
         >,
       transfer: (
         body: SdkBody<S, "stock.transfer">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "stock.transfer">> =>
+      ): Promise<SdkResponse<S, "stock.transfer", M>> =>
         invoke("stock.transfer", {}, body, undefined, options) as Promise<
-          SdkResponse<S, "stock.transfer">
+          SdkResponse<S, "stock.transfer", M>
         >,
     },
     settings: {
       update: (
         body: SdkBody<S, "settings.update">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "settings.update">> =>
+      ): Promise<SdkResponse<S, "settings.update", M>> =>
         invoke("settings.update", {}, body, undefined, options) as Promise<
-          SdkResponse<S, "settings.update">
+          SdkResponse<S, "settings.update", M>
         >,
     },
     state: {
-      get: (options?: CallOptions): Promise<SdkResponse<S, "get_bootstrap">> =>
+      get: (
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "get_bootstrap", M>> =>
         invoke("get_bootstrap", {}, undefined, undefined, options) as Promise<
-          SdkResponse<S, "get_bootstrap">
+          SdkResponse<S, "get_bootstrap", M>
         >,
     },
     catalog: {
       list: (
         query?: SdkQuery<"get_catalog">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "get_catalog">> =>
+      ): Promise<SdkResponse<S, "get_catalog", M>> =>
         invoke("get_catalog", {}, undefined, query, options) as Promise<
-          SdkResponse<S, "get_catalog">
+          SdkResponse<S, "get_catalog", M>
         >,
     },
     audit: {
       list: (
         query?: SdkQuery<"get_audit">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "get_audit">> =>
+      ): Promise<SdkResponse<S, "get_audit", M>> =>
         invoke("get_audit", {}, undefined, query, options) as Promise<
-          SdkResponse<S, "get_audit">
+          SdkResponse<S, "get_audit", M>
         >,
     },
     images: {
       get: (
         imageId: string,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "get_images_imageId_">> =>
+      ): Promise<SdkResponse<S, "get_images_imageId_", M>> =>
         invoke(
           "get_images_imageId_",
           { imageId },
           undefined,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "get_images_imageId_">>,
+        ) as Promise<SdkResponse<S, "get_images_imageId_", M>>,
     },
     events: {
       list: (
         query?: SdkQuery<"events.list">,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "events.list">> =>
+      ): Promise<SdkResponse<S, "events.list", M>> =>
         invoke("events.list", {}, undefined, query, options) as Promise<
-          SdkResponse<S, "events.list">
+          SdkResponse<S, "events.list", M>
         >,
       subscribe: (options?: SubscribeOptions) =>
         subscribeToEvents(transport.options, options),
@@ -859,21 +867,21 @@ export function createBistryskladClient<S extends FieldTypes = DefaultFields>(
     billing: {
       overview: (
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "billing.overview">> =>
+      ): Promise<SdkResponse<S, "billing.overview", M>> =>
         invoke(
           "billing.overview",
           {},
           undefined,
           undefined,
           options,
-        ) as Promise<SdkResponse<S, "billing.overview">>,
+        ) as Promise<SdkResponse<S, "billing.overview", M>>,
     },
     company: {
       schema: (
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "company.schema">> =>
+      ): Promise<SdkResponse<S, "company.schema", M>> =>
         invoke("company.schema", {}, undefined, undefined, options) as Promise<
-          SdkResponse<S, "company.schema">
+          SdkResponse<S, "company.schema", M>
         >,
     },
   };
