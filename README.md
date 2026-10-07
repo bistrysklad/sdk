@@ -5,8 +5,8 @@
 поля — через один клиент. `Idempotency-Key` для команд создаётся автоматически.
 Есть realtime-подписки через SSE и WebSocket и генератор типов вашей компании.
 
-**Версия: 0.1.0-beta.5.** Это отдельный репозиторий пакета. Публикация в npm
-пока не выполнена: используйте [проверенный архив релиза](https://github.com/bistrysklad/sdk/releases/tag/v0.1.0-beta.5). Node.js ≥22.18 нужен для CLI
+**Версия: 0.1.0-beta.6.** Это отдельный репозиторий пакета. Публикация в npm
+пока не выполнена: используйте [проверенный архив релиза](https://github.com/bistrysklad/sdk/releases/tag/v0.1.0-beta.6). Node.js ≥22.18 нужен для CLI
 и WebSocket; основной клиент собирается для современных браузеров.
 Лицензия пока `UNLICENSED`: публичный исходный код сам по себе не предоставляет
 лицензию на распространение и изменение.
@@ -14,7 +14,7 @@
 ## Установка и первый запрос
 
 ```sh
-npm install https://github.com/bistrysklad/sdk/releases/download/v0.1.0-beta.5/bistrysklad-sdk-0.1.0-beta.5.tgz
+npm install https://github.com/bistrysklad/sdk/releases/download/v0.1.0-beta.6/bistrysklad-sdk-0.1.0-beta.6.tgz
 ```
 
 Владелец склада выпускает токен в «Настройки → API-токены». Передайте его
@@ -26,8 +26,9 @@ import { createBistryskladClient } from "@bistrysklad/sdk";
 const sklad = createBistryskladClient({
   baseUrl: "https://bistrysklad.ru", // допустим и адрес с /api/v1
   token: process.env.BISTRYSKLAD_TOKEN!,
+  responseMode: "minimal",
 });
-const catalog = await sklad.catalog.list();
+const catalog = await sklad.workspace.products.list({limit:50});
 const created = await sklad.products.create({ name: "Упаковочная коробка" });
 console.log(created.result.id);
 ```
@@ -97,7 +98,7 @@ for await (const event of subscribeToEvents(
 | `catalog.invalidated` | Цена, фото, остаток, резерв, комплект, фильтры, публикация, профиль или схема полей |
 
 `entityId` содержит ID товара, когда он известен; `null` требует обновить
-соответствующий каталог целиком. В событии нет копии товара или фото.
+текущую страницу каталога. В событии нет копии товара или фото.
 События появляются после успешного commit; rollback и повтор идемпотентной
 команды не создают повторных изменений. Одна команда может создать несколько
 событий. Обработка должна допускать повторную доставку.
@@ -125,7 +126,7 @@ const sklad = createBistryskladClient({
 const saved = await sklad.products.create({ name: "Коробка" });
 console.log(saved.result.id, saved.revision);
 // saved.state отсутствует и не доступен в типах.
-const catalog = await sklad.catalog.list(); // тип и формат чтения сохранены
+const catalog = await sklad.workspace.products.list({limit:50}); // тип и формат чтения сохранены
 ```
 
 В этом режиме команды передают `Prefer: return=minimal`. Сервер подтверждает
@@ -183,3 +184,51 @@ CI проверяет генерацию, runtime, SSE/WebSocket, установ
 браузерную сборку и положительные/отрицательные TypeScript-примеры.
 Основной экспорт не импортирует Node-модули; WebSocket находится в `/node`.
 [Порядок выпуска](docs/releases.md).
+
+## Страницы, карточки и итоги
+
+`workspace` читает отдельные ресурсы: `products`, `partners`, `orders`, `lots`,
+`purchases`, `procurementDocuments`, `procurementPayments`, `movements`,
+`warehouses`, `organizations`, `contracts`, `priceTypes`, `filters`,
+`customFields`, `salesWorkflows`, `catalogProfiles`.
+У каждого есть `list(query)` и `get(id)`. Отчёты `replenishment`,
+`commissionReport`, `commissionBalances`, `counterpartyBalances` имеют `list`.
+
+```ts
+const page = await sklad.workspace.products.list({
+  limit: 50, offset: 0, q: "Коробка",
+  sort: {field: "price", direction: "asc"},
+});
+console.log(page.ids, page.pagination.total, page.pagination.nextOffset);
+const product = await sklad.workspace.products.get("product-id");
+const summary = await sklad.workspace.summary({
+  start: "2026-10-01T00:00:00Z", end: "2026-10-08T00:00:00Z", timeZone: "UTC",
+});
+```
+
+`data` содержит текущие строки и их прямые связи. Для списка используйте `ids`:
+связанный товар того же типа может присутствовать в `data.products` без входа в
+страницу. `pagination.total` и `summary` считаются по всему отбору/периоду.
+`Product.stock` содержит точные физические, зарезервированные и свободные остатки
+по складам. Страницы ограничены 100 строками, по умолчанию 50; поиск, условия и
+сортировка выполняются в PostgreSQL до отбора страницы.
+
+Дополнительные поля участвуют и в чтении, и в выборе:
+
+```ts
+// Клиент, созданный генератором для компании с weight: number.
+const page = await sklad.workspace.products.list({
+  conditions: [{id:"weight",field:"custom:weight",operator:"gte",value:"1",to:""}],
+  sort: {field:"custom:weight",direction:"desc"}, limit:50,
+});
+const file = await sklad.workspace.products.export([
+  {key:"name",label:"Название"}, {key:"custom:weight",label:"Вес"},
+], {q:"Коробка"});
+```
+
+Генератор переводит коды в ID компании; неизвестные коды обнаруживаются типами.
+CSV выгружает весь отбор пакетами на сервере. Обычные чтения не перебирают все
+страницы автоматически. `workspace.context()` отдаёт компанию и настройки,
+`workspace.stockPreview()` — полный FIFO итог и до 50 строк плана. Legacy
+`state.get()` и `catalog.list()` сохранены для существующих интеграций; новый UI
+использует страницы/карточки и компактные команды.

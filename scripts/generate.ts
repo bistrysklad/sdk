@@ -62,8 +62,13 @@ for (const [path, verbs] of Object.entries(spec.paths))
     if (op["x-sdk-stream"] || !op.security?.some((s) => "bearerAuth" in s))
       continue;
     const id = op.operationId!;
-    const [prefix, action] = id.split(".");
-    const [group, name] = reads[id] ?? [groups[prefix], camel(action)];
+    const [prefix, action, resourceAction] = id.split(".");
+    const [group, name] =
+      prefix === "workspace"
+        ? resourceAction
+          ? [`workspace/${action}`, resourceAction]
+          : ["workspace", action]
+        : (reads[id] ?? [groups[prefix], camel(action)]);
     if (!group || !name) throw new Error(`Unmapped public operation ${id}`);
     const params = [...path.matchAll(/\{(\w+)\}/g)].map((m) => m[1]);
     const contents = op.requestBody?.content;
@@ -83,19 +88,28 @@ for (const [path, verbs] of Object.entries(spec.paths))
       binary,
       "x-sdk-command": !!op["x-sdk-command"],
     };
+    if (prefix === "workspace" && resourceAction === "export") {
+      const fn = `export: (columns:{key:CatalogFieldKey<S>;label:string}[],query?:CatalogResourceQuery<S>,options?:CallOptions):Promise<Blob> => invoke(${JSON.stringify(id)}, {}, undefined, {selection:resourceSelection(snapshot,query),columns:JSON.stringify(columns.map(column=>({...column,key:resourceField(snapshot,column.key)})))},options) as Promise<Blob>`;
+      if (!methods.has(group)) methods.set(group, []);
+      methods.get(group)!.push(fn);
+      continue;
+    }
+    const scopedList = prefix === "workspace" && resourceAction === "list";
     const args = [
       ...params.map((p) => `${p}: string`),
       ...(hasBody ? [`body: SdkBody<S,${JSON.stringify(id)}>`] : []),
       ...(hasQuery
         ? [
-            `query${op.parameters?.some((p) => p.in === "query" && p.required) ? "" : "?"}: SdkQuery<${JSON.stringify(id)}>`,
+            scopedList
+              ? `query?: ${action === "products" ? "CatalogResourceQuery<S>" : "ResourceQuery"}`
+              : `query${op.parameters?.some((p) => p.in === "query" && p.required) ? "" : "?"}: SdkQuery<${JSON.stringify(id)}>`,
           ]
         : []),
       binary
         ? `options: CallOptions & { contentType: ${Object.keys(contents!).map(JSON.stringify).join(" | ")} }`
         : "options?: CallOptions",
     ];
-    const fn = `${name}: (${args.join(", ")}): Promise<SdkResponse<S,${JSON.stringify(id)},M>> => invoke(${JSON.stringify(id)}, {${params.join(", ")}}, ${hasBody ? "body" : method !== "get" ? "{}" : "undefined"}, ${hasQuery ? "query" : "undefined"}, options) as Promise<SdkResponse<S,${JSON.stringify(id)},M>>`;
+    const fn = `${name}: (${args.join(", ")}): Promise<SdkResponse<S,${JSON.stringify(id)},M>> => invoke(${JSON.stringify(id)}, {${params.join(", ")}}, ${hasBody ? "body" : method !== "get" ? "{}" : "undefined"}, ${hasQuery ? (scopedList ? "{selection:resourceSelection(snapshot,query)}" : "query") : "undefined"}, options) as Promise<SdkResponse<S,${JSON.stringify(id)},M>>`;
     if (!methods.has(group)) methods.set(group, []);
     methods.get(group)!.push(fn);
   }
@@ -113,6 +127,8 @@ const files = new Map([
   [
     "facade.ts",
     `/** Generated from OpenAPI; run npm run generate. */
+import { resourceSelection,resourceField } from "./resource-query.js";
+import type { ResourceQuery,CatalogResourceQuery,CatalogFieldKey } from "./resource-query.js";
 import { Transport } from "./transport.js";
 import { subscribeToEvents } from "./events.js";
 import type { SubscribeOptions } from "./event-protocol.js";
@@ -129,7 +145,13 @@ export function createBistryskladClient<S extends FieldTypes = DefaultFields, M 
     if (snapshot && id === "procurement.update" && body && typeof body === "object" && "customValues" in body && !entity) throw new Error("kind is required when updating procurement customValues");
     return decodeCustom(snapshot, await transport.invoke(op.method, op.path, path, encodeCustom(snapshot,entity,body),query,opts,options.responseMode === "minimal" && op["x-sdk-command"]));
   };
-  return { ${[...methods].map(([group, fns]) => `${group}: { ${fns.join(",\n")} }`).join(",\n")} };
+  return { ${[...methods]
+    .filter(([group]) => !group.includes("/"))
+    .map(
+      ([group, fns]) =>
+        `${group}: { ${[...fns, ...[...methods].filter(([child]) => child.startsWith(group + "/")).map(([child, childFns]) => `${child.split("/")[1]}: { ${childFns.join(",\n")} }`)].join(",\n")} }`,
+    )
+    .join(",\n")} };
 }
 `,
   ],

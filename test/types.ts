@@ -175,3 +175,37 @@ async function realtimeTypes() {
 void realtimeTypes;
 // @ts-expect-error subscriptions have no idempotency key
 client.events.subscribe({ idempotencyKey: "unused" });
+
+client.workspace.products.list({
+  conditions: [
+    { id: "w", field: "custom:weight", operator: "gte", value: "1", to: "" },
+  ],
+  sort: { field: "price", direction: "asc" },
+});
+// @ts-expect-error unknown company custom code in a filter
+client.workspace.products.list({
+  conditions: [
+    { id: "w", field: "custom:typo", operator: "eq", value: "x", to: "" },
+  ],
+});
+// @ts-expect-error unknown company custom code in a sort
+client.workspace.products.list({
+  sort: { field: "custom:typo", direction: "asc" },
+});
+// @ts-expect-error invalid direction
+client.workspace.products.list({ sort: { field: "price", direction: "up" } });
+client.workspace.products.export([{ key: "custom:weight", label: "Weight" }]);
+// @ts-expect-error invalid export column
+client.workspace.products.export([{ key: "custom:typo", label: "Typo" }]);
+async function resourceReads() {
+  const page = await client.workspace.products.list({ limit: 50 });
+  const weight: number | null | undefined =
+    page.data.products?.[0].customValues.weight;
+  // @ts-expect-error scoped reads preserve custom scalar
+  const wrong: string = page.data.products![0].customValues.weight;
+  const file: Blob = await client.workspace.products.export([
+    { key: "name", label: "Name" },
+  ]);
+  void [weight, wrong, file];
+}
+void resourceReads;

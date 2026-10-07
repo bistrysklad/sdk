@@ -1,4 +1,10 @@
 /** Generated from OpenAPI; run npm run generate. */
+import { resourceSelection, resourceField } from "./resource-query.js";
+import type {
+  ResourceQuery,
+  CatalogResourceQuery,
+  CatalogFieldKey,
+} from "./resource-query.js";
 import { Transport } from "./transport.js";
 import { subscribeToEvents } from "./events.js";
 import type { SubscribeOptions } from "./event-protocol.js";
@@ -852,6 +858,496 @@ export function createBistryskladClient<
           undefined,
           options,
         ) as Promise<SdkResponse<S, "get_images_imageId_", M>>,
+    },
+    workspace: {
+      stockPreview: (
+        query?: SdkQuery<"workspace.stockPreview">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "workspace.stockPreview", M>> =>
+        invoke(
+          "workspace.stockPreview",
+          {},
+          undefined,
+          query,
+          options,
+        ) as Promise<SdkResponse<S, "workspace.stockPreview", M>>,
+      context: (
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "workspace.context", M>> =>
+        invoke(
+          "workspace.context",
+          {},
+          undefined,
+          undefined,
+          options,
+        ) as Promise<SdkResponse<S, "workspace.context", M>>,
+      summary: (
+        query?: SdkQuery<"workspace.summary">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "workspace.summary", M>> =>
+        invoke("workspace.summary", {}, undefined, query, options) as Promise<
+          SdkResponse<S, "workspace.summary", M>
+        >,
+      products: {
+        export: (
+          columns: { key: CatalogFieldKey<S>; label: string }[],
+          query?: CatalogResourceQuery<S>,
+          options?: CallOptions,
+        ): Promise<Blob> =>
+          invoke(
+            "workspace.products.export",
+            {},
+            undefined,
+            {
+              selection: resourceSelection(snapshot, query),
+              columns: JSON.stringify(
+                columns.map((column) => ({
+                  ...column,
+                  key: resourceField(snapshot, column.key),
+                })),
+              ),
+            },
+            options,
+          ) as Promise<Blob>,
+        list: (
+          query?: CatalogResourceQuery<S>,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.products.list", M>> =>
+          invoke(
+            "workspace.products.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.products.list", M>>,
+        get: (
+          id: string,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.products.get", M>> =>
+          invoke(
+            "workspace.products.get",
+            { id },
+            undefined,
+            undefined,
+            options,
+          ) as Promise<SdkResponse<S, "workspace.products.get", M>>,
+      },
+      partners: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.partners.list", M>> =>
+          invoke(
+            "workspace.partners.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.partners.list", M>>,
+        get: (
+          id: string,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.partners.get", M>> =>
+          invoke(
+            "workspace.partners.get",
+            { id },
+            undefined,
+            undefined,
+            options,
+          ) as Promise<SdkResponse<S, "workspace.partners.get", M>>,
+      },
+      orders: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.orders.list", M>> =>
+          invoke(
+            "workspace.orders.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.orders.list", M>>,
+        get: (
+          id: string,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.orders.get", M>> =>
+          invoke(
+            "workspace.orders.get",
+            { id },
+            undefined,
+            undefined,
+            options,
+          ) as Promise<SdkResponse<S, "workspace.orders.get", M>>,
+      },
+      lots: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.lots.list", M>> =>
+          invoke(
+            "workspace.lots.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.lots.list", M>>,
+        get: (
+          id: string,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.lots.get", M>> =>
+          invoke(
+            "workspace.lots.get",
+            { id },
+            undefined,
+            undefined,
+            options,
+          ) as Promise<SdkResponse<S, "workspace.lots.get", M>>,
+      },
+      purchases: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.purchases.list", M>> =>
+          invoke(
+            "workspace.purchases.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.purchases.list", M>>,
+        get: (
+          id: string,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.purchases.get", M>> =>
+          invoke(
+            "workspace.purchases.get",
+            { id },
+            undefined,
+            undefined,
+            options,
+          ) as Promise<SdkResponse<S, "workspace.purchases.get", M>>,
+      },
+      procurementDocuments: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.procurementDocuments.list", M>> =>
+          invoke(
+            "workspace.procurementDocuments.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<
+            SdkResponse<S, "workspace.procurementDocuments.list", M>
+          >,
+        get: (
+          id: string,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.procurementDocuments.get", M>> =>
+          invoke(
+            "workspace.procurementDocuments.get",
+            { id },
+            undefined,
+            undefined,
+            options,
+          ) as Promise<SdkResponse<S, "workspace.procurementDocuments.get", M>>,
+      },
+      procurementPayments: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.procurementPayments.list", M>> =>
+          invoke(
+            "workspace.procurementPayments.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.procurementPayments.list", M>>,
+        get: (
+          id: string,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.procurementPayments.get", M>> =>
+          invoke(
+            "workspace.procurementPayments.get",
+            { id },
+            undefined,
+            undefined,
+            options,
+          ) as Promise<SdkResponse<S, "workspace.procurementPayments.get", M>>,
+      },
+      movements: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.movements.list", M>> =>
+          invoke(
+            "workspace.movements.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.movements.list", M>>,
+        get: (
+          id: string,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.movements.get", M>> =>
+          invoke(
+            "workspace.movements.get",
+            { id },
+            undefined,
+            undefined,
+            options,
+          ) as Promise<SdkResponse<S, "workspace.movements.get", M>>,
+      },
+      warehouses: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.warehouses.list", M>> =>
+          invoke(
+            "workspace.warehouses.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.warehouses.list", M>>,
+        get: (
+          id: string,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.warehouses.get", M>> =>
+          invoke(
+            "workspace.warehouses.get",
+            { id },
+            undefined,
+            undefined,
+            options,
+          ) as Promise<SdkResponse<S, "workspace.warehouses.get", M>>,
+      },
+      organizations: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.organizations.list", M>> =>
+          invoke(
+            "workspace.organizations.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.organizations.list", M>>,
+        get: (
+          id: string,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.organizations.get", M>> =>
+          invoke(
+            "workspace.organizations.get",
+            { id },
+            undefined,
+            undefined,
+            options,
+          ) as Promise<SdkResponse<S, "workspace.organizations.get", M>>,
+      },
+      contracts: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.contracts.list", M>> =>
+          invoke(
+            "workspace.contracts.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.contracts.list", M>>,
+        get: (
+          id: string,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.contracts.get", M>> =>
+          invoke(
+            "workspace.contracts.get",
+            { id },
+            undefined,
+            undefined,
+            options,
+          ) as Promise<SdkResponse<S, "workspace.contracts.get", M>>,
+      },
+      priceTypes: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.priceTypes.list", M>> =>
+          invoke(
+            "workspace.priceTypes.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.priceTypes.list", M>>,
+        get: (
+          id: string,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.priceTypes.get", M>> =>
+          invoke(
+            "workspace.priceTypes.get",
+            { id },
+            undefined,
+            undefined,
+            options,
+          ) as Promise<SdkResponse<S, "workspace.priceTypes.get", M>>,
+      },
+      filters: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.filters.list", M>> =>
+          invoke(
+            "workspace.filters.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.filters.list", M>>,
+        get: (
+          id: string,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.filters.get", M>> =>
+          invoke(
+            "workspace.filters.get",
+            { id },
+            undefined,
+            undefined,
+            options,
+          ) as Promise<SdkResponse<S, "workspace.filters.get", M>>,
+      },
+      customFields: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.customFields.list", M>> =>
+          invoke(
+            "workspace.customFields.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.customFields.list", M>>,
+        get: (
+          id: string,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.customFields.get", M>> =>
+          invoke(
+            "workspace.customFields.get",
+            { id },
+            undefined,
+            undefined,
+            options,
+          ) as Promise<SdkResponse<S, "workspace.customFields.get", M>>,
+      },
+      salesWorkflows: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.salesWorkflows.list", M>> =>
+          invoke(
+            "workspace.salesWorkflows.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.salesWorkflows.list", M>>,
+        get: (
+          id: string,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.salesWorkflows.get", M>> =>
+          invoke(
+            "workspace.salesWorkflows.get",
+            { id },
+            undefined,
+            undefined,
+            options,
+          ) as Promise<SdkResponse<S, "workspace.salesWorkflows.get", M>>,
+      },
+      catalogProfiles: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.catalogProfiles.list", M>> =>
+          invoke(
+            "workspace.catalogProfiles.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.catalogProfiles.list", M>>,
+        get: (
+          id: string,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.catalogProfiles.get", M>> =>
+          invoke(
+            "workspace.catalogProfiles.get",
+            { id },
+            undefined,
+            undefined,
+            options,
+          ) as Promise<SdkResponse<S, "workspace.catalogProfiles.get", M>>,
+      },
+      replenishment: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.replenishment.list", M>> =>
+          invoke(
+            "workspace.replenishment.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.replenishment.list", M>>,
+      },
+      commissionReport: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.commissionReport.list", M>> =>
+          invoke(
+            "workspace.commissionReport.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.commissionReport.list", M>>,
+      },
+      commissionBalances: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.commissionBalances.list", M>> =>
+          invoke(
+            "workspace.commissionBalances.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.commissionBalances.list", M>>,
+      },
+      counterpartyBalances: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.counterpartyBalances.list", M>> =>
+          invoke(
+            "workspace.counterpartyBalances.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<
+            SdkResponse<S, "workspace.counterpartyBalances.list", M>
+          >,
+      },
     },
     events: {
       list: (

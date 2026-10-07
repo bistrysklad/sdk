@@ -29,3 +29,10 @@ export type {
   SubscribeOptions,
   StreamStatus,
 } from "./event-protocol.js";
+
+export type {
+  ResourceQuery,
+  ResourceCondition,
+  CatalogResourceQuery,
+  CatalogFieldKey,
+} from "./resource-query.js";

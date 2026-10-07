@@ -345,7 +345,8 @@ export class Transport {
           ? { bodySerializer: (value: unknown) => value }
           : {}),
         ...((path.includes("/images/") && method === "get") ||
-        path.endsWith("/file")
+        path.endsWith("/file") ||
+        path.endsWith("/export")
           ? { parseAs: "blob" }
           : {}),
       });

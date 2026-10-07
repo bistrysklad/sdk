@@ -44,6 +44,10 @@ function fieldTypes(snapshot: CompanySnapshot) {
     "CatalogProfile",
     "CatalogPresentation",
     "ProfileCatalogResponse",
+    "ResourcePage",
+    "WorkspaceSummary",
+    "WorkspaceContext",
+    "StockPreview",
   ])
     lines.push(
       `export type ${name} = TypedRead<components["schemas"][${quoted(name)}], CompanyFieldTypes>;`,
@@ -54,7 +58,7 @@ function clientTypes(spec: Record<string, unknown>, origin: string) {
   // Local DTO signatures follow the downloaded contract. Runtime routes must be supported by this SDK version.
   const base = `/** Generated factory and methods typed from local api.ts. */
 import { createBistryskladClient } from "@bistrysklad/sdk";
-import type { ClientOptions, CallOptions, ResponseMode, SelectResponse, TypedRead, ProcurementKind, SubscribeOptions, WarehouseEvent } from "@bistrysklad/sdk";
+import type { ClientOptions, CallOptions, ResponseMode, SelectResponse, TypedRead, ProcurementKind, SubscribeOptions, WarehouseEvent, ResourceQuery, CatalogResourceQuery, CatalogFieldKey } from "@bistrysklad/sdk";
 import type { operations } from "./api.js";
 import { companySchema } from "./fields.js";
 import type { CompanyFieldTypes } from "./fields.js";
@@ -129,11 +133,16 @@ type Query<I extends keyof operations> = operations[I]["parameters"]["query"];
         throw new Error(
           "API routes differ from this SDK; update @bistrysklad/sdk first",
         );
-      const [prefix, action] = id.split(".");
-      const [group, name] = readMap[id] ?? [
-        groupMap[prefix],
-        action.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase()),
-      ];
+      const [prefix, action, resourceAction] = id.split(".");
+      const [group, name] =
+        prefix === "workspace"
+          ? resourceAction
+            ? [`workspace/${action}`, resourceAction]
+            : ["workspace", action]
+          : (readMap[id] ?? [
+              groupMap[prefix],
+              action.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase()),
+            ]);
       if (!group || !name)
         throw new Error(`Unsupported SDK operation name: ${id}`);
       const contents = op.requestBody?.content;
@@ -145,18 +154,28 @@ type Query<I extends keyof operations> = operations[I]["parameters"]["query"];
             .length === 0
         );
       const binary = contents && !("application/json" in contents);
+      const scopedList = prefix === "workspace" && resourceAction === "list";
       const args = [
         ...[...path.matchAll(/\{(\w+)\}/g)].map((m) => `${m[1]}: string`),
         ...(body ? [`body: Body<${quoted(id)}>`] : []),
         ...(op.parameters?.some((p) => p.in === "query")
           ? [
-              `query${op.parameters.some((p) => p.in === "query" && p.required) ? "" : "?"}: Query<${quoted(id)}>`,
+              `query${op.parameters.some((p) => p.in === "query" && p.required) ? "" : "?"}: ${scopedList ? (action === "products" ? "CatalogResourceQuery<CompanyFieldTypes>" : "ResourceQuery") : `Query<${quoted(id)}>`}`,
             ]
           : []),
         binary
           ? `options: CallOptions & { contentType: ${Object.keys(contents!).map(quoted).join(" | ")} }`
           : "options?: CallOptions",
       ];
+      if (prefix === "workspace" && resourceAction === "export") {
+        if (!groups.has(group)) groups.set(group, []);
+        groups
+          .get(group)!
+          .push(
+            `export: (columns: {key: CatalogFieldKey<CompanyFieldTypes>;label: string}[], query?: CatalogResourceQuery<CompanyFieldTypes>, options?: CallOptions) => Promise<Blob>`,
+          );
+        continue;
+      }
       if (!groups.has(group)) groups.set(group, []);
       groups
         .get(group)!
@@ -188,7 +207,27 @@ type Query<I extends keyof operations> = operations[I]["parameters"]["query"];
     throw new Error("API response schemas are incomplete");
   return (
     base +
-    `export interface CompanyClient<M extends ResponseMode = "full"> {\n${[...groups].map(([group, methods]) => `${group}: {${methods.join(";\n")}}`).join(";\n")}\n}\nexport function createCompanyClient<M extends ResponseMode = "full">(options: Omit<ClientOptions,"baseUrl"|"responseMode"> & {baseUrl?: string;responseMode?: M}): CompanyClient<M> { return createBistryskladClient<CompanyFieldTypes,M>({...options,baseUrl:options.baseUrl ?? ${quoted(origin)}},companySchema) as unknown as CompanyClient<M>; }\n`
+    `export interface CompanyClient<M extends ResponseMode = "full"> {\n${[
+      ...groups,
+    ]
+      .filter(([group]) => !group.startsWith("workspace/"))
+      .map(
+        ([group, methods]) =>
+          `${group}: {${methods.join(";\n")}${
+            group === "workspace"
+              ? [...groups]
+                  .filter(([key]) => key.startsWith("workspace/"))
+                  .map(
+                    ([key, items]) =>
+                      `;${key.split("/")[1]}: {${items.join(";\n")}}`,
+                  )
+                  .join("")
+              : ""
+          }}`,
+      )
+      .join(
+        ";\n",
+      )}\n}\nexport function createCompanyClient<M extends ResponseMode = "full">(options: Omit<ClientOptions,"baseUrl"|"responseMode"> & {baseUrl?: string;responseMode?: M}): CompanyClient<M> { return createBistryskladClient<CompanyFieldTypes,M>({...options,baseUrl:options.baseUrl ?? ${quoted(origin)}},companySchema) as unknown as CompanyClient<M>; }\n`
   );
 }
 async function fetchJson(url: string, token?: string): Promise<unknown> {

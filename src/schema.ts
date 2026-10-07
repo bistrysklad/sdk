@@ -951,6 +951,686 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/workspace/products/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** CSV всего отбора с выбранными столбцами; потоковые пакеты по 100 */
+        get: operations["workspace.products.export"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/products": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ограниченная страница раздела */
+        get: operations["workspace.products.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/products/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Одна запись и её связанные карточки */
+        get: operations["workspace.products.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/partners": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ограниченная страница раздела */
+        get: operations["workspace.partners.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/partners/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Одна запись и её связанные карточки */
+        get: operations["workspace.partners.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/orders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ограниченная страница раздела */
+        get: operations["workspace.orders.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/orders/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Одна запись и её связанные карточки */
+        get: operations["workspace.orders.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/lots": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ограниченная страница раздела */
+        get: operations["workspace.lots.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/lots/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Одна запись и её связанные карточки */
+        get: operations["workspace.lots.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/purchases": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ограниченная страница раздела */
+        get: operations["workspace.purchases.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/purchases/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Одна запись и её связанные карточки */
+        get: operations["workspace.purchases.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/procurementDocuments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ограниченная страница раздела */
+        get: operations["workspace.procurementDocuments.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/procurementDocuments/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Одна запись и её связанные карточки */
+        get: operations["workspace.procurementDocuments.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/procurementPayments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ограниченная страница раздела */
+        get: operations["workspace.procurementPayments.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/procurementPayments/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Одна запись и её связанные карточки */
+        get: operations["workspace.procurementPayments.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/movements": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ограниченная страница раздела */
+        get: operations["workspace.movements.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/movements/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Одна запись и её связанные карточки */
+        get: operations["workspace.movements.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/warehouses": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ограниченная страница раздела */
+        get: operations["workspace.warehouses.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/warehouses/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Одна запись и её связанные карточки */
+        get: operations["workspace.warehouses.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/organizations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ограниченная страница раздела */
+        get: operations["workspace.organizations.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/organizations/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Одна запись и её связанные карточки */
+        get: operations["workspace.organizations.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/contracts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ограниченная страница раздела */
+        get: operations["workspace.contracts.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/contracts/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Одна запись и её связанные карточки */
+        get: operations["workspace.contracts.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/priceTypes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ограниченная страница раздела */
+        get: operations["workspace.priceTypes.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/priceTypes/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Одна запись и её связанные карточки */
+        get: operations["workspace.priceTypes.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/filters": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ограниченная страница раздела */
+        get: operations["workspace.filters.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/filters/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Одна запись и её связанные карточки */
+        get: operations["workspace.filters.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/customFields": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ограниченная страница раздела */
+        get: operations["workspace.customFields.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/customFields/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Одна запись и её связанные карточки */
+        get: operations["workspace.customFields.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/salesWorkflows": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ограниченная страница раздела */
+        get: operations["workspace.salesWorkflows.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/salesWorkflows/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Одна запись и её связанные карточки */
+        get: operations["workspace.salesWorkflows.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/catalogProfiles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ограниченная страница раздела */
+        get: operations["workspace.catalogProfiles.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/catalogProfiles/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Одна запись и её связанные карточки */
+        get: operations["workspace.catalogProfiles.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/replenishment": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ограниченная страница раздела */
+        get: operations["workspace.replenishment.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/commissionReport": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ограниченная страница раздела */
+        get: operations["workspace.commissionReport.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/commissionBalances": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ограниченная страница раздела */
+        get: operations["workspace.commissionBalances.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/counterpartyBalances": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ограниченная страница раздела */
+        get: operations["workspace.counterpartyBalances.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/stock-preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Точный предварительный FIFO расчёт; до 50 строк плана и полные итоги */
+        get: operations["workspace.stockPreview"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/context": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Компания и настройки без бизнес-списков */
+        get: operations["workspace.context"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Точные итоги и график по сохранённым операциям */
+        get: operations["workspace.summary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/catalog-profiles/{profileId}/catalog": {
         parameters: {
             query?: never;
@@ -1315,6 +1995,11 @@ export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         ServiceResponseModels: {
+            resourceQuery: components["schemas"]["ResourceQuery"];
+            resourcePage: components["schemas"]["ResourcePage"];
+            stockPreview: components["schemas"]["StockPreview"];
+            workspaceContext: components["schemas"]["WorkspaceContext"];
+            workspaceSummary: components["schemas"]["WorkspaceSummary"];
             events: components["schemas"]["EventsPage"];
             state: components["schemas"]["WarehouseState"];
             catalog: components["schemas"]["CatalogResponse"];
@@ -1344,47 +2029,78 @@ export interface components {
             partnerResolve: components["schemas"]["PartnerResolveResult"];
             importDocument: components["schemas"]["ImportDocumentResult"];
         };
-        EventsPage: {
-            events: components["schemas"]["WarehouseEvent"][];
-            cursor: string;
-            headCursor: string;
-            hasMore: boolean;
-            retentionEvents: number;
-        };
-        WarehouseEvent: {
-            cursor: string;
+        ResourceQuery: {
+            limit?: number;
+            offset?: number;
+            q?: string;
+            tab?: string;
+            kind?: string;
+            warehouseId?: string;
+            priceTypeId?: string;
+            profileId?: string;
+            productId?: string;
+            partnerId?: string;
+            documentId?: string;
+            contractId?: string;
+            valueIds?: string[];
+            conditions?: components["schemas"]["ResourceCondition"][];
             /** @enum {string} */
-            type: "product.created" | "product.updated" | "product.deleted" | "catalog.invalidated";
-            entityId: string | null;
-            source: string;
-            occurredAt: string;
+            match?: "all" | "any";
+            sort?: {
+                field: string;
+                /** @enum {string} */
+                direction: "asc" | "desc";
+            } | null;
         };
-        WarehouseState: {
-            company: {
+        ResourceCondition: {
+            id: string;
+            field: string;
+            /** @enum {string} */
+            operator: "eq" | "neq" | "contains" | "notContains" | "starts" | "ends" | "gt" | "gte" | "lt" | "lte" | "between" | "empty" | "filled";
+            value: string;
+            to: string;
+        };
+        ResourcePage: {
+            resource: components["schemas"]["WorkspaceResource"];
+            revision: string;
+            /** @description Only this page/detail and its related records; never a complete workspace. */
+            data: components["schemas"]["Partial<WarehouseState>"];
+            ids: string[];
+            pagination: {
+                limit: number;
+                offset: number;
+                total: number;
+                nextOffset: number | null;
+            };
+        };
+        /** @enum {string} */
+        WorkspaceResource: "products" | "partners" | "orders" | "lots" | "purchases" | "procurementDocuments" | "procurementPayments" | "movements" | "warehouses" | "organizations" | "contracts" | "priceTypes" | "filters" | "customFields" | "salesWorkflows" | "catalogProfiles" | "replenishment" | "commissionReport" | "commissionBalances" | "counterpartyBalances";
+        "Partial<WarehouseState>": {
+            company?: {
                 id: string;
                 name: string;
             } | null;
-            warehouses: components["schemas"]["Warehouse"][];
-            priceTypes: components["schemas"]["PriceType"][];
-            catalogProfiles: components["schemas"]["CatalogProfile"][];
-            filters: components["schemas"]["CatalogFilter"][];
-            products: components["schemas"]["Product"][];
-            partners: components["schemas"]["Partner"][];
-            organizations: components["schemas"]["Organization"][];
-            contracts: components["schemas"]["Contract"][];
-            customFields: components["schemas"]["CustomField"][];
-            lots: components["schemas"]["Lot"][];
-            purchases: components["schemas"]["Purchase"][];
-            procurementDocuments: components["schemas"]["ProcurementDocument"][];
-            procurementPayments: components["schemas"]["ProcurementPayment"][];
-            replenishment: components["schemas"]["Replenishment"][];
-            commissionReport: components["schemas"]["CommissionReport"][];
-            commissionBalances: components["schemas"]["CommissionBalance"][];
-            counterpartyBalances: components["schemas"]["CounterpartyBalance"][];
-            orders: components["schemas"]["Order"][];
-            salesWorkflows: components["schemas"]["SalesWorkflow"][];
-            movements: components["schemas"]["Movement"][];
-            settings: components["schemas"]["Settings"] | null;
+            warehouses?: components["schemas"]["Warehouse"][];
+            priceTypes?: components["schemas"]["PriceType"][];
+            catalogProfiles?: components["schemas"]["CatalogProfile"][];
+            filters?: components["schemas"]["CatalogFilter"][];
+            products?: components["schemas"]["Product"][];
+            partners?: components["schemas"]["Partner"][];
+            organizations?: components["schemas"]["Organization"][];
+            contracts?: components["schemas"]["Contract"][];
+            customFields?: components["schemas"]["CustomField"][];
+            lots?: components["schemas"]["Lot"][];
+            purchases?: components["schemas"]["Purchase"][];
+            procurementDocuments?: components["schemas"]["ProcurementDocument"][];
+            procurementPayments?: components["schemas"]["ProcurementPayment"][];
+            replenishment?: components["schemas"]["Replenishment"][];
+            commissionReport?: components["schemas"]["CommissionReport"][];
+            commissionBalances?: components["schemas"]["CommissionBalance"][];
+            counterpartyBalances?: components["schemas"]["CounterpartyBalance"][];
+            orders?: components["schemas"]["Order"][];
+            salesWorkflows?: components["schemas"]["SalesWorkflow"][];
+            movements?: components["schemas"]["Movement"][];
+            settings?: components["schemas"]["Settings"] | null;
         };
         Warehouse: {
             id: components["schemas"]["EntityId"];
@@ -1425,6 +2141,8 @@ export interface components {
         Product: {
             id: components["schemas"]["EntityId"];
             hasPrice?: boolean;
+            /** @description Authoritative stock aggregates in a bounded resource response. */
+            stock?: components["schemas"]["ProductStock"][];
             kind: components["schemas"]["ProductKind"];
             name: string;
             sku: components["schemas"]["Nullable<string>"];
@@ -1457,6 +2175,12 @@ export interface components {
             components: components["schemas"]["Component"][];
             physical: components["schemas"]["Nullable<number>"];
             available: components["schemas"]["Nullable<number>"];
+        };
+        ProductStock: {
+            warehouseId: string;
+            physical: number;
+            reserved: number;
+            available: number;
         };
         /** @enum {string} */
         ProductKind: "product" | "variant" | "service" | "bundle";
@@ -1762,6 +2486,104 @@ export interface components {
             dailySummary: boolean;
             /** @enum {string} */
             orderStockDeductStatus: "picking" | "ready" | "shipped";
+        };
+        StockPreview: {
+            revision: string;
+            physical: number;
+            reserved: number;
+            available: number;
+            canConsume: boolean;
+            plan: {
+                lotId: string;
+                quantity: number;
+                unitCost: number;
+                reference: string;
+                supplier: string;
+            }[];
+            totalCost: number;
+            totalAllocations: number;
+        };
+        WorkspaceContext: {
+            revision: string;
+            company: {
+                id: string;
+                name: string;
+            } | null;
+            settings: components["schemas"]["Settings"] | null;
+        };
+        WorkspaceSummary: {
+            revision: string;
+            counts: {
+                products: number;
+                partners: number;
+                suppliers: number;
+                buyers: number;
+                activeOrders: number;
+                pendingPurchases: number;
+                purchases: number;
+                lowStock: number;
+                stocked: number;
+                reserved: number;
+                available: number;
+            };
+            inventoryValue: number;
+            revenue: number;
+            periodRevenue: number;
+            periodOrders: number;
+            unpricedOrders: number;
+            sales: {
+                date: string;
+                revenue: number;
+                orders: number;
+            }[];
+            topProducts: {
+                productId: string;
+                name: string;
+                quantity: number;
+                revenue: number;
+            }[];
+        };
+        EventsPage: {
+            events: components["schemas"]["WarehouseEvent"][];
+            cursor: string;
+            headCursor: string;
+            hasMore: boolean;
+            retentionEvents: number;
+        };
+        WarehouseEvent: {
+            cursor: string;
+            /** @enum {string} */
+            type: "product.created" | "product.updated" | "product.deleted" | "catalog.invalidated";
+            entityId: string | null;
+            source: string;
+            occurredAt: string;
+        };
+        WarehouseState: {
+            company: {
+                id: string;
+                name: string;
+            } | null;
+            warehouses: components["schemas"]["Warehouse"][];
+            priceTypes: components["schemas"]["PriceType"][];
+            catalogProfiles: components["schemas"]["CatalogProfile"][];
+            filters: components["schemas"]["CatalogFilter"][];
+            products: components["schemas"]["Product"][];
+            partners: components["schemas"]["Partner"][];
+            organizations: components["schemas"]["Organization"][];
+            contracts: components["schemas"]["Contract"][];
+            customFields: components["schemas"]["CustomField"][];
+            lots: components["schemas"]["Lot"][];
+            purchases: components["schemas"]["Purchase"][];
+            procurementDocuments: components["schemas"]["ProcurementDocument"][];
+            procurementPayments: components["schemas"]["ProcurementPayment"][];
+            replenishment: components["schemas"]["Replenishment"][];
+            commissionReport: components["schemas"]["CommissionReport"][];
+            commissionBalances: components["schemas"]["CommissionBalance"][];
+            counterpartyBalances: components["schemas"]["CounterpartyBalance"][];
+            orders: components["schemas"]["Order"][];
+            salesWorkflows: components["schemas"]["SalesWorkflow"][];
+            movements: components["schemas"]["Movement"][];
+            settings: components["schemas"]["Settings"] | null;
         };
         CatalogResponse: {
             priceTypes: {
@@ -14170,6 +14992,4358 @@ export interface operations {
                         /** @description Committed workspace revision, distinct from the event cursor */
                         revision: string;
                     };
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.products.export": {
+        parameters: {
+            query: {
+                selection?: string;
+                /** @description JSON array of {key,label}, от 1 до 100 столбцов */
+                columns: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description CSV файл */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/csv": string;
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.products.list": {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                q?: string;
+                tab?: string;
+                kind?: string;
+                warehouseId?: string;
+                priceTypeId?: string;
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.products.get": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.partners.list": {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                q?: string;
+                tab?: string;
+                kind?: string;
+                warehouseId?: string;
+                priceTypeId?: string;
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.partners.get": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.orders.list": {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                q?: string;
+                tab?: string;
+                kind?: string;
+                warehouseId?: string;
+                priceTypeId?: string;
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.orders.get": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.lots.list": {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                q?: string;
+                tab?: string;
+                kind?: string;
+                warehouseId?: string;
+                priceTypeId?: string;
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.lots.get": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.purchases.list": {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                q?: string;
+                tab?: string;
+                kind?: string;
+                warehouseId?: string;
+                priceTypeId?: string;
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.purchases.get": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.procurementDocuments.list": {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                q?: string;
+                tab?: string;
+                kind?: string;
+                warehouseId?: string;
+                priceTypeId?: string;
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.procurementDocuments.get": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.procurementPayments.list": {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                q?: string;
+                tab?: string;
+                kind?: string;
+                warehouseId?: string;
+                priceTypeId?: string;
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.procurementPayments.get": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.movements.list": {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                q?: string;
+                tab?: string;
+                kind?: string;
+                warehouseId?: string;
+                priceTypeId?: string;
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.movements.get": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.warehouses.list": {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                q?: string;
+                tab?: string;
+                kind?: string;
+                warehouseId?: string;
+                priceTypeId?: string;
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.warehouses.get": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.organizations.list": {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                q?: string;
+                tab?: string;
+                kind?: string;
+                warehouseId?: string;
+                priceTypeId?: string;
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.organizations.get": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.contracts.list": {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                q?: string;
+                tab?: string;
+                kind?: string;
+                warehouseId?: string;
+                priceTypeId?: string;
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.contracts.get": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.priceTypes.list": {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                q?: string;
+                tab?: string;
+                kind?: string;
+                warehouseId?: string;
+                priceTypeId?: string;
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.priceTypes.get": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.filters.list": {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                q?: string;
+                tab?: string;
+                kind?: string;
+                warehouseId?: string;
+                priceTypeId?: string;
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.filters.get": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.customFields.list": {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                q?: string;
+                tab?: string;
+                kind?: string;
+                warehouseId?: string;
+                priceTypeId?: string;
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.customFields.get": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.salesWorkflows.list": {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                q?: string;
+                tab?: string;
+                kind?: string;
+                warehouseId?: string;
+                priceTypeId?: string;
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.salesWorkflows.get": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.catalogProfiles.list": {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                q?: string;
+                tab?: string;
+                kind?: string;
+                warehouseId?: string;
+                priceTypeId?: string;
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.catalogProfiles.get": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.replenishment.list": {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                q?: string;
+                tab?: string;
+                kind?: string;
+                warehouseId?: string;
+                priceTypeId?: string;
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.commissionReport.list": {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                q?: string;
+                tab?: string;
+                kind?: string;
+                warehouseId?: string;
+                priceTypeId?: string;
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.commissionBalances.list": {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                q?: string;
+                tab?: string;
+                kind?: string;
+                warehouseId?: string;
+                priceTypeId?: string;
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.counterpartyBalances.list": {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                q?: string;
+                tab?: string;
+                kind?: string;
+                warehouseId?: string;
+                priceTypeId?: string;
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            404: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.stockPreview": {
+        parameters: {
+            query?: {
+                productId?: string;
+                warehouseId?: string;
+                quantity?: string;
+                lotId?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description StockPreview */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StockPreview"];
+                };
+            };
+            /** @description Ошибка */
+            400: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.context": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description WorkspaceContext */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WorkspaceContext"];
+                };
+            };
+            /** @description Ошибка */
+            401: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа */
+            403: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Квота API */
+            429: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.summary": {
+        parameters: {
+            query?: {
+                start?: string;
+                end?: string;
+                timeZone?: string;
+                warehouseId?: string;
+                q?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description WorkspaceSummary: SQL агрегаты всей компании/периода, не одной страницы */
+            200: {
+                headers: {
+                    /** @description Месячная квота */
+                    "X-RateLimit-Limit"?: number;
+                    /** @description Остаток месячной квоты */
+                    "X-RateLimit-Remaining"?: number;
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WorkspaceSummary"];
                 };
             };
             /** @description Ошибка */
