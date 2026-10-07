@@ -182,15 +182,24 @@ client.workspace.products.list({
   ],
   sort: { field: "price", direction: "asc" },
 });
-// @ts-expect-error unknown company custom code in a filter
 client.workspace.products.list({
   conditions: [
-    { id: "w", field: "custom:typo", operator: "eq", value: "x", to: "" },
+    {
+      id: "w",
+      // @ts-expect-error unknown company custom code in a filter
+      field: "custom:typo",
+      operator: "eq",
+      value: "x",
+      to: "",
+    },
   ],
 });
-// @ts-expect-error unknown company custom code in a sort
 client.workspace.products.list({
-  sort: { field: "custom:typo", direction: "asc" },
+  sort: {
+    // @ts-expect-error unknown company custom code in a sort
+    field: "custom:typo",
+    direction: "asc",
+  },
 });
 // @ts-expect-error invalid direction
 client.workspace.products.list({ sort: { field: "price", direction: "up" } });
