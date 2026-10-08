@@ -1034,7 +1034,8 @@ export interface components {
         };
         CustomValue: string | number | boolean | null;
         ResourcePage: {
-            resource: components["schemas"]["WorkspaceResource"];
+            /** @enum {string} */
+            resource: "products" | "orders" | "salesWorkflows";
             /** @description Версия сохранённых данных пространства; не используйте как курсор событий. */
             revision: string;
             ids: string[];
@@ -1054,8 +1055,6 @@ export interface components {
                 salesWorkflows?: components["schemas"]["SalesWorkflow"][];
             };
         };
-        /** @enum {string} */
-        WorkspaceResource: "products" | "partners" | "orders" | "lots" | "purchases" | "procurementDocuments" | "procurementPayments" | "movements" | "warehouses" | "organizations" | "contracts" | "priceTypes" | "filters" | "customFields" | "salesWorkflows" | "catalogProfiles" | "replenishment" | "commissionReport" | "commissionBalances" | "counterpartyBalances";
         IntegrationProduct: {
             /** @description ID записи в этом пространстве; берите из ответа API. */
             id: components["schemas"]["EntityId"];

@@ -11343,7 +11343,12 @@
         "type": "object",
         "properties": {
           "resource": {
-            "$ref": "#/components/schemas/WorkspaceResource"
+            "type": "string",
+            "enum": [
+              "products",
+              "orders",
+              "salesWorkflows"
+            ]
           },
           "revision": {
             "type": "string",
@@ -11418,31 +11423,6 @@
           "revision"
         ],
         "additionalProperties": false
-      },
-      "WorkspaceResource": {
-        "type": "string",
-        "enum": [
-          "products",
-          "partners",
-          "orders",
-          "lots",
-          "purchases",
-          "procurementDocuments",
-          "procurementPayments",
-          "movements",
-          "warehouses",
-          "organizations",
-          "contracts",
-          "priceTypes",
-          "filters",
-          "customFields",
-          "salesWorkflows",
-          "catalogProfiles",
-          "replenishment",
-          "commissionReport",
-          "commissionBalances",
-          "counterpartyBalances"
-        ]
       },
       "IntegrationProduct": {
         "type": "object",
