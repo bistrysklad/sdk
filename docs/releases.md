@@ -1,27 +1,63 @@
-# Выпуск SDK в npm
+# Выпуск SDK из GitHub в npm
 
-Исходники, публичный OpenAPI, документация и синтетические примеры находятся
-в отдельном публичном репозитории. Схемы реальных компаний и секреты туда не входят.
+Пакет связан с [публичным репозиторием](https://github.com/bistrysklad/sdk)
+через `repository`, с [документацией](https://docs.bistrysklad.ru/guide.html)
+через `homepage`. README включается в npm-архив и отображается на странице пакета.
+Обновление README в GitHub меняет страницу npm при следующем выпуске версии.
 
-1. Обновите contract/openapi.json совместимым контрактом backend.
-2. Выполните npm ci, npm run generate, npm run generate:check, npm test.
-3. Поднимите версию package.json/package-lock.json, дополните CHANGELOG.md.
-4. Выполните npm run package:check: проверяются реальный архив и allowlist файлов.
-5. Закоммитьте проверенные исходники. Выполните npm publish --access public
-   --registry=https://registry.npmjs.org. Нужны права организации @bistrysklad;
-   интерактивная публикация может запросить подтверждение 2FA в npm.
-6. Проверьте npm view @bistrysklad/sdk version и установку из registry в пустой
-   проект. Создайте тег v<version> только для действительно опубликованного релиза.
+## Однократная настройка Trusted Publisher
 
-publishConfig закрепляет публичный доступ и официальный registry. Постоянные
-npm-токены не входят в Git. Для CI можно настроить npm Trusted Publishing
-на проверенный workflow; такая конфигурация требует настройки в самом npm.
-Provenance используйте при публикации из доверенного CI, не имитируйте локально.
+В настройках пакета `@bistrysklad/sdk` в npm добавьте GitHub Actions:
 
-Генерация типов конкретной компании не требует нового выпуска SDK. Установите
-версию в lockfile проекта и перегенерируйте локальную схему после её изменения.
-Основной entrypoint — ESM/CJS и оба графа деклараций, /node — WebSocket,
-bistrysklad — CLI. Node >=22.18 для серверных инструментов.
+| Поле | Значение |
+| --- | --- |
+| Organization/user | `bistrysklad` |
+| Repository | `sdk` |
+| Workflow filename | `publish.yml` |
+| Environment | Не задан |
+| Permission | Publish |
 
-Источники: [публичные scoped-пакеты](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages/),
-[Trusted Publishing](https://docs.npmjs.com/trusted-publishers/).
+Можно настроить из терминала с npm ≥11.15, входом владельца и включённой 2FA:
+
+```sh
+npm trust github @bistrysklad/sdk --repo bistrysklad/sdk --file publish.yml --allow-publish --yes
+npm trust list @bistrysklad/sdk --json
+```
+
+Подтверждение npm проходите в своём терминале/браузере. Постоянный npm-токен
+в GitHub Secrets не нужен: workflow получает краткоживущую OIDC-авторизацию.
+GitHub hosted runner и право `id-token: write` заданы в workflow.
+[Официальная инструкция npm](https://docs.npmjs.com/trusted-publishers/),
+[команда npm trust](https://docs.npmjs.com/cli/v11/commands/npm-trust/).
+
+## Выпуск версии
+
+1. Обновите публичный `contract/openapi.json`, выполните `npm run generate`.
+2. Обновите `package.json`, lockfile и CHANGELOG. Выполните `npm ci`, `npm test`,
+   `npm run package:check`; проверьте содержимое реального tarball.
+3. Закоммитьте и отправьте изменения. Проверьте успешный SDK CI.
+4. Создайте GitHub Release с тегом `v<version>`, совпадающим с `package.json`.
+5. Workflow повторяет проверки и публикует пакет с provenance. При ошибке не
+   переиспользуйте номер уже опубликованной версии.
+6. Проверьте `npm view @bistrysklad/sdk version repository.url homepage`, затем
+   установите точную версию из registry в пустой проект и проверьте ESM/CJS.
+
+Обычный push и PR не публикуют пакет. Публикация вызывается событием GitHub
+Release. Проверка тега предотвращает выпуск случайного номера. Нельзя объявлять
+версию выпущенной только потому, что архив собрался локально.
+
+## Переход с 0.1.0 на 0.2.0
+
+Новая версия содержит только интеграционный API. Методы `state`, `settings`,
+`billing`, `stock`, закупок и изменения справочников/витрин удалены.
+Используйте приложение для административных действий и отдельные чтения
+`workspace.products`, `workspace.orders`, `workspace.salesWorkflows` для данных.
+
+Существующие токены становятся читающими. Явно включите «Изменение каталога»
+и/или «Работа с заказами» у владельца, если интеграции нужны эти операции.
+Секрет токена сохраняется; права можно изменить без перевыпуска.
+
+Команды всегда возвращают `{ result, revision }`; вместо `saved.state` перечитайте
+нужную карточку. Повторы записей теперь включены по умолчанию. Для очередей
+сохраняйте ключ команды; `retry: { maxAttempts: 1 }` отключает повторы вызова.
+Перегенерируйте локальные типы компании и проверьте TypeScript-компиляцию.

@@ -1,6 +1,6 @@
 # @bistrysklad/sdk
 
-Typed SDK for the Bistry Sklad Bearer API, version `0.1.0`.
+Typed SDK for the Bistry Sklad Bearer API, version `0.2.0`.
 Node22.18+ is required for the CLI and Node client. The client entrypoint also
 bundles for modern browsers with fetch, crypto.randomUUID and AbortSignal.any;
 use a server integration to keep service tokens private.
@@ -26,8 +26,8 @@ const created = await sklad.products.create({ name: "Packing box" });
 console.log(created.result.id); // Idempotency-Key is created automatically
 ```
 
-The owner creates/revokes tokens in Settings → API tokens. A new company starts
-empty. Methods use the stored API data and respect tenant isolation, workload protection and plan
+The owner creates/revokes tokens in Settings → API tokens. Tokens default to read access. The owner explicitly grants catalog writes and
+order access. A new company starts empty. Methods use the stored API data and respect tenant isolation, workload protection and plan
 feature permissions. Session-only settings, owner billing requests and MoySklad import
 management are operated through the application and are not SDK methods.
 
@@ -66,8 +66,8 @@ await sklad.products.create({
   customValues: { material: "Cotton", weight: 1.25 },
 });
 
-const state = await sklad.state.get();
-const product: Product = state.products[0];
+const page = await sklad.workspace.products.list();
+const product: Product = page.data.products![0];
 const weight: number | null | undefined = product.customValues.weight;
 
 // TypeScript rejects unknown codes, a string weight and an invalid select option.
@@ -81,9 +81,7 @@ Archived fields remain readable, have readonly properties, and are excluded
 from writes. Dates are strings in `YYYY-MM-DD`; actual calendar dates are checked
 before sending a generated-client write. False and zero are preserved.
 
-Product, partner and each of the five procurement document kinds have separate
-field types. A procurement update containing custom values must include its
-kind, e.g. `{ kind: "receipt", customValues: { delivered: "2026-10-04" } }`.
+Product custom fields participate in public reads and permitted writes.
 The generated client sends its company ID; a token from another company is
 rejected by the API before any command effect. Unknown wire field IDs are
 preserved on reads; regenerate to obtain their names and types.
@@ -114,14 +112,15 @@ field also causes drift. Upgrading the SDK is required for new unsupported route
 ## Idempotency, retries and errors
 
 A write generates one UUID per logical method call. All attempts of that call
-use identical URL, method, body bytes and key. Write retries are disabled by
-default. Reads retry connection failures,429 and502/503/504 up to three attempts.
-For a deliberate write retry, opt in per call:
+use identical URL, method, body bytes and key. Reads and writes retry connection failures, 429 and 502/503/504 up to three
+attempts by default, including the first. Backoff starts at 200ms, capped at
+2s; Retry-After takes priority within the shared 30s deadline. Client settings
+are merged with per-call overrides. Use maxAttempts:1 to disable retries:
 
 ```ts
 await sklad.products.create(
   { name: "Packing box" },
-  { retry: { maxAttempts: 3 }, timeoutMs: 15_000 },
+  { retry: { maxAttempts: 1 }, timeoutMs: 15_000 },
 );
 ```
 
@@ -150,128 +149,37 @@ Client options accept custom fetch, a token provider and an `onResponse`
 callback for status/retry monitoring. A proxy HTML response is not included
 in an error message. ESM and CommonJS imports both include strict declarations.
 
-## Photos and procurement files
+## Photos
 
-```ts
-import { readFile } from "node:fs/promises";
+Upload with `productImages.create(productId, bytes, {contentType:"image/png"})`;
+read with `images.get(imageId)`, returning a Blob. Uploads require the explicit
+catalog-write permission. Bytes and idempotency keys survive retries.
 
-await sklad.productImages.create(productId, await readFile("photo.png"), {
-  contentType: "image/png",
-});
-const original: Blob = await sklad.images.get(imageId);
-await sklad.procurementImports.create(await readFile("invoice.png"), {
-  contentType: "image/png",
-});
-const invoice: Blob = await sklad.procurementImports.download(importId);
-```
+## Token permissions and compact receipts
 
-Files use raw bytes, with automatic idempotency and the same timeout/error
-handling. The current upload API accepts JPEG, PNG and WebP originals. Bootstrap/catalog return complete collections. Profile catalogs support pagination and product-ID batches.
+New and existing ordinary tokens default to catalog/photo/profile/event reads.
+The owner grants catalog writes and order access independently in the cabinet.
+Settings, billing, import, full warehouse state and financial documents are
+cabinet operations and have no SDK methods. Product pages do not expose cost
+or supplier data. `TOKEN_PERMISSION_DENIED` is a 403 requiring a permission change.
 
-## Available method groups
+Commands always resolve to `{result,revision}` after commit. Read current data
+with `workspace.products.list/get`, `workspace.orders.list/get` and
+`workspace.salesWorkflows.list/get`. The revision is not an event cursor.
+`responseMode` is retained as a source-compatibility option; receipts stay compact.
 
-`state`, `catalog`, `audit`, `company`, `billing`, `products`, `productImages`,
-`images`, `partners`, `organizations`, `contracts`, `customFields`, `warehouses`,
-`priceTypes`, `filters`, `filterValues`, `externalLinks`, `purchases`, `orders`,
-`salesWorkflows`, `procurement`, `procurementPayments`, `procurementImports`, `stock`, `settings`.
-Autocomplete shows their exact request and response types. `components`,
-`operations` and `paths` are also exported for custom integration code.
+Profiles are configured in the application; SDK reads published profile catalogs
+and presentations. Custom sales models are configured in the application; use
+`orders.transition(id,{transitionId})` with a permitted transition of the saved
+order model. See the [integration guide](integration.md) for scheduling,
+reservation, photos and WebSocket updates.
 
 ## Repository development
 
-From the standalone SDK repository: `npm ci`, `npm run generate`, `npm test`, `npm pack`.
-Generation of the base SDK uses the checked-in public `contract/openapi.json`; no backend checkout is required. Release
-gates verify its checked-in generated copies, runtime tests, negative TypeScript
-fixtures, URL generation, offline consumer compilation and installation of an
-actual tarball in ESM/CJS. The package allowlist contains dist, README, documentation and examples. The registry release is public; publishing requires organization access.
+Run `npm ci`, `npm run generate:check`, `npm test`, `npm run package:check`.
+The public contract snapshot is sufficient; no backend checkout is required.
+Tests install an actual tarball, compile generated types offline, check ESM/CJS,
+negative field types and transport recovery. [Publishing](releases.md) uses
+GitHub Releases and npm Trusted Publishing without permanent registry secrets.
 
-## Scheduled orders and stock stages
-
-`orders.create` accepts optional `fulfillmentAt` (ISO datetime with offset),
-`fulfillmentTimeZone` (IANA zone), and `reserveMode`: `none`, `available`, `full`.
-The legacy default remains `full`; explicitly choose `none` to accept an order
-without available stock. `orders.reserve(id,{mode})` changes only actual reserve;
-`orders.schedule(id,{fulfillmentAt,fulfillmentTimeZone})` changes/clears a deadline.
-
-Settings `orderStockDeductStatus` selects `picking`, `ready`, or `shipped` for
-new standard-flow orders. Each order snapshots it. Moving to that stage or a later one deducts
-all snapshotted components once, transactionally and without negative stock.
-A later `shipped` transition records actual fulfillment and does not deduct
-again. Cancel/delete/reserve after deduction are refused; a stock return requires
-a separate accounting document. Planned quantity and `reservedQuantity` differ.
-
-## Custom sales workflows
-
-Company models are available in `(await sklad.state.get()).salesWorkflows`.
-Create/edit/archive them through `salesWorkflows.create/update`; updates require
-an expected `version` and reject stale edits. Assign `salesWorkflowId` to a product.
-New orders inherit that model, or accept an explicit `workflowId` (`null` selects
-the standard flow). Mixed product models require that explicit choice.
-
-```ts
-const state = await sklad.state.get();
-const order = state.orders.find(item => item.id === orderId)!;
-const allowed = order.workflow.definition.transitions.filter(
-  edge => edge.from === order.workflow.statusId,
-);
-// Choose a permitted transition for your process.
-await sklad.orders.transition(order.id, { transitionId: allowed[0].id });
-await sklad.salesWorkflows.update(model.id, {
-  version: model.version,
-  archived: true,
-});
-```
-
-Definitions have typed `statuses`, an `initialStatus`, and directed `transitions`
-with `from/to/label/actions`. Supported actions: `reserve_full`,
-`reserve_available`, `release_reserve`, `deduct_stock`. All statuses must be
-reachable. Initial category is `new`; `completed/cancelled` are terminal;
-completion requires `deduct_stock`. Deduction executes once per order; after
-physical consumption, repeated transition stock/reservation actions are skipped.
-Manual reservation and cancellation are still refused after consumption.
-Orders freeze the definition/name/version at acceptance. Editing or archiving
-never rewrites an existing order. `order.workflow.statusId` is the custom node;
-`order.status` retains the common reporting category. Use `orders.transition`
-for custom models; `orders.status` retains standard stage identifiers.
-## Catalog profiles
-
-Create a profile with `client.catalogProfiles.create({name, warehouseId, priceTypeId})`.
-Profiles share warehouse product cards and photos. Publication starts disabled;
-profiles inherit common publication and order until explicitly overridden.
-`catalogProfiles.catalog(profileId, {limit: 50, offset: 0, sort: "default"})`
-returns published cards with selected warehouse stock and selected price. Missing
-price is `null`; zero stock is valid, services have `null` quantities. Bundle
-components are counted within the selected warehouse. Paginate using `nextOffset`
-and restart if `version` changes. Repeated `productId` query IDs read a batch;
-`catalogProfiles.product(profileId, productId)` reads one published card. Both
-retain generated tenant custom field types.
-
-Read `catalogPresentations.get("common")` or a profile ID before updating. Pass
-its `version` to `catalogPresentations.update(scopeId, patch)`. Order fields set
-to `null` inherit; publication `null` removes an override. Copy/reset order does
-not change publication. A stale write returns `CATALOG_VERSION_CONFLICT` (409);
-reload and reapply the draft. Profile updates require the numeric profile version.
-Mutation idempotency keys are generated automatically by the existing transport.
-Private image URLs require authentication; proxy images on your server and keep
-warehouse tokens out of the storefront browser. This package is distributed as
-the public npm package with a pinned lockfile.
-
-## Compact command receipts
-
-Set `responseMode: "minimal"` on `createBistryskladClient` or the generated
-`createCompanyClient`. Commands send `Prefer: return=minimal` and resolve to
-`{ result, revision }`; `state` is absent from both the wire response and the
-inferred TypeScript type. Read methods retain their response types. The default
-`full` mode retains `{ result, state }` for existing integrations.
-
-A receipt is returned after commit. Its workspace revision is not an event
-cursor. If a read is needed, request the relevant card or paginated catalog
-separately. Keep the response mode and idempotency key unchanged during retries;
-changing the mode with the same key yields `IDEMPOTENCY_CONFLICT`.
-
-`COMPACT_RESPONSE_UNSUPPORTED` means an older server returned a full response.
-The write may already have committed. Check current data and keep the reported
-idempotency key. An older server may have stored a full response; retrieve it
-with a `full` client using the same key and body after the server is upgraded.
-Replaying that key as `minimal` may yield `IDEMPOTENCY_CONFLICT`. Do not blindly
-issue a new write with a new key.
+[Full interactive HTTP/SDK reference](https://docs.bistrysklad.ru/reference.html).

@@ -30,19 +30,21 @@ client.products.create({ name: "Invalid", customValues: { material: "Silk" } });
 client.products.update("id", { customValues: { weight: "heavy" } });
 // @ts-expect-error archived cannot be written
 client.products.update("id", { customValues: { archived: "x" } });
-// @ts-expect-error custom document writes require kind
-client.procurement.update("id", { customValues: { delivered: "2026-10-04" } });
-client.procurement.update("id", {
-  kind: "receipt",
-  customValues: { delivered: null },
-});
-client.procurement.update("id", { note: "Valid ordinary update" });
+// @ts-expect-error procurement is a cabinet operation
+client.procurement.update("id", { note: "private" });
+// @ts-expect-error settings are a cabinet operation
+client.settings.update({});
+// @ts-expect-error full warehouse state is not a token operation
+client.state.get();
+// @ts-expect-error cost is not a public filter
+client.workspace.products.list({ sort: { field: "cost", direction: "asc" } });
 // @ts-expect-error unsupported order status
 client.orders.status("id", { status: "made_up" });
 // @ts-expect-error wrong body scalar
 client.products.create({ name: 42 });
 async function reads() {
-  const data = await client.state.get();
+  const page = await client.workspace.products.list();
+  const data = { products: page.data.products! };
   const material: string | null | undefined =
     data.products[0].customValues.material;
   const weight: number | null | undefined =
@@ -69,31 +71,24 @@ async function compactReads() {
   const id: string = result.result.id;
   // @ts-expect-error compact commands do not return a full state
   result.state;
-  const state = await compact.state.get();
+  const page = await compact.workspace.products.list();
+  const state = { products: page.data.products! };
   const weight: number | null | undefined =
     state.products[0].customValues.weight;
-  const legacy = await client.products.create({ name: "Legacy" });
-  legacy.state.products;
-  // @ts-expect-error full responses do not promise a compact revision
-  const impossible: string = legacy.revision;
-  void impossible;
+  const saved = await client.products.create({ name: "Default" });
+  const defaultRevision: string = saved.revision;
+  // @ts-expect-error default commands also return compact receipts
+  saved.state;
+  void defaultRevision;
   void [revision, id, weight];
 }
 void compactReads;
 
-client.catalogProfiles.create({
-  name: "Store",
-  warehouseId: "main",
-  priceTypeId: "retail",
-});
-client.catalogProfiles.update("profile", { version: 1, archived: true });
-client.catalogPresentations.update("common", {
-  version: "from-get",
-  productOrder: null,
-  publications: [{ productId: "a", published: null }],
-});
-// @ts-expect-error profile edits require their optimistic version
-client.catalogProfiles.update("profile", { archived: true });
+// @ts-expect-error profile creation is a cabinet operation
+client.catalogProfiles.create({ name: "Store" });
+// @ts-expect-error publication editing is a cabinet operation
+client.catalogPresentations.update("common", {});
+client.catalogPresentations.get("common");
 // @ts-expect-error catalog sorting is a finite set
 client.catalogProfiles.catalog("profile", { sort: "random" });
 async function profileReads() {
@@ -112,46 +107,12 @@ async function profileReads() {
 }
 void profileReads;
 
-client.salesWorkflows.create({
-  name: "Delivery",
-  definition: {
-    initialStatus: "accepted",
-    statuses: [
-      { id: "accepted", label: "Accepted", category: "new", tone: "blue" },
-      { id: "done", label: "Done", category: "completed", tone: "green" },
-    ],
-    transitions: [
-      {
-        id: "finish",
-        label: "Finish",
-        from: "accepted",
-        to: "done",
-        actions: ["deduct_stock"],
-      },
-    ],
-  },
-});
+// @ts-expect-error workflow editing is a cabinet operation
+client.salesWorkflows.create({ name: "Delivery" });
+client.workspace.salesWorkflows.list();
 client.orders.transition("id", { transitionId: "finish" });
-// @ts-expect-error workflow version is required for concurrent edit protection
-client.salesWorkflows.update("id", { name: "Renamed" });
 // @ts-expect-error transition ID is required
 client.orders.transition("id", {});
-client.salesWorkflows.create({
-  name: "Invalid",
-  definition: {
-    initialStatus: "a",
-    statuses: [],
-    transitions: [
-      {
-        id: "x",
-        label: "x",
-        from: "a",
-        to: "b", // @ts-expect-error unsupported workflow action
-        actions: ["execute_js"],
-      },
-    ],
-  },
-});
 
 async function realtimeTypes() {
   const page = await client.events.list({

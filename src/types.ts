@@ -63,7 +63,9 @@ export type SelectResponse<T, M extends ResponseMode = "full"> = T extends {
 }
   ? M extends "minimal"
     ? Extract<T, { revision: string }>
-    : Extract<T, { state: object }>
+    : T extends { state: object }
+      ? Extract<T, { state: object }>
+      : Extract<T, { revision: string }>
   : T;
 export type SdkResponse<
   S extends FieldTypes,

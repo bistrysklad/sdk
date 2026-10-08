@@ -1,22 +1,17 @@
 # @bistrysklad/sdk
 
-Типизированный TypeScript SDK для [Быстрого склада](https://bistrysklad.ru).
-Товары, фото, цены, остатки, заказы, статусные модели, витрины и дополнительные
-поля — через один клиент. `Idempotency-Key` для команд создаётся автоматически.
-Есть realtime-подписки через SSE и WebSocket и генератор типов вашей компании.
+TypeScript-клиент [Быстрого склада](https://bistrysklad.ru): товары, витрины,
+фотографии, остатки, заказы и события. Сигнатуры создаются из публичного OpenAPI;
+генератор по URL добавляет типы дополнительных полей вашей компании.
 
-**Версия: 0.1.0.** Node.js ≥22.18 нужен для CLI и WebSocket;
-основной клиент собирается для современных браузеров. ESM и CommonJS,
-строгие типы запросов/ответов, отдельный Node entrypoint.
+**Документация:** [первые шаги и сценарии](https://docs.bistrysklad.ru/guide.html),
+[справочник с HTTP и SDK примерами](https://docs.bistrysklad.ru/reference.html),
+[все методы SDK](docs/methods.md). [Пакет npm](https://www.npmjs.com/package/@bistrysklad/sdk),
+[GitHub](https://github.com/bistrysklad/sdk), [MIT](LICENSE).
 
-Лицензия [MIT](LICENSE).
-
-- [Подключить сайт: витрина → заказ → обновления](docs/integration.md)
-- [Все методы SDK и соответствующие HTTP-маршруты](docs/methods.md)
-- [Типы полей, фото, статусы и расширенные сценарии](docs/guide.en.md)
-- [Сокеты, курсоры и восстановление соединения](docs/realtime.md)
-- [Ошибки, замедление и повтор команд](docs/errors.md)
-- [Руководство API с интерактивными запросами](https://docs.bistrysklad.ru/guide.html)
+Этот README описывает **0.2.0**. Node.js ≥22.18 для CLI и WebSocket.
+Есть ESM, CommonJS, строгие типы и отдельный Node entrypoint. Токен используйте
+на backend: он не должен попадать в браузер посетителя или публичный репозиторий.
 
 ## Установка и первый запрос
 
@@ -24,219 +19,201 @@
 npm install @bistrysklad/sdk
 ```
 
-Владелец склада выпускает токен в «Настройки → API-токены». Передайте его
-серверу через переменную окружения `BISTRYSKLAD_TOKEN`.
+В приложении откройте **Настройки → API-токены**, выпустите токен и задайте
+`BISTRYSKLAD_TOKEN` в окружении backend. Секрет показывается один раз.
 
 ```ts
 import { createBistryskladClient } from "@bistrysklad/sdk";
 
+const token = process.env.BISTRYSKLAD_TOKEN;
+if (!token) throw new Error("Задайте BISTRYSKLAD_TOKEN");
 const sklad = createBistryskladClient({
-  baseUrl: "https://bistrysklad.ru", // допустим и адрес с /api/v1
-  token: process.env.BISTRYSKLAD_TOKEN!,
-  responseMode: "minimal",
+  baseUrl: "https://bistrysklad.ru", // можно https://bistrysklad.ru/api/v1
+  token,
 });
-const catalog = await sklad.workspace.products.list({limit:50});
-const created = await sklad.products.create({ name: "Упаковочная коробка" });
-console.log(created.result.id);
-```
 
-Токен даёт доступ к компании; храните его на сервере. Для магазина браузер
-обращается к вашему backend, который авторизует посетителя и отдаёт допустимые
-данные. Пример такой схемы есть ниже. Сессии владельца, настройки тарифа и
-управление импортом МойСклада выполняются через приложение склада.
-
-## Типы дополнительных полей по URL
-
-```sh
-# BISTRYSKLAD_TOKEN уже задан в окружении/CI secrets
-npx bistrysklad generate --url https://bistrysklad.ru --out src/bistrysklad
-```
-
-Генератор создаёт `api.ts`, `fields.ts`, `client.ts` и манифест управляемых
-файлов. Токен в них не записывается. Типы работают локально, без запросов при
-сборке. После изменения полей повторите генерацию и проверьте diff.
-
-```ts
-import { createCompanyClient } from "./bistrysklad/client.js";
-const sklad = createCompanyClient({ token: process.env.BISTRYSKLAD_TOKEN! });
-
-// Если в компании есть material: select(Cotton, Linen), weight: number:
-await sklad.products.create({
-  name: "Ткань",
-  customValues: { material: "Cotton", weight: 1.25 },
-});
-// Неизвестное поле, строка вместо числа или неверный select — ошибка TypeScript.
-```
-
-Коды полей переводятся в серверные ID и обратно. Поля необязательные и допускают
-`null`; архивные поля доступны для чтения и исключены из записи. Для разных
-компаний используйте разные каталоги генерации. `--check` ничего не записывает:
-код выхода `0` — актуально, `1` — схема изменилась, `2` — запрос/валидация не удались.
-Подробнее: [генератор и типизация](docs/guide.en.md#generate-types-from-your-company-url).
-
-## Изменения в реальном времени
-
-Для backend сайта используйте WebSocket. Клиентам вашего сайта изменения
-можно передавать через SSE с вашего backend:
-
-```ts
-import { subscribeToEvents } from "@bistrysklad/sdk/node";
-const stop = new AbortController();
-
-for await (const event of subscribeToEvents(
-  { baseUrl: "https://bistrysklad.ru", token: process.env.BISTRYSKLAD_TOKEN! },
-  { signal: stop.signal, after: savedCursor },
-)) {
-  // Событие сообщает, что данные изменились. Прочитайте актуальную карточку/каталог.
-  await refreshAffectedCatalog(event);
-  await saveCursor(event.cursor); // после успешной обработки
+const profiles = await sklad.catalogProfiles.list();
+if (profiles.profiles.length) {
+  const page = await sklad.catalogProfiles.catalog(profiles.profiles[0].id, {
+    limit: 50,
+    sort: "default",
+  });
+  console.log(page.products, page.nextOffset);
 }
 ```
 
-Для SSE: `sklad.events.subscribe({ signal, after })`. Оба транспорта возвращают
-`AsyncIterable<WarehouseEvent>`, восстанавливают соединение и возобновляют чтение
-с последнего обработанного курсора. `AbortController.abort()` останавливает
-подписку и переподключения. Новый токен берётся у token provider при каждом соединении.
+Пустое пространство возвращает пустые списки. Витрина применяет настроенные
+публикацию, склад, цену и порядок. Если `nextOffset` задан, запросите следующую
+страницу. При смене `version` между страницами перечитайте их.
 
-| Событие | Что изменилось |
+## Права и ответы
+
+| Токен | Методы |
 | --- | --- |
-| `product.created` | Товар создан |
-| `product.updated` | Карточка товара изменена |
-| `product.deleted` | Товар удалён |
-| `catalog.invalidated` | Цена, фото, остаток, резерв, комплект, фильтры, публикация, профиль или схема полей |
+| По умолчанию | Товары, витрины, фото, остатки, схема полей и события: чтение |
+| «Изменение каталога» | Создание/изменение/удаление товаров и фото |
+| «Работа с заказами» | Чтение/создание заказов, резерв, расписание, переходы, поиск покупателя |
 
-`entityId` содержит ID товара, когда он известен; `null` требует обновить
-текущую страницу каталога. В событии нет копии товара или фото.
-События появляются после успешного commit; rollback и повтор идемпотентной
-команды не создают повторных изменений. Одна команда может создать несколько
-событий. Обработка должна допускать повторную доставку.
+Права включаются отдельно владельцем при выпуске или редактировании токена.
+Изменение тарифов, импорт, настройки, права доступа и бухгалтерские операции
+выполняются в кабинете. Чтения не возвращают себестоимость и поставщиков.
 
-Поток хранит последние **20 000 событий компании**. Без `after` подписка
-начинает с текущей позиции. При `EVENT_CURSOR_EXPIRED` загрузите новый снимок.
-Чтобы избежать потери изменений при начальной загрузке, сначала получите
-`(await sklad.events.list()).cursor`, затем снимок каталога и подпишитесь с этим
-курсором. [Протокол, восстановление и ограничения](docs/realtime.md).
-
-Готовый [пример backend → браузер через SSE](examples/README.md) держит один
-WebSocket со складом, обновляет опубликованный каталог выбранной витрины и
-уведомляет браузеры о новой версии. Складской токен остаётся на backend.
-
-## Быстрые ответы команд
-
-Для серверной интеграции можно получать короткое подтверждение сохранения:
+Все команды возвращают **`{ result, revision }`** после commit. Полное состояние
+пространства не возвращается. Для актуальной карточки используйте отдельное
+чтение. `revision` и курсор событий имеют разное назначение.
 
 ```ts
-const sklad = createBistryskladClient({
-  baseUrl: "https://bistrysklad.ru",
-  token: process.env.BISTRYSKLAD_TOKEN!,
-  responseMode: "minimal",
-});
-const saved = await sklad.products.create({ name: "Коробка" });
-console.log(saved.result.id, saved.revision);
-// saved.state отсутствует и не доступен в типах.
-const catalog = await sklad.workspace.products.list({limit:50}); // тип и формат чтения сохранены
+// Нужен флаг «Изменение каталога».
+const saved = await sklad.products.create({ name: "Упаковочная коробка" });
+const page = await sklad.workspace.products.get(saved.result.id);
+console.log(saved.revision, page.data.products);
 ```
 
-В этом режиме команды передают `Prefer: return=minimal`. Сервер подтверждает
-транзакцию до ответа, возвращает `{ result, revision }` и сохраняет компактное
-подтверждение для повторов. Полный снимок рабочего пространства не строится
-внутри транзакции. `revision` — версия данных компании; она не является курсором
-realtime-потока. Генерируемый `createCompanyClient` принимает ту же настройку.
+В 0.2.0 удалены методы кабинета из SDK. Существующие токены получают права
+только на чтение; владелец может явно включить нужную запись. Параметр
+`responseMode` сохранён для совместимости кода, команды всегда компактные.
+[Переход с 0.1.0](docs/releases.md).
 
-По умолчанию остаётся режим `full` с `{ result, state }`. Не меняйте режим при
-повторе команды с тем же ключом: сервер вернёт `IDEMPOTENCY_CONFLICT`. Если
-старый сервер не поддерживает компактные ответы, SDK выдаёт
-`COMPACT_RESPONSE_UNSUPPORTED` с ключом команды. Операция могла сохраниться:
-проверьте актуальные данные. Старый сервер мог сохранить полный ответ: после
-обновления его можно повторно получить клиентом в режиме `full`, с тем же
-ключом и телом. Повтор в режиме `minimal` для такого ключа может дать
-`IDEMPOTENCY_CONFLICT`. Новый ключ может создать вторую операцию.
+## Повторы, таймауты и ключи команд
 
-## Команды, ошибки и возможности
+Настройка работает сразу после создания клиента:
 
-Один вызов команды получает один UUID; явные повторы используют одинаковые
-байты и ключ. По умолчанию записи не повторяются; чтения делают до трёх попыток.
-Для задания, переживающего рестарт процесса, сохраняйте свой `idempotencyKey`.
-`BistryskladError` содержит `status`, `code`, `idempotencyKey` и `rateLimit`.
-Настраиваются `signal`, `timeoutMs`, custom `fetch`, token provider и `onResponse`.
+| Параметр | По умолчанию |
+| --- | --- |
+| Чтения и команды | До 3 попыток, включая первую |
+| Повторяемые ошибки | Сетевая ошибка; HTTP 429, 502, 503, 504 |
+| Пауза | Экспоненциальная: от 200 мс, максимум 2 с |
+| `Retry-After` | Пауза из ответа имеет приоритет |
+| Таймаут | 30 с на весь вызов, включая повторы и ожидание токена |
+| Ключ команды | UUID создаётся автоматически один раз на вызов |
+
+SDK повторяет запись с одинаковыми методом, URL, ключом и байтами тела.
+Ошибки 400, 401, 402, 403 и 409 не повторяются. Новый вызов без сохранённого
+ключа считается новой командой. Для очереди заданий сохраните ключ **до**
+запроса, чтобы повтор после рестарта не создал дубль:
+
+```ts
+await sklad.orders.create(checkoutCommand, {
+  idempotencyKey: persistedCheckoutKey,
+});
+```
+
+`checkoutCommand` — проверенные данные заказа, `persistedCheckoutKey` — UUID
+задания в вашей БД. Нужен флаг «Работа с заказами».
+
+```ts
+const configured = createBistryskladClient({
+  baseUrl: "https://bistrysklad.ru",
+  token,
+  timeoutMs: 15_000,
+  retry: { maxAttempts: 3, baseDelayMs: 300, maxDelayMs: 2000 },
+});
+const stop = new AbortController();
+await configured.catalog.list(undefined, {
+  signal: stop.signal,
+  retry: { maxAttempts: 1 }, // отключить повторы только этого вызова
+});
+```
+
+Параметры вызова дополняют настройки клиента. `AbortController.abort()`
+останавливает запрос и ожидание; сохранённую сервером команду он не откатывает.
+При неизвестном результате удерживайте прежний ключ.
+
+## Ошибки
 
 ```ts
 import { BistryskladError } from "@bistrysklad/sdk";
+
 try {
-  await sklad.products.create({ name: "Коробка" }, { idempotencyKey: persistedJobKey });
+  await sklad.workspace.products.list({ limit: 50 });
 } catch (error) {
-  if (error instanceof BistryskladError) console.log(error.status, error.code);
+  if (!(error instanceof BistryskladError)) throw error;
+  console.error(error.status, error.code, error.message);
+  // Для команды здесь будет ключ, который нужно сохранить при неизвестном результате.
+  console.log(error.idempotencyKey, error.rateLimit.retryAfterMs);
 }
 ```
 
-Доступны 115 HTTP-методов: товары/комплекты, фото, цены, фильтры, контрагенты,
-договоры, склады, документы, закупки, продажи, статусы и движения, API-схема,
-тарифные данные, витрины и поток изменений. Автодополнение показывает точные
-запросы и ответы. Полные DTO экспортируются как `components`, `operations`, `paths`.
-[Файлы, заказы, процессы продаж и витрины](docs/guide.en.md).
+`error.code` предназначен для обработки в коде; текст сообщения может меняться.
+`TOKEN_PERMISSION_DENIED` требует изменить права, `WORKSPACE_BUSY` — снизить
+параллельность, `IDEMPOTENCY_CONFLICT` — проверить запрос, связанный с ключом.
+При `TIMEOUT` или `NETWORK_ERROR` команда могла сохраниться.
+[Все ошибки и действия](docs/errors.md).
 
-## Разработка пакета
+## Дополнительные поля по URL
 
 ```sh
-npm ci
-npm run generate:check
-npm test
-npm pack
+# BISTRYSKLAD_TOKEN задан в окружении, не передавайте секрет аргументом CLI.
+npx bistrysklad generate --url https://bistrysklad.ru --out src/bistrysklad
+npx bistrysklad generate --url https://bistrysklad.ru --out src/bistrysklad --check
 ```
 
-Для сборки своего архива клонируйте репозиторий и выполните команды выше.
-
-`contract/openapi.json` — публичный снимок контракта, генерация не требует
-репозитория backend. При обновлении контракта выполните `npm run generate`.
-CI проверяет генерацию, runtime, SSE/WebSocket, установку архива, ESM/CJS,
-браузерную сборку и положительные/отрицательные TypeScript-примеры.
-Основной экспорт не импортирует Node-модули; WebSocket находится в `/node`.
-[Порядок выпуска](docs/releases.md).
-
-## Страницы, карточки и итоги
-
-`workspace` читает отдельные ресурсы: `products`, `partners`, `orders`, `lots`,
-`purchases`, `procurementDocuments`, `procurementPayments`, `movements`,
-`warehouses`, `organizations`, `contracts`, `priceTypes`, `filters`,
-`customFields`, `salesWorkflows`, `catalogProfiles`.
-У каждого есть `list(query)` и `get(id)`. Отчёты `replenishment`,
-`commissionReport`, `commissionBalances`, `counterpartyBalances` имеют `list`.
+Генератор создаёт `api.ts`, `fields.ts`, `client.ts` и манифест. Токен в них
+не записывается. Типы работают локально без сети при сборке. Для каждой компании
+нужен отдельный каталог; после изменения схемы повторите генерацию.
 
 ```ts
-const page = await sklad.workspace.products.list({
-  limit: 50, offset: 0, q: "Коробка",
-  sort: {field: "price", direction: "asc"},
+import { createCompanyClient } from "./bistrysklad/client.js";
+const typed = createCompanyClient({ token });
+
+// Если у компании есть material: select(Cotton, Linen), weight: number:
+await typed.products.create({
+  name: "Ткань",
+  customValues: { material: "Cotton", weight: 1.25 },
 });
-console.log(page.ids, page.pagination.total, page.pagination.nextOffset);
-const product = await sklad.workspace.products.get("product-id");
-const summary = await sklad.workspace.summary({
-  start: "2026-10-01T00:00:00Z", end: "2026-10-08T00:00:00Z", timeZone: "UTC",
+const page = await typed.workspace.products.list({
+  sort: { field: "custom:weight", direction: "desc" },
 });
+console.log(page.data.products?.[0].customValues.material);
 ```
 
-`data` содержит текущие строки и их прямые связи. Для списка используйте `ids`:
-связанный товар того же типа может присутствовать в `data.products` без входа в
-страницу. `pagination.total` и `summary` считаются по всему отбору/периоду.
-`Product.stock` содержит точные физические, зарезервированные и свободные остатки
-по складам. Страницы ограничены 100 строками, по умолчанию 50; поиск, условия и
-сортировка выполняются в PostgreSQL до отбора страницы.
+Неизвестный код, строка вместо числа и неверное значение select отклоняются
+TypeScript. Коды переводятся в ID на отправке и обратно на чтении; архивные поля
+доступны только для чтения. Типы участвуют в фильтрах, сортировках и CSV.
+`--check` не меняет файлы: код 0 — актуально, 1 — схема изменилась, 2 — ошибка.
+[Подробности генератора](docs/guide.en.md#generate-types-from-your-company-url).
 
-Дополнительные поля участвуют и в чтении, и в выборе:
+## Фотографии
 
 ```ts
-// Клиент, созданный генератором для компании с weight: number.
-const page = await sklad.workspace.products.list({
-  conditions: [{id:"weight",field:"custom:weight",operator:"gte",value:"1",to:""}],
-  sort: {field:"custom:weight",direction:"desc"}, limit:50,
+import { readFile } from "node:fs/promises";
+
+// Для загрузки нужно «Изменение каталога».
+await sklad.productImages.create(productId, await readFile("photo.png"), {
+  contentType: "image/png",
 });
-const file = await sklad.workspace.products.export([
-  {key:"name",label:"Название"}, {key:"custom:weight",label:"Вес"},
-], {q:"Коробка"});
+const original: Blob = await sklad.images.get(imageId);
 ```
 
-Генератор переводит коды в ID компании; неизвестные коды обнаруживаются типами.
-CSV выгружает весь отбор пакетами на сервере. Обычные чтения не перебирают все
-страницы автоматически. `workspace.context()` отдаёт компанию и настройки,
-`workspace.stockPreview()` — полный FIFO итог и до 50 строк плана. Legacy
-`state.get()` и `catalog.list()` сохранены для существующих интеграций; новый UI
-использует страницы/карточки и компактные команды.
+ID изображений приходит в карточке товара. Отдавайте оригинал через свой backend
+или CDN, проверив публикацию товара. Bearer-токен не добавляется в URL фото.
+
+## Обновления через WebSocket
+
+```ts
+import { subscribeToEvents } from "@bistrysklad/sdk/node";
+
+const initialCursor = (await sklad.events.list()).cursor;
+const initialCatalog = await sklad.catalog.list();
+console.log(initialCatalog.products);
+const stop = new AbortController();
+for await (const event of subscribeToEvents(
+  { baseUrl: "https://bistrysklad.ru", token },
+  { after: initialCursor, signal: stop.signal },
+)) {
+  console.log(event.type, event.entityId, event.cursor);
+  // Перечитайте нужную карточку; затем сохраните cursor в своей БД.
+}
+```
+
+Backend подключается к складу по WebSocket и может выдавать браузерам свой SSE.
+Событие сообщает об изменении, а не содержит карточку. SDK переподключается с
+последнего обработанного курсора; допускайте повторную доставку. При истёкшем
+курсоре загрузите новый снимок. [Протокол](docs/realtime.md),
+[рабочий сервер и браузер](examples/README.md), [сценарий витрина → заказ](docs/integration.md).
+
+## Выпуск из GitHub
+
+[Workflow](https://github.com/bistrysklad/sdk/blob/main/.github/workflows/publish.yml)
+проверяет пакет и публикует тег версии через npm Trusted Publishing. Постоянный
+npm-токен в репозитории не нужен. [Настройка и последовательность выпуска](docs/releases.md).

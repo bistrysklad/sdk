@@ -6,6 +6,7 @@ interface Operation {
   security?: Record<string, string[]>[];
   "x-sdk-stream"?: boolean;
   "x-sdk-command"?: boolean;
+  "x-sdk-method"?: string;
   requestBody?: {
     content: Record<string, { schema: { type?: string; properties?: object } }>;
   };
@@ -57,7 +58,14 @@ const metadata: Record<
   { method: string; path: string; binary: boolean; "x-sdk-command": boolean }
 > = {};
 const methods = new Map<string, string[]>();
-const reference = ["# Методы SDK", "", "Создано из публичного OpenAPI. Аргументы и ответы доступны в автодополнении TypeScript.", "", "| Метод SDK | HTTP | Ответ команды |", "| --- | --- | --- |"];
+const reference = [
+  "# Методы SDK",
+  "",
+  "Создано из публичного OpenAPI. Аргументы и ответы доступны в автодополнении TypeScript.",
+  "",
+  "| Метод SDK | HTTP | Ответ команды |",
+  "| --- | --- | --- |",
+];
 for (const [path, verbs] of Object.entries(spec.paths))
   for (const [method, op] of Object.entries(verbs)) {
     if (op["x-sdk-stream"] || !op.security?.some((s) => "bearerAuth" in s))
@@ -71,7 +79,11 @@ for (const [path, verbs] of Object.entries(spec.paths))
           : ["workspace", action]
         : (reads[id] ?? [groups[prefix], camel(action)]);
     if (!group || !name) throw new Error(`Unmapped public operation ${id}`);
-    reference.push(`| \`sklad.${group.replaceAll("/", ".")}.${name}()\` | \`${method.toUpperCase()} ${path}\` | ${op["x-sdk-command"] ? "result + revision в minimal" : "Ресурс / страница"} |`);
+    if (op["x-sdk-method"] !== `${group.replaceAll("/", ".")}.${name}`)
+      throw new Error(`SDK method metadata differs for ${id}`);
+    reference.push(
+      `| \`sklad.${group.replaceAll("/", ".")}.${name}()\` | \`${method.toUpperCase()} ${path}\` | ${op["x-sdk-command"] ? "result + revision в minimal" : "Ресурс / страница"} |`,
+    );
     const params = [...path.matchAll(/\{(\w+)\}/g)].map((m) => m[1]);
     const contents = op.requestBody?.content;
     const hasBody =
@@ -115,6 +127,10 @@ for (const [path, verbs] of Object.entries(spec.paths))
     if (!methods.has(group)) methods.set(group, []);
     methods.get(group)!.push(fn);
   }
+for (const group of [...methods.keys()]) {
+  if (group.includes("/") && !methods.has(group.split("/")[0]))
+    methods.set(group.split("/")[0], []);
+}
 methods
   .get("events")!
   .push(
@@ -143,9 +159,8 @@ export function createBistryskladClient<S extends FieldTypes = DefaultFields, M 
   const transport = new Transport({...options, companyId: snapshot?.companyId ?? options.companyId});
   const invoke = async (id: keyof typeof metadata, path: Record<string,string>, body: unknown, query: unknown, opts?: CallOptions) => {
     const op = metadata[id];
-    const entity = id.startsWith("product.") ? "product" : id.startsWith("partner.") ? "partner" : id === "procurement.create" || id === "procurement.update" ? (body as {kind?: EntityKind})?.kind : undefined;
-    if (snapshot && id === "procurement.update" && body && typeof body === "object" && "customValues" in body && !entity) throw new Error("kind is required when updating procurement customValues");
-    return decodeCustom(snapshot, await transport.invoke(op.method, op.path, path, encodeCustom(snapshot,entity,body),query,opts,options.responseMode === "minimal" && op["x-sdk-command"]));
+    const entity = id.startsWith("product.") ? "product" : undefined;
+    return decodeCustom(snapshot, await transport.invoke(op.method, op.path, path, encodeCustom(snapshot,entity,body),query,opts,op["x-sdk-command"]));
   };
   return { ${[...methods]
     .filter(([group]) => !group.includes("/"))
@@ -172,7 +187,16 @@ console.log(
     ? "SDK contract is current"
     : `${Object.keys(metadata).length} public SDK operations generated`,
 );
-reference.push("", "Дополнительно: `sklad.events.subscribe(options)` — SSE AsyncIterable; `subscribeToEvents` из `@bistrysklad/sdk/node` — WebSocket AsyncIterable.", "", "Каждый HTTP-метод принимает необязательные CallOptions: signal, timeoutMs, retry и idempotencyKey для команд.", "");
-const referencePath=new URL('../docs/methods.md',import.meta.url), referenceContent=reference.join('\n');
-if(check){if(await readFile(referencePath,'utf8')!==referenceContent)throw new Error('SDK method reference is stale');}
-else await writeFile(referencePath,referenceContent);
+reference.push(
+  "",
+  "Дополнительно: `sklad.events.subscribe(options)` — SSE AsyncIterable; `subscribeToEvents` из `@bistrysklad/sdk/node` — WebSocket AsyncIterable.",
+  "",
+  "Каждый HTTP-метод принимает необязательные CallOptions: signal, timeoutMs, retry и idempotencyKey для команд.",
+  "",
+);
+const referencePath = new URL("../docs/methods.md", import.meta.url),
+  referenceContent = reference.join("\n");
+if (check) {
+  if ((await readFile(referencePath, "utf8")) !== referenceContent)
+    throw new Error("SDK method reference is stale");
+} else await writeFile(referencePath, referenceContent);

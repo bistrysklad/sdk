@@ -11,7 +11,7 @@ const opts = (fetch) => ({
   token: "synthetic-sdk-token",
   fetch,
 });
-test("minimal clients negotiate only command responses and keep the response mode across retries",async()=>{
+test("all clients negotiate compact commands and preserve mode across retries",async()=>{
   const calls=[];
   const client=createBistryskladClient({...opts(async request=>{
     calls.push({path:new URL(request.url).pathname,prefer:request.headers.get("Prefer"),key:request.headers.get("Idempotency-Key")});
@@ -21,14 +21,14 @@ test("minimal clients negotiate only command responses and keep the response mod
   assert.equal((await client.products.create({name:'Synthetic'},{retry:{maxAttempts:2,baseDelayMs:1,maxDelayMs:1}})).revision,'company:1');
   await client.catalog.list();
   assert.equal(calls[0].prefer,'return=minimal');assert.equal(calls[1].prefer,'return=minimal');assert.equal(calls[0].key,calls[1].key);assert.equal(calls[2].prefer,null);
-  const ordinary=createBistryskladClient(opts(async request=>{assert.equal(request.headers.get('Prefer'),null);return json({result:{id:'full'},state:{products:[]}});}));
-  assert.deepEqual((await ordinary.products.create({name:'Full'})).state,{products:[]});
+  const ordinary=createBistryskladClient(opts(async request=>{assert.equal(request.headers.get('Prefer'),'return=minimal');return json({result:{id:'saved'},revision:'company:2'});}));
+  assert.equal((await ordinary.products.create({name:'Saved'})).revision,'company:2');
 });
 test("minimal clients reject a legacy server response without silently claiming a typed revision",async()=>{
   const client=createBistryskladClient({...opts(async()=>json({result:{id:'committed'},state:{products:[]}})),responseMode:'minimal'});
   await assert.rejects(client.products.create({name:'Synthetic'}),error=>error instanceof BistryskladError&&error.code==='COMPACT_RESPONSE_UNSUPPORTED'&&typeof error.idempotencyKey==='string');
 });
-test("profile catalogs encode batch IDs and finite sorts; presentation saves use an automatic replay key", async () => {
+test("profile catalogs encode batch IDs and finite sorts; presentation reads need no command key", async () => {
   const calls = [];
   const client = createBistryskladClient(
     opts(async (request) => {
@@ -52,16 +52,10 @@ test("profile catalogs encode batch IDs and finite sorts; presentation saves use
   assert.deepEqual(url.searchParams.getAll("productId"), ["a", "b"]);
   assert.equal(url.searchParams.get("sort"), "price_desc");
   assert.equal(calls[0].key, null);
-  await client.catalogPresentations.update("common", {
-    version: "v1",
-    productOrder: null,
-  });
-  assert.equal(calls[1].method, "PATCH");
-  assert.ok(calls[1].key);
-  assert.deepEqual(JSON.parse(calls[1].body), {
-    version: "v1",
-    productOrder: null,
-  });
+  await client.catalogPresentations.get("common");
+  assert.equal(calls[1].method, "GET");
+  assert.equal(calls[1].key, null);
+  assert.equal(calls[1].body, "");
 });
 test("token provider failures and waiting obey the total deadline before fetch", async () => {
   let calls = 0;
@@ -110,7 +104,7 @@ test("commands get unique keys; explicit retries keep identical method, URL, key
       });
       return calls.length === 1
         ? json({ error: { code: "BUSY", message: "Busy" } }, 503)
-        : json({ result: { id: "synthetic" }, state: {} });
+        : json({ result: { id: "synthetic" }, revision: "company:1" });
     }),
   );
   await client.products.update(
@@ -134,7 +128,7 @@ test("commands get unique keys; explicit retries keep identical method, URL, key
   assert.equal(calls.at(-1).key, "resume-after-restart");
   assert.equal(calls.at(-1).method, "DELETE");
 });
-test("writes do not retry by default; structured and proxy failures retain key and quotas", async () => {
+test("per-call retries can be disabled; structured and proxy failures retain identity and retry hints", async () => {
   let calls = 0;
   const client = createBistryskladClient({
     ...opts(async () => {
@@ -152,7 +146,7 @@ test("writes do not retry by default; structured and proxy failures retain key a
     retry: { maxAttempts: 3 },
   });
   await assert.rejects(
-    client.products.create({ name: "Synthetic" }),
+    client.products.create({ name: "Synthetic" }, {retry:{maxAttempts:1}}),
     (error) => {
       assert.ok(error instanceof BistryskladError);
       assert.equal(error.status, 429);
@@ -212,7 +206,7 @@ test("binary photos and files preserve bytes, MIME and cancellation", async () =
         bytes = await req.arrayBuffer();
         mime = req.headers.get("Content-Type");
         fileName = req.headers.get("X-File-Name");
-        return json({ result: { id: "image" }, state: {} });
+        return json({ result: { id: "image" }, revision: "company:1" });
       }
       return new Response(new Uint8Array([0, 255, 42]), {
         headers: { "Content-Type": "image/png" },
@@ -278,7 +272,7 @@ test("company custom codes map to IDs; reads preserve history and unknown IDs", 
     {
       id: "00000000-0000-4000-8000-000000000003",
       code: "date",
-      entityKind: "receipt",
+      entityKind: "product",
       name: "Date",
       valueType: "date",
       options: [],
@@ -294,23 +288,14 @@ test("company custom codes map to IDs; reads preserve history and unknown IDs", 
   };
   const client = createBistryskladClient(
     opts(async (req) => {
-      sent = JSON.parse(await req.text());
-      company = req.headers.get("X-Bistrysklad-Company");
-      return json({
-        result: { id: "synthetic" },
-        state: {
-          products: [
-            {
-              kind: "product",
-              customValues: {
-                [fields[0].id]: "Removed historical option",
-                [fields[1].id]: "Old",
-                [unknown]: 42,
-              },
-            },
-          ],
-        },
-      });
+      if(req.method !== "GET") {
+        sent = JSON.parse(await req.text());
+        company = req.headers.get("X-Bistrysklad-Company");
+        return json({result:{id:"synthetic"},revision:"company:1"});
+      }
+      return json({data:{products:[{kind:"product",customValues:{
+        [fields[0].id]:"Removed historical option",[fields[1].id]:"Old",[unknown]:42
+      }}]}});
     }),
     schema,
   );
@@ -323,7 +308,10 @@ test("company custom codes map to IDs; reads preserve history and unknown IDs", 
     [unknown]: 0,
   });
   assert.equal(company, schema.companyId);
-  assert.deepEqual(response.state.products[0].customValues, {
+  assert.equal(response.revision,"company:1");
+  assert.equal("state" in response,false);
+  const page = await client.workspace.products.list();
+  assert.deepEqual(page.data.products[0].customValues, {
     material: "Removed historical option",
     legacy: "Old",
     [unknown]: 42,
@@ -340,15 +328,38 @@ test("company custom codes map to IDs; reads preserve history and unknown IDs", 
     client.products.update("id", { customValues: { typo: "Wrong" } }),
     /Unknown product custom/,
   );
+  assert.equal(client.procurement, undefined);
   await assert.rejects(
-    client.procurement.update("id", { customValues: { date: "2026-02-30" } }),
-    /kind is required/,
-  );
-  await assert.rejects(
-    client.procurement.update("id", {
-      kind: "receipt",
-      customValues: { date: "2026-02-30" },
-    }),
+    client.products.update("id", {customValues:{date:"2026-02-30"}}),
     /Invalid calendar date/,
   );
+});
+test("writes retry by default after a lost committed response with stable key and body; overrides merge", async () => {
+  const attempts=[];
+  const client=createBistryskladClient({...opts(async req=>{
+    attempts.push({key:req.headers.get('Idempotency-Key'),body:await req.text(),method:req.method,url:req.url});
+    if(attempts.length===1)throw new TypeError('response lost after commit');
+    if(attempts.length===2)return json({},503);
+    return json({result:{id:'committed-once'},revision:'company:1'});
+  }),retry:{baseDelayMs:0,maxDelayMs:0}});
+  const receipt=await client.products.create({name:'Once'},{retry:{maxDelayMs:1}});
+  assert.equal(receipt.result.id,'committed-once');
+  assert.equal(attempts.length,3);
+  assert.deepEqual(attempts[0],attempts[1]);assert.deepEqual(attempts[1],attempts[2]);
+  assert.equal('state' in receipt,false);
+});
+test("business/auth errors never retry; exhausted default retries and invalid settings are bounded",async()=>{
+  for(const status of [400,401,402,403,409]) {
+    let calls=0;
+    const client=createBistryskladClient({...opts(async()=>{calls++;return json({error:{code:'DENIED',message:'Denied'}},status);}),retry:{baseDelayMs:0}});
+    await assert.rejects(client.products.create({name:'No'}),e=>e.status===status&&e.code==='DENIED');
+    assert.equal(calls,1);
+  }
+  let calls=0;
+  const client=createBistryskladClient({...opts(async()=>{calls++;throw new TypeError('offline');}),retry:{baseDelayMs:0}});
+  await assert.rejects(client.products.create({name:'No'}),e=>e.code==='NETWORK_ERROR'&&!!e.idempotencyKey);
+  assert.equal(calls,3);
+  await assert.rejects(client.catalog.list(undefined,{retry:{maxAttempts:11}}),/maxAttempts/);
+  await assert.rejects(client.catalog.list(undefined,{retry:{baseDelayMs:Infinity}}),/Retry delays/);
+  assert.equal(calls,3);
 });

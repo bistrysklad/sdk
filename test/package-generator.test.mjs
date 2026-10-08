@@ -76,7 +76,7 @@ test("installed tarball works in ESM/CJS; URL generation is isolated, determinis
     spec = openApiDocument(),
     failure = 0,
     html = false,
-    requests = [];
+    requests = [], lastProduct = {};
   const server = createServer(async (req, res) => {
     requests.push({
       url: req.url,
@@ -119,15 +119,11 @@ test("installed tarball works in ESM/CJS; URL generation is isolated, determinis
       let body = "";
       for await (const part of req) body += part;
       const input = JSON.parse(body);
-      return res.end(
-        JSON.stringify({
-          result: { id: "synthetic-product" },
-          state: {
-            products: [{ kind: "product", customValues: input.customValues }],
-          },
-        }),
-      );
+      lastProduct = {id:"synthetic-product",kind:"product",customValues:input.customValues};
+      return res.end(JSON.stringify({result:{id:"synthetic-product"},revision:"company:1"}));
     }
+    if(req.url.startsWith("/api/v1/workspace/products") && req.method === "GET")
+      return res.end(JSON.stringify({resource:"products",data:{products:[lastProduct]},ids:[lastProduct.id],revision:"company:1",pagination:{limit:50,offset:0,total:1,nextOffset:null}}));
     res.statusCode = 404;
     res.end("{}");
   });
@@ -251,8 +247,8 @@ const b=createB({baseUrl:${JSON.stringify(url)},token:'synthetic-token-b'});
 function examples(){
 client.products.create({name:'Valid',customValues:{material:'Cotton',weight:0}});
 client.products.create({name:'Nullable',customValues:{material:null,weight:null}});
-client.partners.create({name:'Valid',customValues:{approved:false}});
-client.procurement.update('id',{kind:'receipt',customValues:{delivered:'2026-10-04'}});
+// @ts-expect-error partners CRUD belongs to the cabinet
+client.partners.create({name:'Valid'});
 b.products.create({name:'Valid',customValues:{supplier_code:'B'}});
 // @ts-expect-error schema A is not schema B
 b.products.create({name:'Wrong company field',customValues:{material:'Cotton'}});
@@ -269,7 +265,7 @@ client.procurement.update('id',{kind:'internal_order',customValues:{unavailable:
 // @ts-expect-error kind is required for document custom values
 client.procurement.update('id',{customValues:{delivered:'2026-10-04'}});
 }
-async function reads(){const state=await client.state.get();const p:Product=state.products[0];const weight:number|null|undefined=p.customValues.weight;const historical:string|null|undefined=p.customValues.material;
+async function reads(){const page=await client.workspace.products.list();const p:Product=page.data.products![0];const weight:number|null|undefined=p.customValues.weight;const historical:string|null|undefined=p.customValues.material;
 // @ts-expect-error archived reads are readonly
 p.customValues.legacy='changed';
 // @ts-expect-error field types participate in responses
@@ -277,7 +273,7 @@ const wrong:string=p.customValues.weight;void[weight,historical,wrong];}
 async function profileReads(){const page=await client.catalogProfiles.catalog('profile',{productId:['a'],sort:'default',limit:50});const material:string|null|undefined=page.products[0].customValues.material;const card=await client.catalogProfiles.product('profile','a');const weight:number|null|undefined=card.customValues.weight;
 // @ts-expect-error custom scalar retained through profile detail
 const wrong:string=card.customValues.weight;
-client.catalogPresentations.update('common',{version:'from-get',productOrder:null});
+client.catalogPresentations.get('common');
 // @ts-expect-error profile update needs a version
 client.catalogProfiles.update('profile',{archived:true});void[material,weight,wrong];}
 void[examples,reads,profileReads];
@@ -313,7 +309,7 @@ api.products.create({name:42});\n`,
     const runtime = await run([
       "--input-type=module",
       "-e",
-      `import {client} from './build/app.js'; const r=await client.products.create({name:'Synthetic',customValues:{material:'Cotton',weight:0}}); if(r.state.products[0].customValues.material!=='Cotton')process.exit(1);`,
+      `import {client} from './build/app.js'; const r=await client.products.create({name:'Synthetic',customValues:{material:'Cotton',weight:0}}); const page=await client.workspace.products.list(); if('state' in r || page.data.products[0].customValues.material!=='Cotton')process.exit(1);`,
     ]);
     assert.equal(runtime.code, 0, runtime.stdout + runtime.stderr);
     assert.equal(requests.at(-1).company, syntheticA);

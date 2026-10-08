@@ -1,6 +1,6 @@
 {
   "name": "@bistrysklad/sdk",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Typed client and company schema generator for Bistry Sklad",
   "type": "module",
   "license": "MIT",
@@ -63,7 +63,7 @@
     "type": "git",
     "url": "git+https://github.com/bistrysklad/sdk.git"
   },
-  "homepage": "https://github.com/bistrysklad/sdk#readme",
+  "homepage": "https://docs.bistrysklad.ru/guide.html",
   "bugs": {
     "url": "https://github.com/bistrysklad/sdk/issues"
   },

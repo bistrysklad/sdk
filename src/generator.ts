@@ -10,7 +10,7 @@ import {
 import { writeManaged } from "./managed-files.js";
 
 const quoted = (value: unknown) => JSON.stringify(value);
-function fieldTypes(snapshot: CompanySnapshot) {
+function fieldTypes(snapshot: CompanySnapshot, spec: Record<string, unknown>) {
   const lines = [
     "/** Generated company metadata. No credentials or business records. */",
     'import type { components } from "./api.js";',
@@ -37,18 +37,14 @@ function fieldTypes(snapshot: CompanySnapshot) {
   for (const name of [
     "Product",
     "CatalogProduct",
-    "Partner",
-    "ProcurementDocument",
-    "WarehouseState",
     "CatalogResponse",
     "CatalogProfile",
     "CatalogPresentation",
     "ProfileCatalogResponse",
     "ResourcePage",
-    "WorkspaceSummary",
-    "WorkspaceContext",
-    "StockPreview",
-  ])
+  ].filter((name) =>
+    Object.hasOwn((spec.components as { schemas: object }).schemas, name),
+  ))
     lines.push(
       `export type ${name} = TypedRead<components["schemas"][${quoted(name)}], CompanyFieldTypes>;`,
     );
@@ -183,6 +179,11 @@ type Query<I extends keyof operations> = operations[I]["parameters"]["query"];
           `${name}: (${args.join(", ")}) => Promise<Response<${quoted(id)},M>>`,
         );
     }
+  if (
+    [...groups.keys()].some((g) => g.startsWith("workspace/")) &&
+    !groups.has("workspace")
+  )
+    groups.set("workspace", []);
   groups
     .get("events")!
     .push(
@@ -194,15 +195,9 @@ type Query<I extends keyof operations> = operations[I]["parameters"]["query"];
     spec.components as { schemas?: Record<string, unknown> } | undefined
   )?.schemas;
   if (
-    [
-      "Product",
-      "CatalogProduct",
-      "Partner",
-      "ProcurementDocument",
-      "WarehouseState",
-      "CatalogResponse",
-      "CompanySchema",
-    ].some((name) => !schemas?.[name])
+    ["Product", "CatalogProduct", "CatalogResponse", "CompanySchema"].some(
+      (name) => !schemas?.[name],
+    )
   )
     throw new Error("API response schemas are incomplete");
   return (
@@ -213,17 +208,17 @@ type Query<I extends keyof operations> = operations[I]["parameters"]["query"];
       .filter(([group]) => !group.startsWith("workspace/"))
       .map(
         ([group, methods]) =>
-          `${group}: {${methods.join(";\n")}${
-            group === "workspace"
+          `${group}: {${[
+            ...methods,
+            ...(group === "workspace"
               ? [...groups]
                   .filter(([key]) => key.startsWith("workspace/"))
                   .map(
                     ([key, items]) =>
-                      `;${key.split("/")[1]}: {${items.join(";\n")}}`,
+                      `${key.split("/")[1]}: {${items.join(";\n")}}`,
                   )
-                  .join("")
-              : ""
-          }}`,
+              : []),
+          ].join(";\n")}}`,
       )
       .join(
         ";\n",
@@ -290,7 +285,7 @@ export async function runGenerator(args: string[]): Promise<void> {
   const client = clientTypes(spec, origin);
   const files = {
     "api.ts": astToString(await openapiTS(spec as never)),
-    "fields.ts": fieldTypes(snapshot),
+    "fields.ts": fieldTypes(snapshot, spec),
     "client.ts": client,
   };
   const matches = await writeManaged(out, files, check, snapshot.companyId);

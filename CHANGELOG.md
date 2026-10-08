@@ -1,3 +1,12 @@
+# 0.2.0
+
+- Explicit public integration API; owner-only settings/billing/import/stock and full state removed.
+- Tokens default to reads, with separate catalog-write and order permissions.
+- Compact command receipts by default and safe product page/filter/export types.
+- Reads and idempotent writes retry up to three attempts, with merged overrides, bounded backoff and Retry-After.
+- Expanded package docs, website links, per-method SDK snippets from OpenAPI metadata.
+- GitHub Releases workflow for npm Trusted Publishing with provenance.
+
 # Changelog
 
 ## 0.1.0
