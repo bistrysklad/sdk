@@ -29,3 +29,7 @@
 - Catalog profiles, publication/order and typed profile catalog pagination.
 - Company custom field generator, ESM/CJS, automatic command idempotency.
 - Scheduled orders, custom sales workflows, photos and procurement files.
+
+Public OpenAPI descriptions, nested documentation topics and structured error
+examples are synchronized with the server. Billing includes the one-month trial
+and `TRIAL_EXPIRED`; expired free tokens pause until a paid plan is assigned.
