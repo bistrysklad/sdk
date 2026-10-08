@@ -17615,7 +17615,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Тарифы: monthlyPrice (RUB), storageBytes, apiMonthly, apiPerMinute, warehouses и features. paymentAvailable=false: переход по заявке, без автоматической оплаты. Кеширование и WebSocket перечислены как будущие возможности. */
+            /** @description Тарифы: monthlyPrice (RUB), features и quotasEnforced=false. Старые числовые поля сохраняются для совместимости и не ограничивают работу. paymentAvailable=false: переход по заявке, без автоматической оплаты. */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -17638,7 +17638,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Тариф/планы, storage (databaseBytes/fileBytes/reservedBytes/usedBytes/limitBytes/files), api (used/limit/perMinute/periodStart/resetsAt UTC), warehouses и pending changeRequest. Все Bearer-токены компании делят API-квоту; web-сессии не расходуют её. */
+            /** @description Тариф/планы, точный учёт storage (databaseBytes/fileBytes/reservedBytes/usedBytes/files), пакетный учёт API (used/periodStart/resetsAt UTC), warehouses и pending changeRequest. quotasEnforced=false: старые limit/perMinute/limitBytes не применяются. Защита нагрузки общая для сессий и токенов пространства. */
             200: {
                 headers: {
                     /** @description Ожидание после 429 в секундах */
