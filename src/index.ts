@@ -1,4 +1,9 @@
 export { createBistryskladClient } from "./facade.js";
+import type { createBistryskladClient } from "./facade.js";
+import type { FieldTypes, DefaultFields } from "./types.js";
+import type { ResponseMode } from "./transport.js";
+/** Client type for dependency injection and service constructors. */
+export type BistryskladClient<S extends FieldTypes = DefaultFields, M extends ResponseMode = "full"> = ReturnType<typeof createBistryskladClient<S, M>>;
 export { BistryskladError } from "./transport.js";
 export type {
   ClientOptions,

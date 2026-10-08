@@ -15,5 +15,6 @@
     "types.ts",
     "types.cts",
     "../examples/server.ts"
+    ,"../examples/integration.ts"
   ]
 }

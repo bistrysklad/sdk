@@ -1946,7 +1946,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Публичные тарифы и квоты пространства */
+        /** Публичные тарифы и доступные возможности */
         get: operations["billing.plans"];
         put?: never;
         post?: never;
@@ -2722,6 +2722,7 @@ export interface components {
             [key: string]: unknown;
         };
         BillingOverview: {
+            quotasEnforced?: boolean;
             plan: components["schemas"]["BillingPlan"];
             plans: components["schemas"]["BillingPlan"][];
             storage: {
@@ -2751,6 +2752,8 @@ export interface components {
             } | null;
         };
         BillingPlan: {
+            /** @description False on servers without numeric tariff quotas. Legacy numeric fields are informational only. */
+            quotasEnforced?: boolean;
             id: string;
             name: string;
             description: string;
@@ -3028,10 +3031,6 @@ export interface operations {
             /** @description Профили каталога */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3043,10 +3042,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3058,10 +3053,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3073,10 +3064,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3088,10 +3075,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3103,10 +3086,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3115,13 +3094,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3164,10 +3139,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3188,10 +3159,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3203,10 +3170,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3218,10 +3181,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3233,10 +3192,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3248,10 +3203,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3263,10 +3214,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3278,10 +3225,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3293,10 +3236,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3343,10 +3282,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3367,10 +3302,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3382,10 +3313,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3397,10 +3324,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3412,10 +3335,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3427,10 +3346,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3442,10 +3357,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3457,10 +3368,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3472,10 +3379,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3503,10 +3406,6 @@ export interface operations {
             /** @description Публикация и порядок с наследованием */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3518,10 +3417,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3533,10 +3428,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3548,10 +3439,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3563,10 +3450,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3578,10 +3461,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3590,13 +3469,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3646,10 +3521,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3670,10 +3541,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3685,10 +3552,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3700,10 +3563,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3715,10 +3574,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3730,10 +3585,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3745,10 +3596,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3760,10 +3607,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3775,10 +3618,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3817,10 +3656,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3841,10 +3676,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3856,10 +3687,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3871,10 +3698,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3886,10 +3709,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3901,10 +3720,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3916,10 +3731,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3931,10 +3742,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3946,10 +3753,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -3985,10 +3788,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4009,10 +3808,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4024,10 +3819,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4039,10 +3830,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4054,10 +3841,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4069,10 +3852,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4084,10 +3863,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4099,10 +3874,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4114,10 +3885,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4160,10 +3927,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4184,10 +3947,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4199,10 +3958,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4214,10 +3969,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4229,10 +3980,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4244,10 +3991,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4259,10 +4002,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4274,10 +4013,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4289,10 +4024,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4329,10 +4060,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4353,10 +4080,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4368,10 +4091,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4383,10 +4102,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4398,10 +4113,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4413,10 +4124,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4428,10 +4135,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4443,10 +4146,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4458,10 +4157,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4497,10 +4192,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4521,10 +4212,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4536,10 +4223,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4551,10 +4234,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4566,10 +4245,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4581,10 +4256,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4596,10 +4267,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4611,10 +4278,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4626,10 +4289,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4670,10 +4329,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4694,10 +4349,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4709,10 +4360,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4724,10 +4371,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4739,10 +4382,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4754,10 +4393,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4769,10 +4404,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4784,10 +4415,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4799,10 +4426,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4841,10 +4464,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4865,10 +4484,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4880,10 +4495,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4895,10 +4506,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4910,10 +4517,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4925,10 +4528,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4940,10 +4539,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4955,10 +4550,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -4970,10 +4561,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5010,10 +4597,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5034,10 +4617,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5049,10 +4628,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5064,10 +4639,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5079,10 +4650,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5094,10 +4661,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5109,10 +4672,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5124,10 +4683,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5139,10 +4694,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5184,10 +4735,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5208,10 +4755,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5223,10 +4766,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5238,10 +4777,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5253,10 +4788,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5268,10 +4799,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5283,10 +4810,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5298,10 +4821,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5313,10 +4832,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5416,10 +4931,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5440,10 +4951,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5455,10 +4962,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5470,10 +4973,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5485,10 +4984,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5500,10 +4995,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5515,10 +5006,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5530,10 +5017,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5545,10 +5028,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5584,10 +5063,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5608,10 +5083,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5623,10 +5094,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5638,10 +5105,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5653,10 +5116,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5668,10 +5127,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5683,10 +5138,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5698,10 +5149,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5713,10 +5160,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5820,10 +5263,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5844,10 +5283,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5859,10 +5294,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5874,10 +5305,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5889,10 +5316,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5904,10 +5327,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5919,10 +5338,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5934,10 +5349,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5949,10 +5360,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -5989,10 +5396,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6013,10 +5416,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6028,10 +5427,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6043,10 +5438,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6058,10 +5449,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6073,10 +5460,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6088,10 +5471,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6103,10 +5482,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6118,10 +5493,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6209,10 +5580,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6233,10 +5600,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6248,10 +5611,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6263,10 +5622,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6278,10 +5633,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6293,10 +5644,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6308,10 +5655,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6323,10 +5666,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6338,10 +5677,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6377,10 +5712,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6401,10 +5732,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6416,10 +5743,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6431,10 +5754,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6446,10 +5765,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6461,10 +5776,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6476,10 +5787,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6491,10 +5798,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6506,10 +5809,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6583,10 +5882,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6607,10 +5902,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6622,10 +5913,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6637,10 +5924,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6652,10 +5935,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6667,10 +5946,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6682,10 +5957,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6697,10 +5968,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6712,10 +5979,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6758,10 +6021,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6782,10 +6041,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6797,10 +6052,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6812,10 +6063,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6827,10 +6074,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6842,10 +6085,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6857,10 +6096,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6872,10 +6107,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6887,10 +6118,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6942,10 +6169,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6966,10 +6189,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6981,10 +6200,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -6996,10 +6211,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7011,10 +6222,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7026,10 +6233,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7041,10 +6244,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7056,10 +6255,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7071,10 +6266,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7110,10 +6301,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7134,10 +6321,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7149,10 +6332,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7164,10 +6343,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7179,10 +6354,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7194,10 +6365,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7209,10 +6376,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7224,10 +6387,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7239,10 +6398,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7298,10 +6453,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7322,10 +6473,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7337,10 +6484,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7352,10 +6495,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7367,10 +6506,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7382,10 +6517,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7397,10 +6528,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7412,10 +6539,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7427,10 +6550,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7479,10 +6598,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7503,10 +6618,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7518,10 +6629,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7533,10 +6640,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7548,10 +6651,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7563,10 +6662,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7578,10 +6673,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7593,10 +6684,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7608,10 +6695,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7647,10 +6730,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7671,10 +6750,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7686,10 +6761,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7701,10 +6772,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7716,10 +6783,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7731,10 +6794,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7746,10 +6805,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7761,10 +6816,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7776,10 +6827,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7832,10 +6879,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7856,10 +6899,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7871,10 +6910,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7886,10 +6921,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7901,10 +6932,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7916,10 +6943,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7931,10 +6954,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7946,10 +6965,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -7961,10 +6976,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8014,10 +7025,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8038,10 +7045,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8053,10 +7056,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8068,10 +7067,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8083,10 +7078,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8098,10 +7089,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8113,10 +7100,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8128,10 +7111,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8143,10 +7122,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8182,10 +7157,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8206,10 +7177,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8221,10 +7188,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8236,10 +7199,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8251,10 +7210,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8266,10 +7221,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8281,10 +7232,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8296,10 +7243,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8311,10 +7254,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8356,10 +7295,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8380,10 +7315,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8395,10 +7326,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8410,10 +7337,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8425,10 +7348,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8440,10 +7359,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8455,10 +7370,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8470,10 +7381,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8485,10 +7392,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8518,10 +7421,6 @@ export interface operations {
             /** @description Данные компании */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8533,10 +7432,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8548,10 +7443,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8563,10 +7454,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8578,10 +7465,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8590,13 +7473,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8639,10 +7518,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8663,10 +7538,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8678,10 +7549,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8693,10 +7560,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8708,10 +7571,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8723,10 +7582,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8738,10 +7593,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8753,10 +7604,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8768,10 +7615,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8814,10 +7657,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8838,10 +7677,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8853,10 +7688,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8868,10 +7699,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8883,10 +7710,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8898,10 +7721,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8913,10 +7732,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8928,10 +7743,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8943,10 +7754,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -8982,10 +7789,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9006,10 +7809,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9021,10 +7820,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9036,10 +7831,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9051,10 +7842,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9066,10 +7853,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9081,10 +7864,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9096,10 +7875,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9111,10 +7886,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9161,10 +7932,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9185,10 +7952,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9200,10 +7963,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9215,10 +7974,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9230,10 +7985,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9245,10 +7996,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9260,10 +8007,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9275,10 +8018,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9290,10 +8029,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9342,10 +8077,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9366,10 +8097,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9381,10 +8108,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9396,10 +8119,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9411,10 +8130,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9426,10 +8141,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9441,10 +8152,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9456,10 +8163,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9471,10 +8174,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9510,10 +8209,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9534,10 +8229,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9549,10 +8240,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9564,10 +8251,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9579,10 +8262,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9594,10 +8273,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9609,10 +8284,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9624,10 +8295,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9639,10 +8306,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9722,10 +8385,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9746,10 +8405,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9761,10 +8416,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9776,10 +8427,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9791,10 +8438,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9806,10 +8449,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9821,10 +8460,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9836,10 +8471,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9851,10 +8482,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9890,10 +8517,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9914,10 +8537,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9929,10 +8548,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9944,10 +8559,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9959,10 +8570,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9974,10 +8581,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -9989,10 +8592,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10004,10 +8603,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10019,10 +8614,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10104,10 +8695,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10128,10 +8715,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10143,10 +8726,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10158,10 +8737,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10173,10 +8748,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10188,10 +8759,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10203,10 +8770,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10218,10 +8781,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10233,10 +8792,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10275,10 +8830,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10299,10 +8850,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10314,10 +8861,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10329,10 +8872,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10344,10 +8883,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10359,10 +8894,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10374,10 +8905,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10389,10 +8916,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10404,10 +8927,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10443,10 +8962,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10467,10 +8982,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10482,10 +8993,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10497,10 +9004,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10512,10 +9015,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10527,10 +9026,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10542,10 +9037,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10557,10 +9048,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10572,10 +9059,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10611,10 +9094,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10635,10 +9114,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10650,10 +9125,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10665,10 +9136,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10680,10 +9147,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10695,10 +9158,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10710,10 +9169,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10725,10 +9180,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10740,10 +9191,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10825,10 +9272,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10849,10 +9292,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10864,10 +9303,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10879,10 +9314,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10894,10 +9325,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10909,10 +9336,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10924,10 +9347,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10939,10 +9358,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -10954,10 +9369,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11015,10 +9426,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11039,10 +9446,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11054,10 +9457,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11069,10 +9468,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11084,10 +9479,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11099,10 +9490,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11114,10 +9501,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11129,10 +9512,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11144,10 +9523,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11183,10 +9558,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11207,10 +9578,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11222,10 +9589,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11237,10 +9600,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11252,10 +9611,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11267,10 +9622,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11282,10 +9633,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11297,10 +9644,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11312,10 +9655,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11375,10 +9714,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11399,10 +9734,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11414,10 +9745,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11429,10 +9756,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11444,10 +9767,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11459,10 +9778,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11474,10 +9789,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11489,10 +9800,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11504,10 +9811,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11546,10 +9849,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11570,10 +9869,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11585,10 +9880,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11600,10 +9891,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11615,10 +9902,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11630,10 +9913,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11645,10 +9924,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11660,10 +9935,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11675,10 +9946,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11758,10 +10025,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11782,10 +10045,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11797,10 +10056,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11812,10 +10067,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11827,10 +10078,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11842,10 +10089,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11857,10 +10100,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11872,10 +10111,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11887,10 +10122,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11929,10 +10160,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11953,10 +10180,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11968,10 +10191,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11983,10 +10202,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -11998,10 +10213,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12013,10 +10224,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12028,10 +10235,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12043,10 +10246,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12058,10 +10257,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12100,10 +10295,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12124,10 +10315,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12139,10 +10326,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12154,10 +10337,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12169,10 +10348,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12184,10 +10359,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12199,10 +10370,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12214,10 +10381,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12229,10 +10392,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12276,10 +10435,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12300,10 +10455,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12315,10 +10466,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12330,10 +10477,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12345,10 +10488,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12360,10 +10499,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12375,10 +10510,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12390,10 +10521,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12405,10 +10532,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12444,10 +10567,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12468,10 +10587,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12483,10 +10598,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12498,10 +10609,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12513,10 +10620,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12528,10 +10631,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12543,10 +10642,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12558,10 +10653,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12573,10 +10664,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12638,10 +10725,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12662,10 +10745,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12677,10 +10756,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12692,10 +10767,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12707,10 +10778,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12722,10 +10789,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12737,10 +10800,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12752,10 +10811,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12767,10 +10822,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12806,10 +10857,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12830,10 +10877,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12845,10 +10888,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12860,10 +10899,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12875,10 +10910,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12890,10 +10921,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12905,10 +10932,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12920,10 +10943,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -12935,10 +10954,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13006,10 +11021,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13030,10 +11041,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13045,10 +11052,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13060,10 +11063,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13075,10 +11074,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13090,10 +11085,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13105,10 +11096,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13120,10 +11107,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13135,10 +11118,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13177,10 +11156,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13201,10 +11176,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13216,10 +11187,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13231,10 +11198,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13246,10 +11209,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13261,10 +11220,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13276,10 +11231,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13291,10 +11242,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13306,10 +11253,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13360,10 +11303,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13384,10 +11323,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13399,10 +11334,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13414,10 +11345,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13429,10 +11356,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13444,10 +11367,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13459,10 +11378,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13474,10 +11389,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13489,10 +11400,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13537,10 +11444,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13561,10 +11464,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13576,10 +11475,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13591,10 +11486,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13606,10 +11497,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13621,10 +11508,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13636,10 +11519,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13651,10 +11530,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13666,10 +11541,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13714,10 +11585,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13738,10 +11605,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13753,10 +11616,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13768,10 +11627,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13783,10 +11638,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13798,10 +11649,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13813,10 +11660,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13828,10 +11671,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13843,10 +11682,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13892,10 +11727,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13916,10 +11747,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13931,10 +11758,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13946,10 +11769,6 @@ export interface operations {
             /** @description Ошибка */
             402: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13961,10 +11780,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13976,10 +11791,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -13991,10 +11802,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14006,10 +11813,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14021,10 +11824,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14056,10 +11855,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14071,10 +11866,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14086,10 +11877,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14127,10 +11914,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14142,10 +11925,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14157,10 +11936,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14186,10 +11961,6 @@ export interface operations {
             /** @description Данные компании */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14201,10 +11972,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14216,10 +11983,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14231,10 +11994,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14246,10 +12005,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14258,13 +12013,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14294,10 +12045,6 @@ export interface operations {
             /** @description Данные компании */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14309,10 +12056,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14324,10 +12067,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14339,10 +12078,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14354,10 +12089,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14366,13 +12097,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14400,10 +12127,6 @@ export interface operations {
             /** @description Данные компании */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14415,10 +12138,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14430,10 +12149,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14445,10 +12160,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14460,10 +12171,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14472,13 +12179,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14506,10 +12209,6 @@ export interface operations {
             /** @description Оригинал файла */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14523,10 +12222,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14538,10 +12233,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14553,10 +12244,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14568,10 +12255,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14580,13 +12263,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14612,10 +12291,6 @@ export interface operations {
             /** @description Данные компании */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14627,10 +12302,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14642,10 +12313,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14657,10 +12324,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14672,10 +12335,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14684,13 +12343,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14726,10 +12381,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             202: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14750,10 +12401,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14765,10 +12412,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14780,10 +12423,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14795,10 +12434,6 @@ export interface operations {
             /** @description Ошибка */
             413: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14810,10 +12445,6 @@ export interface operations {
             /** @description Ошибка */
             415: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14822,13 +12453,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14856,10 +12483,6 @@ export interface operations {
             /** @description Оригинал файла */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14873,10 +12496,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14888,10 +12507,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14903,10 +12518,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14918,10 +12529,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14930,13 +12537,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14973,10 +12576,6 @@ export interface operations {
             /** @description Результат операции и актуальное состояние склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -14997,10 +12596,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15012,10 +12607,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15027,10 +12618,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15039,13 +12626,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15075,10 +12658,6 @@ export interface operations {
             /** @description CSV файл */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15090,10 +12669,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15105,10 +12680,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15120,10 +12691,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15132,13 +12699,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15175,10 +12738,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15190,10 +12749,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15205,10 +12760,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15220,10 +12771,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15235,10 +12782,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15247,13 +12790,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15281,10 +12820,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15296,10 +12831,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15311,10 +12842,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15326,10 +12853,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15341,10 +12864,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15353,13 +12872,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15396,10 +12911,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15411,10 +12922,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15426,10 +12933,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15441,10 +12944,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15456,10 +12955,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15468,13 +12963,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15502,10 +12993,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15517,10 +13004,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15532,10 +13015,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15547,10 +13026,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15562,10 +13037,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15574,13 +13045,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15617,10 +13084,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15632,10 +13095,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15647,10 +13106,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15662,10 +13117,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15677,10 +13128,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15689,13 +13136,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15723,10 +13166,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15738,10 +13177,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15753,10 +13188,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15768,10 +13199,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15783,10 +13210,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15795,13 +13218,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15838,10 +13257,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15853,10 +13268,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15868,10 +13279,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15883,10 +13290,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15898,10 +13301,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15910,13 +13309,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15944,10 +13339,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15959,10 +13350,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15974,10 +13361,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -15989,10 +13372,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16004,10 +13383,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16016,13 +13391,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16059,10 +13430,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16074,10 +13441,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16089,10 +13452,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16104,10 +13463,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16119,10 +13474,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16131,13 +13482,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16165,10 +13512,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16180,10 +13523,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16195,10 +13534,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16210,10 +13545,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16225,10 +13556,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16237,13 +13564,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16280,10 +13603,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16295,10 +13614,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16310,10 +13625,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16325,10 +13636,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16340,10 +13647,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16352,13 +13655,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16386,10 +13685,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16401,10 +13696,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16416,10 +13707,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16431,10 +13718,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16446,10 +13729,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16458,13 +13737,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16501,10 +13776,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16516,10 +13787,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16531,10 +13798,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16546,10 +13809,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16561,10 +13820,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16573,13 +13828,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16607,10 +13858,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16622,10 +13869,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16637,10 +13880,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16652,10 +13891,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16667,10 +13902,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16679,13 +13910,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16722,10 +13949,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16737,10 +13960,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16752,10 +13971,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16767,10 +13982,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16782,10 +13993,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16794,13 +14001,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16828,10 +14031,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16843,10 +14042,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16858,10 +14053,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16873,10 +14064,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16888,10 +14075,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16900,13 +14083,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16943,10 +14122,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16958,10 +14133,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16973,10 +14144,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -16988,10 +14155,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17003,10 +14166,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17015,13 +14174,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17049,10 +14204,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17064,10 +14215,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17079,10 +14226,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17094,10 +14237,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17109,10 +14248,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17121,13 +14256,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17164,10 +14295,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17179,10 +14306,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17194,10 +14317,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17209,10 +14328,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17224,10 +14339,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17236,13 +14347,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17270,10 +14377,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17285,10 +14388,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17300,10 +14399,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17315,10 +14410,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17330,10 +14421,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17342,13 +14429,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17385,10 +14468,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17400,10 +14479,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17415,10 +14490,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17430,10 +14501,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17445,10 +14512,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17457,13 +14520,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17491,10 +14550,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17506,10 +14561,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17521,10 +14572,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17536,10 +14583,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17551,10 +14594,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17563,13 +14602,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17606,10 +14641,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17621,10 +14652,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17636,10 +14663,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17651,10 +14674,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17666,10 +14685,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17678,13 +14693,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17712,10 +14723,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17727,10 +14734,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17742,10 +14745,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17757,10 +14756,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17772,10 +14767,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17784,13 +14775,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17827,10 +14814,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17842,10 +14825,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17857,10 +14836,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17872,10 +14847,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17887,10 +14858,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17899,13 +14866,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17933,10 +14896,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17948,10 +14907,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17963,10 +14918,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17978,10 +14929,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -17993,10 +14940,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18005,13 +14948,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18048,10 +14987,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18063,10 +14998,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18078,10 +15009,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18093,10 +15020,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18108,10 +15031,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18120,13 +15039,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18154,10 +15069,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18169,10 +15080,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18184,10 +15091,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18199,10 +15102,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18214,10 +15113,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18226,13 +15121,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18269,10 +15160,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18284,10 +15171,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18299,10 +15182,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18314,10 +15193,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18329,10 +15204,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18341,13 +15212,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18375,10 +15242,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18390,10 +15253,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18405,10 +15264,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18420,10 +15275,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18435,10 +15286,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18447,13 +15294,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18490,10 +15333,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18505,10 +15344,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18520,10 +15355,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18535,10 +15366,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18550,10 +15377,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18562,13 +15385,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18596,10 +15415,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18611,10 +15426,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18626,10 +15437,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18641,10 +15448,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18656,10 +15459,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18668,13 +15467,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18711,10 +15506,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18726,10 +15517,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18741,10 +15528,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18756,10 +15539,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18771,10 +15550,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18783,13 +15558,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18826,10 +15597,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18841,10 +15608,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18856,10 +15619,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18871,10 +15630,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18886,10 +15641,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18898,13 +15649,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18941,10 +15688,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18956,10 +15699,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18971,10 +15710,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -18986,10 +15721,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19001,10 +15732,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19013,13 +15740,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19056,10 +15779,6 @@ export interface operations {
             /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19071,10 +15790,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19086,10 +15801,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19101,10 +15812,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19116,10 +15823,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19128,13 +15831,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19165,10 +15864,6 @@ export interface operations {
             /** @description StockPreview */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19180,10 +15875,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19195,10 +15886,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19210,10 +15897,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19222,13 +15905,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19254,10 +15933,6 @@ export interface operations {
             /** @description WorkspaceContext */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19269,10 +15944,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19284,10 +15955,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19296,13 +15963,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19334,10 +15997,6 @@ export interface operations {
             /** @description WorkspaceSummary: SQL агрегаты всей компании/периода, не одной страницы */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19349,10 +16008,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19364,10 +16019,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19379,10 +16030,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19391,13 +16038,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19432,10 +16075,6 @@ export interface operations {
             /** @description Опубликованный каталог с ценами и остатками выбранного склада */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19447,10 +16086,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19462,10 +16097,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19477,10 +16108,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19492,10 +16119,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19507,10 +16130,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19519,13 +16138,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19554,10 +16169,6 @@ export interface operations {
             /** @description Опубликованная карточка профиля */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19569,10 +16180,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19584,10 +16191,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19599,10 +16202,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19614,10 +16213,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19629,10 +16224,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19641,13 +16232,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19677,10 +16264,6 @@ export interface operations {
             /** @description EventsPage; последние 20 000 событий компании, без бизнес-содержимого */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19692,10 +16275,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19707,10 +16286,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19722,10 +16297,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19737,10 +16308,6 @@ export interface operations {
             /** @description EVENT_CURSOR_EXPIRED: загрузите снимок заново; EVENT_CURSOR_FUTURE: курсор опережает журнал */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19749,13 +16316,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19767,10 +16330,6 @@ export interface operations {
             /** @description Ошибка */
             503: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19800,10 +16359,6 @@ export interface operations {
             /** @description SSE: id=cursor; data=WarehouseEvent. ready/heartbeat/error — управляющие сообщения. Необработанные события можно получить повторно после переподключения. */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19815,10 +16370,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19830,10 +16381,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19845,10 +16392,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19860,10 +16403,6 @@ export interface operations {
             /** @description EVENT_CURSOR_EXPIRED: загрузите снимок заново; EVENT_CURSOR_FUTURE: курсор опережает журнал */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19872,13 +16411,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19890,10 +16425,6 @@ export interface operations {
             /** @description Ошибка */
             503: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19922,10 +16453,6 @@ export interface operations {
             /** @description JSON WarehouseEvent и ready/heartbeat/error. Authorization в заголовке Upgrade; токен в URL не поддерживается. Клиентские сообщения закрывают соединение. */
             101: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19935,10 +16462,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19950,10 +16473,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19965,10 +16484,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19980,10 +16495,6 @@ export interface operations {
             /** @description EVENT_CURSOR_EXPIRED: загрузите снимок заново; EVENT_CURSOR_FUTURE: курсор опережает журнал */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -19995,10 +16506,6 @@ export interface operations {
             /** @description Ошибка */
             426: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20007,13 +16514,9 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            /** @description Квота API */
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20025,10 +16528,6 @@ export interface operations {
             /** @description Ошибка */
             503: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20060,10 +16559,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20075,10 +16570,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20119,10 +16610,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20134,10 +16621,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20149,10 +16632,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20164,10 +16643,6 @@ export interface operations {
             /** @description Ошибка */
             503: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20205,10 +16680,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20220,10 +16691,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20235,10 +16702,6 @@ export interface operations {
             /** @description Ошибка */
             503: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20293,10 +16756,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20308,10 +16767,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20323,10 +16778,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20338,10 +16789,6 @@ export interface operations {
             /** @description Ошибка */
             503: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20381,10 +16828,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20396,10 +16839,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20411,10 +16850,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20426,10 +16861,6 @@ export interface operations {
             /** @description Ошибка */
             503: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20469,10 +16900,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20484,10 +16911,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20499,10 +16922,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20514,10 +16933,6 @@ export interface operations {
             /** @description Ошибка */
             503: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20557,10 +16972,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20572,10 +16983,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20587,10 +16994,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20602,10 +17005,6 @@ export interface operations {
             /** @description Ошибка */
             503: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20645,10 +17044,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20660,10 +17055,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20675,10 +17066,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20690,10 +17077,6 @@ export interface operations {
             /** @description Ошибка */
             503: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20733,10 +17116,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20748,10 +17127,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20763,10 +17138,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20778,10 +17149,6 @@ export interface operations {
             /** @description Ошибка */
             503: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20821,10 +17188,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20836,10 +17199,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20851,10 +17210,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20866,10 +17221,6 @@ export interface operations {
             /** @description Ошибка */
             503: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20905,10 +17256,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20920,10 +17267,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -20935,10 +17278,6 @@ export interface operations {
             /** @description Ошибка */
             503: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21006,10 +17345,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21021,10 +17356,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21036,10 +17367,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21051,10 +17378,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21066,10 +17389,6 @@ export interface operations {
             /** @description Ошибка */
             503: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21105,10 +17424,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21120,10 +17435,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21135,10 +17446,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21150,10 +17457,6 @@ export interface operations {
             /** @description Ошибка */
             503: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21192,10 +17495,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21207,10 +17506,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21222,10 +17517,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21237,10 +17528,6 @@ export interface operations {
             /** @description Ошибка */
             404: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21252,10 +17539,6 @@ export interface operations {
             /** @description Ошибка */
             409: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21291,10 +17574,6 @@ export interface operations {
             /** @description Ошибка */
             400: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21306,10 +17585,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21321,10 +17596,6 @@ export interface operations {
             /** @description Ошибка */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21370,10 +17641,6 @@ export interface operations {
             /** @description Тариф/планы, storage (databaseBytes/fileBytes/reservedBytes/usedBytes/limitBytes/files), api (used/limit/perMinute/periodStart/resetsAt UTC), warehouses и pending changeRequest. Все Bearer-токены компании делят API-квоту; web-сессии не расходуют её. */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21385,10 +17652,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21400,10 +17663,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21415,10 +17674,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21444,10 +17699,6 @@ export interface operations {
             /** @description Определения полей и revision; без бизнес-записей */
             200: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21459,10 +17710,6 @@ export interface operations {
             /** @description Ошибка */
             401: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21474,10 +17721,6 @@ export interface operations {
             /** @description Токен другой компании или запрет доступа */
             403: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;
@@ -21489,10 +17732,6 @@ export interface operations {
             /** @description Ошибка */
             429: {
                 headers: {
-                    /** @description Месячная квота */
-                    "X-RateLimit-Limit"?: number;
-                    /** @description Остаток месячной квоты */
-                    "X-RateLimit-Remaining"?: number;
                     /** @description Ожидание после 429 в секундах */
                     "Retry-After"?: string;
                     [name: string]: unknown;

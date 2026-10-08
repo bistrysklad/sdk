@@ -1,9 +1,9 @@
 {
   "name": "@bistrysklad/sdk",
-  "version": "0.1.0-beta.6",
+  "version": "0.1.0",
   "description": "Typed client and company schema generator for Bistry Sklad",
   "type": "module",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "engines": {
     "node": ">=22.18"
   },
@@ -44,7 +44,8 @@
     "generate:check": "node scripts/generate.ts --check",
     "build": "node scripts/build.mjs",
     "test": "npm run build && node --test test/*.test.mjs && tsc -p test/tsconfig.json",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "package:check": "npm run generate:check && node scripts/package-check.mjs"
   },
   "dependencies": {
     "openapi-fetch": "0.17.0",
@@ -65,5 +66,15 @@
   "homepage": "https://github.com/bistrysklad/sdk#readme",
   "bugs": {
     "url": "https://github.com/bistrysklad/sdk/issues"
-  }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "keywords": [
+    "inventory",
+    "typescript",
+    "warehouse",
+    "sdk"
+  ]
 }

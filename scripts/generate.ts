@@ -57,6 +57,7 @@ const metadata: Record<
   { method: string; path: string; binary: boolean; "x-sdk-command": boolean }
 > = {};
 const methods = new Map<string, string[]>();
+const reference = ["# Методы SDK", "", "Создано из публичного OpenAPI. Аргументы и ответы доступны в автодополнении TypeScript.", "", "| Метод SDK | HTTP | Ответ команды |", "| --- | --- | --- |"];
 for (const [path, verbs] of Object.entries(spec.paths))
   for (const [method, op] of Object.entries(verbs)) {
     if (op["x-sdk-stream"] || !op.security?.some((s) => "bearerAuth" in s))
@@ -70,6 +71,7 @@ for (const [path, verbs] of Object.entries(spec.paths))
           : ["workspace", action]
         : (reads[id] ?? [groups[prefix], camel(action)]);
     if (!group || !name) throw new Error(`Unmapped public operation ${id}`);
+    reference.push(`| \`sklad.${group.replaceAll("/", ".")}.${name}()\` | \`${method.toUpperCase()} ${path}\` | ${op["x-sdk-command"] ? "result + revision в minimal" : "Ресурс / страница"} |`);
     const params = [...path.matchAll(/\{(\w+)\}/g)].map((m) => m[1]);
     const contents = op.requestBody?.content;
     const hasBody =
@@ -170,3 +172,7 @@ console.log(
     ? "SDK contract is current"
     : `${Object.keys(metadata).length} public SDK operations generated`,
 );
+reference.push("", "Дополнительно: `sklad.events.subscribe(options)` — SSE AsyncIterable; `subscribeToEvents` из `@bistrysklad/sdk/node` — WebSocket AsyncIterable.", "", "Каждый HTTP-метод принимает необязательные CallOptions: signal, timeoutMs, retry и idempotencyKey для команд.", "");
+const referencePath=new URL('../docs/methods.md',import.meta.url), referenceContent=reference.join('\n');
+if(check){if(await readFile(referencePath,'utf8')!==referenceContent)throw new Error('SDK method reference is stale');}
+else await writeFile(referencePath,referenceContent);

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.0
+
+- First npm registry release with public access, ESM/CJS and CLI.
+- 115 typed HTTP operations, resource pages/cards, compact commands and standalone Node WebSocket.
+- Exported generic BistryskladClient type for application services.
+- Deadline-bounded Retry-After, validated retry timing and tests for throttled writes.
+- Tenant tariff quota enforcement indicator for backward-compatible billing reads.
+- Practical integration/error guides, generated method reference and compiled examples.
+
+
 ## 0.1.0-beta.5
 
 - Opt-in typed compact command responses with `responseMode: "minimal"`.

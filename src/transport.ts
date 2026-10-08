@@ -121,12 +121,15 @@ export class Transport {
       ? (options.idempotencyKey ?? globalThis.crypto.randomUUID())
       : undefined;
     const timeout = options.timeoutMs ?? this.options.timeoutMs ?? 30_000;
-    if (!Number.isFinite(timeout) || timeout <= 0)
-      throw new Error("timeoutMs must be positive");
+    if (!Number.isInteger(timeout) || timeout <= 0 || timeout > 2147483647)
+      throw new Error("timeoutMs must be an integer between 1 and 2147483647");
     const retry = options.retry ?? (write ? {} : (this.options.retry ?? {}));
     const attempts = retry.maxAttempts ?? (write ? 1 : 3);
     if (!Number.isInteger(attempts) || attempts < 1 || attempts > 10)
       throw new Error("maxAttempts must be between 1 and 10");
+    for (const delay of [retry.baseDelayMs, retry.maxDelayMs])
+      if (delay !== undefined && (!Number.isFinite(delay) || delay < 0 || delay > 2147483647))
+        throw new Error("Retry delays must be finite milliseconds between 0 and 2147483647");
     const deadline = AbortSignal.timeout(timeout);
     const signal = AbortSignal.any([
       ...(options.signal ? [options.signal] : []),
@@ -229,11 +232,11 @@ export class Transport {
               attempt < attempts
             ) {
               await pause(
-                latest.retryAfterMs ??
+                Math.min(timeout, latest.retryAfterMs ??
                   Math.min(
                     (retry.baseDelayMs ?? 200) * 2 ** (attempt - 1),
                     retry.maxDelayMs ?? 2000,
-                  ),
+                  )),
                 signal,
               );
               continue;

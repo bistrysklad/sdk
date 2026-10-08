@@ -1,7 +1,6 @@
 # @bistrysklad/sdk
 
-Typed SDK for the existing Bistry Sklad Bearer API. The first delivery is a local
-`0.1.0-beta.5` tarball; it has not been published to the public npm registry.
+Typed SDK for the Bistry Sklad Bearer API, version `0.1.0`.
 Node22.18+ is required for the CLI and Node client. The client entrypoint also
 bundles for modern browsers with fetch, crypto.randomUUID and AbortSignal.any;
 use a server integration to keep service tokens private.
@@ -9,7 +8,7 @@ use a server integration to keep service tokens private.
 ## Install and make the first call
 
 ```sh
-npm install /path/to/bistrysklad-sdk-0.1.0-beta.5.tgz
+npm install @bistrysklad/sdk
 ```
 
 ```ts
@@ -28,8 +27,8 @@ console.log(created.result.id); // Idempotency-Key is created automatically
 ```
 
 The owner creates/revokes tokens in Settings → API tokens. A new company starts
-empty. Methods use the stored API data and respect company quotas and plan
-permissions. Session-only settings, owner billing requests and MoySklad import
+empty. Methods use the stored API data and respect tenant isolation, workload protection and plan
+feature permissions. Session-only settings, owner billing requests and MoySklad import
 management are operated through the application and are not SDK methods.
 
 ## Generate types from your company URL
@@ -109,7 +108,7 @@ generation replaces the directory through a staged rename.
 `--check` performs no filesystem writes. Exit0 means current, exit1 means the
 API/company schema changed, and exit2 means authentication, network, schema or
 output validation failed. A check consumes a schema API request under the
-company's normal quota. A rename, select option change, archive or added/deleted
+company's activity accounting. A rename, select option change, archive or added/deleted
 field also causes drift. Upgrading the SDK is required for new unsupported routes.
 
 ## Idempotency, retries and errors
@@ -130,7 +129,7 @@ Provide `idempotencyKey` if you persist a job and resume it after a process
 restart. A new method call without that key is a new command. The SDK returns
 the write key in errors so you can retain it and retry the same input. Quota
 `Retry-After` waiting is bounded by the total call timeout; business400/409
-errors do not retry.429 may be a monthly quota, so retrying cannot expand it.
+errors do not retry. A 429 requests a pause; follow Retry-After and reduce concurrency.
 
 ```ts
 import { BistryskladError } from "@bistrysklad/sdk";
@@ -144,11 +143,11 @@ try {
 }
 ```
 
-Errors expose status/code/message, quota information and the request key.
+Errors expose status/code/message, Retry-After information and the request key.
 Network, malformed JSON, cancellation and deadlines have distinct codes.
 `CallOptions.signal` cancels the request; `timeoutMs` defaults to30000.
 Client options accept custom fetch, a token provider and an `onResponse`
-callback for status/quota monitoring. A proxy HTML response is not included
+callback for status/retry monitoring. A proxy HTML response is not included
 in an error message. ESM and CommonJS imports both include strict declarations.
 
 ## Photos and procurement files
@@ -184,7 +183,7 @@ From the standalone SDK repository: `npm ci`, `npm run generate`, `npm test`, `n
 Generation of the base SDK uses the checked-in public `contract/openapi.json`; no backend checkout is required. Release
 gates verify its checked-in generated copies, runtime tests, negative TypeScript
 fixtures, URL generation, offline consumer compilation and installation of an
-actual tarball in ESM/CJS. The package allowlist contains dist, README, documentation and examples. Public npm publishing and scope ownership are a separate release step.
+actual tarball in ESM/CJS. The package allowlist contains dist, README, documentation and examples. The registry release is public; publishing requires organization access.
 
 ## Scheduled orders and stock stages
 
@@ -234,7 +233,7 @@ Orders freeze the definition/name/version at acceptance. Editing or archiving
 never rewrites an existing order. `order.workflow.statusId` is the custom node;
 `order.status` retains the common reporting category. Use `orders.transition`
 for custom models; `orders.status` retains standard stage identifiers.
-## Catalog profiles (beta.3)
+## Catalog profiles
 
 Create a profile with `client.catalogProfiles.create({name, warehouseId, priceTypeId})`.
 Profiles share warehouse product cards and photos. Publication starts disabled;
@@ -255,7 +254,7 @@ reload and reapply the draft. Profile updates require the numeric profile versio
 Mutation idempotency keys are generated automatically by the existing transport.
 Private image URLs require authentication; proxy images on your server and keep
 warehouse tokens out of the storefront browser. This package is distributed as
-a workspace tarball; public npm publication remains a separate action.
+the public npm package with a pinned lockfile.
 
 ## Compact command receipts
 
