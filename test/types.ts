@@ -1,5 +1,15 @@
 import { createBistryskladClient } from "../dist/index.js";
 import type { DefaultFields } from "../dist/index.js";
+const imageClient = createBistryskladClient({baseUrl:"https://example.test",token:"synthetic"});
+imageClient.images.get("image", {width:400,height:400,fit:"cover",format:"webp"});
+imageClient.images.get("image", {signal:new AbortController().signal});
+imageClient.images.get("image", {width:400}, {timeoutMs:1000});
+// @ts-expect-error a dimension is numeric
+imageClient.images.get("image", {width:"400"});
+// @ts-expect-error lossy output is not available
+imageClient.images.get("image", {format:"jpeg"});
+// @ts-expect-error lossless conversion has no quality slider
+imageClient.images.get("image", {quality:80});
 type Fields = Omit<DefaultFields, "product" | "receipt"> & {
   product: {
     read: {

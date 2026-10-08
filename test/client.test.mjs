@@ -231,6 +231,21 @@ test("binary photos and files preserve bytes, MIME and cancellation", async () =
     (e) => e.code === "ABORTED",
   );
 });
+test("photo dimensions are encoded as query while legacy CallOptions and third-argument cancellation remain local", async () => {
+  const urls=[];
+  const client=createBistryskladClient(opts(async req=>{
+    urls.push(new URL(req.url));
+    return new Response(new Uint8Array([1]),{headers:{"Content-Type":"image/webp"}});
+  }));
+  const photo=await client.images.get("image/with space",{width:400,height:300,fit:"contain",format:"webp"},{timeoutMs:1000});
+  assert.equal(photo.type,"image/webp");
+  assert.equal(urls[0].pathname,"/api/v1/images/image%2Fwith%20space");
+  assert.deepEqual(Object.fromEntries(urls[0].searchParams),{width:"400",height:"300",fit:"contain",format:"webp"});
+  await client.images.get("image",{timeoutMs:1000});
+  assert.equal(urls[1].search,"");
+  const stop=new AbortController();stop.abort();
+  await assert.rejects(client.images.get("image",{width:200},{signal:stop.signal}),e=>e.code==="ABORTED");
+});
 test("deadline interrupts retry-after waiting and exposes the write key", async () => {
   const client = createBistryskladClient(
     opts(async () => json({}, 503, { "Retry-After": "10" })),

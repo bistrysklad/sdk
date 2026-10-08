@@ -267,15 +267,18 @@ export function createBistryskladClient<
     images: {
       get: (
         imageId: string,
+        query?: SdkQuery<"get_images_imageId_"> & CallOptions,
         options?: CallOptions,
-      ): Promise<SdkResponse<S, "get_images_imageId_", M>> =>
-        invoke(
+      ): Promise<SdkResponse<S, "get_images_imageId_", M>> => {
+        const { width, height, fit, format, ...legacyOptions } = query ?? {};
+        return invoke(
           "get_images_imageId_",
           { imageId },
           undefined,
-          undefined,
-          options,
-        ) as Promise<SdkResponse<S, "get_images_imageId_", M>>,
+          { width, height, fit, format },
+          { ...legacyOptions, ...options },
+        ) as Promise<SdkResponse<S, "get_images_imageId_", M>>;
+      },
     },
     events: {
       list: (

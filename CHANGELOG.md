@@ -1,5 +1,6 @@
 # 0.2.0
 
+- Typed photo dimensions, contain/cover and lossless WebP/PNG output; legacy image CallOptions remain compatible.
 - Explicit public integration API; owner-only settings/billing/import/stock and full state removed.
 - Tokens default to reads, with separate catalog-write and order permissions.
 - Compact command receipts by default and safe product page/filter/export types.

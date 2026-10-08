@@ -152,7 +152,14 @@ in an error message. ESM and CommonJS imports both include strict declarations.
 ## Photos
 
 Upload with `productImages.create(productId, bytes, {contentType:"image/png"})`;
-read with `images.get(imageId)`, returning a Blob. Uploads require the explicit
+read with `images.get(imageId)`, returning the original Blob. To resize, call
+`images.get(imageId, { width: 400, height: 400, fit: "cover", format: "webp" })`.
+The default format is lossless WebP; PNG is also available. Resizing changes
+resolution but encoding adds no loss. Transparency is retained, EXIF orientation
+is applied, and small images are never enlarged. `contain` keeps the whole
+image; `cover` crops the centre and needs both dimensions. A dimension is 1..4096
+px; variants accept static sources up to 40 megapixels. Cached variants remain
+authenticated. Lossless output can be larger than a JPEG source. Uploads require the explicit
 catalog-write permission. Bytes and idempotency keys survive retries.
 
 ## Token permissions and compact receipts

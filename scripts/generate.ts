@@ -109,6 +109,13 @@ for (const [path, verbs] of Object.entries(spec.paths))
       continue;
     }
     const scopedList = prefix === "workspace" && resourceAction === "list";
+    if (id === "get_images_imageId_") {
+      // The pre-resize SDK accepted CallOptions as its second argument.
+      const fn = `${name}: (imageId:string, query?:SdkQuery<${JSON.stringify(id)}> & CallOptions, options?:CallOptions):Promise<SdkResponse<S,${JSON.stringify(id)},M>> => { const {width,height,fit,format,...legacyOptions} = query ?? {}; return invoke(${JSON.stringify(id)}, {imageId}, undefined, {width,height,fit,format}, {...legacyOptions,...options}) as Promise<SdkResponse<S,${JSON.stringify(id)},M>>; }`;
+      if (!methods.has(group)) methods.set(group, []);
+      methods.get(group)!.push(fn);
+      continue;
+    }
     const args = [
       ...params.map((p) => `${p}: string`),
       ...(hasBody ? [`body: SdkBody<S,${JSON.stringify(id)}>`] : []),
