@@ -30,7 +30,7 @@
     }
   },
   "bin": {
-    "bistrysklad": "./dist/cli.js"
+    "bistrysklad": "dist/cli.js"
   },
   "files": [
     "dist",
