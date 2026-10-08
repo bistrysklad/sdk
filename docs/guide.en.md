@@ -127,7 +127,7 @@ await sklad.products.create(
 
 Provide `idempotencyKey` if you persist a job and resume it after a process
 restart. A new method call without that key is a new command. The SDK returns
-the write key in errors so you can retain it and retry the same input. Quota
+the write key in errors so you can retain it and retry the same input.
 `Retry-After` waiting is bounded by the total call timeout; business400/409
 errors do not retry. A 429 requests a pause; follow Retry-After and reduce concurrency.
 
