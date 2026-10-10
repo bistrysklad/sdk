@@ -52,7 +52,21 @@ export interface paths {
         delete?: never;
         options?: never;
         head?: never;
-        patch?: never;
+        /**
+         * Изменить публикацию и порядок; scopeId=common для общей основы
+         * @description Изменить публикацию и порядок; scopeId=common для общей основы
+         *
+         *     Профиль каталога выбирает склады, тип цены и правила показа. Для сайта читайте каталог конкретной витрины: сервер применит её публикацию и порядок.
+         *
+         *     Команда подтверждается серверной транзакцией. Передайте Idempotency-Key: повтор с тем же телом и URL возвращает сохранённый результат. Ответ токену содержит result и revision; полное состояние пространства не возвращается.
+         *
+         *     Передайте Authorization: Bearer <API_TOKEN>. Все ID и связанные записи должны принадлежать этому пространству.
+         *
+         *     Нужно отдельно включить «Изменение каталога» у токена в кабинете.
+         *
+         *     После окончания бесплатного месяца API-токены приостановлены (402 TRIAL_EXPIRED). Кабинет доступен для просмотра и экспорта; новые изменения требуют платного тарифа.
+         */
+        patch: operations["catalog_presentation.update"];
         trace?: never;
     };
     "/api/v1/products": {
@@ -890,6 +904,10 @@ export interface components {
                 message: string;
             };
         };
+        IdResult: {
+            /** @description ID записи в этом пространстве; берите из ответа API. */
+            id: string;
+        };
         CatalogPresentation: {
             scopeId: string;
             version: string;
@@ -920,10 +938,6 @@ export interface components {
         };
         "Record<string,(string[]|null)>": {
             [key: string]: string[] | null;
-        };
-        IdResult: {
-            /** @description ID записи в этом пространстве; берите из ответа API. */
-            id: string;
         };
         PartnerResolveResult: {
             /** @description ID записи в этом пространстве; берите из ответа API. */
@@ -1535,6 +1549,149 @@ export interface operations {
                 };
             };
             /** @description Защита от чрезмерной нагрузки; повтор после Retry-After. Снизьте параллельность обращений пространства и повторите после Retry-After. Повторите после Retry-After с тем же ключом команды; избегайте неограниченных повторов. */
+            429: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "catalog_presentation.update": {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
+                "Idempotency-Key": string;
+                /** @description Токен всегда получает result + revision. Полное состояние пространства не возвращается. */
+                Prefer?: "return=minimal";
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                /** @description ID связанной записи из ответа API этого пространства. */
+                scopeId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @example revision-from-get */
+                    version: string;
+                    publications?: {
+                        /**
+                         * @description ID товара из каталога этого пространства.
+                         * @example replace-with-id
+                         */
+                        productId: string;
+                        /** @example false */
+                        published: boolean | null;
+                    }[];
+                    productOrder?: string[] | null;
+                    filterOrder?: string[] | null;
+                    valueOrders?: {
+                        [key: string]: string[] | null;
+                    };
+                };
+            };
+        };
+        responses: {
+            /** @description Сохранённый результат команды и версия данных пространства (result + revision). */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
+                    };
+                };
+            };
+            /** @description Исправьте поля, типы и ID связей; повтор без исправления не помогает. */
+            400: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Проверьте токен и адрес сервера; получите действующий токен у владельца. */
+            401: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Кабинет доступен для просмотра и экспорта. API-токены и новые изменения доступны после подключения платного тарифа. Проверьте доступность нужной функции тарифу пространства. */
+            402: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Владелец включает запись товаров или работу с заказами в настройках токена. Закрытые методы кабинета недоступны любому обычному токену. Проверьте пару токена и сгенерированной схемы компании. Для действий владельца используйте приложение и его сессию. */
+            403: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Проверьте ID и пространство; запись могла быть удалена. */
+            404: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Перечитайте запись и устраните конфликт перед новой командой. Одна логическая команда использует неизменный ключ и тело; для изменённой команды создайте новый ключ. */
+            409: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Уменьшите размер тела или файла; допустимый формат и размер указаны в описании загрузки. */
+            413: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Снизьте параллельность обращений пространства и повторите после Retry-After. Повторите после Retry-After с тем же ключом команды; избегайте неограниченных повторов. */
             429: {
                 headers: {
                     /** @description Ожидание после 429 в секундах */

@@ -94,6 +94,18 @@ export function createBistryskladClient<
         ) as Promise<SdkResponse<S, "catalog_profile.product", M>>,
     },
     catalogPresentations: {
+      update: (
+        scopeId: string,
+        body: SdkBody<S, "catalog_presentation.update">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "catalog_presentation.update", M>> =>
+        invoke(
+          "catalog_presentation.update",
+          { scopeId },
+          body,
+          undefined,
+          options,
+        ) as Promise<SdkResponse<S, "catalog_presentation.update", M>>,
       get: (
         scopeId: string,
         options?: CallOptions,

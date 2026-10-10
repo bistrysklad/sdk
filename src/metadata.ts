@@ -6,6 +6,12 @@ export const metadata = {
     binary: false,
     "x-sdk-command": false,
   },
+  "catalog_presentation.update": {
+    method: "patch",
+    path: "/api/v1/catalog-presentations/{scopeId}",
+    binary: false,
+    "x-sdk-command": true,
+  },
   "catalog_presentation.get": {
     method: "get",
     path: "/api/v1/catalog-presentations/{scopeId}",
