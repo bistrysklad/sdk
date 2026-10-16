@@ -4431,6 +4431,47 @@
                   "items"
                 ],
                 "properties": {
+                  "deliverySchedule": {
+                    "type": "object",
+                    "required": [
+                      "date",
+                      "mode",
+                      "from",
+                      "to"
+                    ],
+                    "properties": {
+                      "date": {
+                        "type": "string",
+                        "examples": [
+                          "2026-10-16"
+                        ],
+                        "maxLength": 10
+                      },
+                      "mode": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "exact",
+                          "interval"
+                        ]
+                      },
+                      "from": {
+                        "type": "string",
+                        "examples": [
+                          "09:00"
+                        ],
+                        "maxLength": 5
+                      },
+                      "to": {
+                        "type": "string",
+                        "examples": [
+                          "12:00"
+                        ],
+                        "maxLength": 5
+                      }
+                    },
+                    "additionalProperties": false
+                  },
                   "customer": {
                     "type": "string",
                     "examples": [
@@ -5788,6 +5829,47 @@
                   "fulfillmentAt"
                 ],
                 "properties": {
+                  "deliverySchedule": {
+                    "type": "object",
+                    "required": [
+                      "date",
+                      "mode",
+                      "from",
+                      "to"
+                    ],
+                    "properties": {
+                      "date": {
+                        "type": "string",
+                        "examples": [
+                          "2026-10-16"
+                        ],
+                        "maxLength": 10
+                      },
+                      "mode": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "exact",
+                          "interval"
+                        ]
+                      },
+                      "from": {
+                        "type": "string",
+                        "examples": [
+                          "09:00"
+                        ],
+                        "maxLength": 5
+                      },
+                      "to": {
+                        "type": "string",
+                        "examples": [
+                          "12:00"
+                        ],
+                        "maxLength": 5
+                      }
+                    },
+                    "additionalProperties": false
+                  },
                   "fulfillmentAt": {
                     "type": [
                       "string",
@@ -12336,6 +12418,9 @@
             "$ref": "#/components/schemas/Nullable%3Cstring%3E",
             "description": "Часовой пояс IANA, например Europe/Moscow."
           },
+          "deliverySchedule": {
+            "$ref": "#/components/schemas/DeliverySchedule"
+          },
           "stockDeductStatus": {
             "type": "string",
             "enum": [
@@ -12391,6 +12476,34 @@
           "createdAt",
           "shippedAt",
           "items"
+        ]
+      },
+      "DeliverySchedule": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "none",
+              "exact",
+              "interval"
+            ]
+          },
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "date",
+          "mode",
+          "from",
+          "to"
         ]
       },
       "OrderWorkflow": {
@@ -12474,6 +12587,31 @@
               "blue",
               "amber",
               "green"
+            ]
+          },
+          "paletteColor": {
+            "type": "string",
+            "enum": [
+              "blue",
+              "amber",
+              "green",
+              "gray",
+              "violet",
+              "indigo",
+              "sky",
+              "teal",
+              "olive",
+              "peach",
+              "pink",
+              "coral",
+              "red",
+              "orange",
+              "yellow",
+              "emerald",
+              "cyan",
+              "royal",
+              "magenta",
+              "graphite"
             ]
           }
         },
@@ -12593,6 +12731,9 @@
             "$ref": "#/components/schemas/WorkflowDefinition"
           },
           "archived": {
+            "type": "boolean"
+          },
+          "isPriority": {
             "type": "boolean"
           }
         },
@@ -13085,6 +13226,9 @@
       "ResourceQuery": {
         "type": "object",
         "properties": {
+          "hideBundleComponents": {
+            "type": "boolean"
+          },
           "limit": {
             "type": "number",
             "description": "Размер страницы; допустимый диапазон указан в схеме этого метода."

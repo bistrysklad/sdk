@@ -1143,6 +1143,7 @@ export interface components {
             fulfillmentAt: components["schemas"]["Nullable<string>"];
             /** @description Часовой пояс IANA, например Europe/Moscow. */
             fulfillmentTimeZone: components["schemas"]["Nullable<string>"];
+            deliverySchedule?: components["schemas"]["DeliverySchedule"];
             /** @enum {string} */
             stockDeductStatus: "picking" | "ready" | "shipped";
             stockDeductedAt: components["schemas"]["Nullable<string>"];
@@ -1153,6 +1154,13 @@ export interface components {
             shippedAt: components["schemas"]["Nullable<string>"];
             /** @description Строки документа или заказа; каждая строка содержит товар и количество. */
             items: components["schemas"]["OrderItem"][];
+        };
+        DeliverySchedule: {
+            date: string;
+            /** @enum {string} */
+            mode: "none" | "exact" | "interval";
+            from: string;
+            to: string;
         };
         OrderWorkflow: {
             /** @description ID записи в этом пространстве; берите из ответа API. */
@@ -1176,6 +1184,8 @@ export interface components {
             category: "new" | "active" | "ready" | "completed" | "cancelled";
             /** @enum {string} */
             tone: "gray" | "blue" | "amber" | "green";
+            /** @enum {string} */
+            paletteColor?: "blue" | "amber" | "green" | "gray" | "violet" | "indigo" | "sky" | "teal" | "olive" | "peach" | "pink" | "coral" | "red" | "orange" | "yellow" | "emerald" | "cyan" | "royal" | "magenta" | "graphite";
         };
         WorkflowTransition: {
             /** @description ID записи в этом пространстве; берите из ответа API. */
@@ -1212,6 +1222,7 @@ export interface components {
             version: number;
             definition: components["schemas"]["WorkflowDefinition"];
             archived: boolean;
+            isPriority?: boolean;
         };
         ProfileCatalogResponse: {
             priceTypes: {
@@ -1330,6 +1341,7 @@ export interface components {
             salesWorkflowId: components["schemas"]["Nullable<EntityId>"];
         };
         ResourceQuery: {
+            hideBundleComponents?: boolean;
             /** @description Размер страницы; допустимый диапазон указан в схеме этого метода. */
             limit?: number;
             /** @description Смещение от начала списка, начиная с нуля. */
@@ -2776,6 +2788,16 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
+                    deliverySchedule?: {
+                        /** @example 2026-10-16 */
+                        date: string;
+                        /** @enum {string} */
+                        mode: "none" | "exact" | "interval";
+                        /** @example 09:00 */
+                        from: string;
+                        /** @example 12:00 */
+                        to: string;
+                    };
                     /** @example Покупатель */
                     customer: string;
                     /**
@@ -3232,6 +3254,16 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
+                    deliverySchedule?: {
+                        /** @example 2026-10-16 */
+                        date: string;
+                        /** @enum {string} */
+                        mode: "none" | "exact" | "interval";
+                        /** @example 09:00 */
+                        from: string;
+                        /** @example 12:00 */
+                        to: string;
+                    };
                     /**
                      * Format: date-time
                      * @description Выбранное время выполнения в ISO 8601 с часовым поясом.
