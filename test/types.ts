@@ -40,8 +40,12 @@ client.products.create({ name: "Invalid", customValues: { material: "Silk" } });
 client.products.update("id", { customValues: { weight: "heavy" } });
 // @ts-expect-error archived cannot be written
 client.products.update("id", { customValues: { archived: "x" } });
-// @ts-expect-error procurement is a cabinet operation
-client.procurement.update("id", { note: "private" });
+client.procurement.update("id", { note: "Received" });
+client.procurement.status("id", { status: "posted" });
+// @ts-expect-error receipt keys cannot cancel documents
+client.procurement.status("id", { status: "cancelled" });
+// @ts-expect-error receipt keys cannot change document terms
+client.procurement.update("id", { warehouseId: "other" });
 // @ts-expect-error settings are a cabinet operation
 client.settings.update({});
 // @ts-expect-error full warehouse state is not a token operation

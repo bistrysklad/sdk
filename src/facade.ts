@@ -203,6 +203,32 @@ export function createBistryskladClient<
           SdkResponse<S, "get_external_links", M>
         >,
     },
+    procurement: {
+      update: (
+        documentId: string,
+        body: SdkBody<S, "procurement.update">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "procurement.update", M>> =>
+        invoke(
+          "procurement.update",
+          { documentId },
+          body,
+          undefined,
+          options,
+        ) as Promise<SdkResponse<S, "procurement.update", M>>,
+      status: (
+        documentId: string,
+        body: SdkBody<S, "procurement.status">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "procurement.status", M>> =>
+        invoke(
+          "procurement.status",
+          { documentId },
+          body,
+          undefined,
+          options,
+        ) as Promise<SdkResponse<S, "procurement.status", M>>,
+    },
     orders: {
       create: (
         body: SdkBody<S, "order.create">,
@@ -379,6 +405,32 @@ export function createBistryskladClient<
             undefined,
             options,
           ) as Promise<SdkResponse<S, "workspace.orders.get", M>>,
+      },
+      procurementDocuments: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.procurementDocuments.list", M>> =>
+          invoke(
+            "workspace.procurementDocuments.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<
+            SdkResponse<S, "workspace.procurementDocuments.list", M>
+          >,
+        get: (
+          id: string,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.procurementDocuments.get", M>> =>
+          invoke(
+            "workspace.procurementDocuments.get",
+            { id },
+            undefined,
+            undefined,
+            options,
+          ) as Promise<SdkResponse<S, "workspace.procurementDocuments.get", M>>,
       },
       salesWorkflows: {
         list: (

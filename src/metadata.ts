@@ -60,6 +60,18 @@ export const metadata = {
     binary: false,
     "x-sdk-command": false,
   },
+  "procurement.update": {
+    method: "patch",
+    path: "/api/v1/procurement/documents/{documentId}",
+    binary: false,
+    "x-sdk-command": true,
+  },
+  "procurement.status": {
+    method: "patch",
+    path: "/api/v1/procurement/documents/{documentId}/status",
+    binary: false,
+    "x-sdk-command": true,
+  },
   "order.create": {
     method: "post",
     path: "/api/v1/orders",
@@ -141,6 +153,18 @@ export const metadata = {
   "workspace.orders.get": {
     method: "get",
     path: "/api/v1/workspace/orders/{id}",
+    binary: false,
+    "x-sdk-command": false,
+  },
+  "workspace.procurementDocuments.list": {
+    method: "get",
+    path: "/api/v1/workspace/procurementDocuments",
+    binary: false,
+    "x-sdk-command": false,
+  },
+  "workspace.procurementDocuments.get": {
+    method: "get",
+    path: "/api/v1/workspace/procurementDocuments/{id}",
     binary: false,
     "x-sdk-command": false,
   },

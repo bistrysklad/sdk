@@ -14,6 +14,8 @@
 | `sklad.partners.resolve()` | `POST /api/v1/partners/resolve` | result + revision в minimal |
 | `sklad.externalLinks.create()` | `POST /api/v1/external-links` | result + revision в minimal |
 | `sklad.externalLinks.find()` | `GET /api/v1/external-links` | Ресурс / страница |
+| `sklad.procurement.update()` | `PATCH /api/v1/procurement/documents/{documentId}` | result + revision в minimal |
+| `sklad.procurement.status()` | `PATCH /api/v1/procurement/documents/{documentId}/status` | result + revision в minimal |
 | `sklad.orders.create()` | `POST /api/v1/orders` | result + revision в minimal |
 | `sklad.orders.status()` | `PATCH /api/v1/orders/{orderId}/status` | result + revision в minimal |
 | `sklad.orders.reserve()` | `PATCH /api/v1/orders/{orderId}/reservation` | result + revision в minimal |
@@ -28,6 +30,8 @@
 | `sklad.workspace.products.get()` | `GET /api/v1/workspace/products/{id}` | Ресурс / страница |
 | `sklad.workspace.orders.list()` | `GET /api/v1/workspace/orders` | Ресурс / страница |
 | `sklad.workspace.orders.get()` | `GET /api/v1/workspace/orders/{id}` | Ресурс / страница |
+| `sklad.workspace.procurementDocuments.list()` | `GET /api/v1/workspace/procurementDocuments` | Ресурс / страница |
+| `sklad.workspace.procurementDocuments.get()` | `GET /api/v1/workspace/procurementDocuments/{id}` | Ресурс / страница |
 | `sklad.workspace.salesWorkflows.list()` | `GET /api/v1/workspace/salesWorkflows` | Ресурс / страница |
 | `sklad.workspace.salesWorkflows.get()` | `GET /api/v1/workspace/salesWorkflows/{id}` | Ресурс / страница |
 | `sklad.catalogProfiles.catalog()` | `GET /api/v1/catalog-profiles/{profileId}/catalog` | Ресурс / страница |

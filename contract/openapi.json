@@ -3,7 +3,7 @@
   "info": {
     "title": "Быстрый склад API",
     "version": "1.0.0",
-    "description": "API интеграции: товары и витрины, фотографии, доступные остатки, заказы и события. Обычный токен разрешает чтение. Запись каталога и работа с заказами включаются владельцем отдельно. Команды требуют Idempotency-Key и возвращают result + revision. Данные компаний изолированы. Настройки пространства выполняются в приложении. Описания и примеры ошибок создаются из этого контракта."
+    "description": "API интеграции: товары и витрины, фотографии, доступные остатки, заказы и события. Обычный токен разрешает чтение. Запись каталога, работа с заказами и приёмка товаров включаются владельцем отдельно. Приёмка разрешает только чтение поступлений, фиксацию брака/недостачи и проведение, без изменения закупочных цен и реквизитов. Команды требуют Idempotency-Key и возвращают result + revision. Данные компаний изолированы. Настройки пространства выполняются в приложении. Описания и примеры ошибок создаются из этого контракта."
   },
   "servers": [
     {
@@ -27,6 +27,10 @@
     {
       "name": "Дополнительные поля",
       "description": "Определения полей и их стабильные коды используются при записи значений и генерации TypeScript-типов вашей компании. После изменения схемы повторите генерацию SDK."
+    },
+    {
+      "name": "Закупки",
+      "description": "Заказы поставщикам, документы закупки, распознавание файлов и платежи. Создание черновика само по себе не проводит документ; движение зависит от его вида и подтверждённого статуса."
     },
     {
       "name": "Продажи",
@@ -58,6 +62,7 @@
     {
       "name": "Складской учёт",
       "tags": [
+        "Закупки",
         "Продажи"
       ]
     },
@@ -4367,6 +4372,901 @@
         "x-token-permission": "read",
         "x-sdk-method": "externalLinks.find",
         "description": "Найти связь по внешнему ID\n\nПостоянная связь ID вашей системы с ID склада. Используйте externalSource и externalId, чтобы находить сущности после повторного обращения и перезапуска интеграции.\n\nПередайте Authorization: Bearer <API_TOKEN>. Все ID и связанные записи должны принадлежать этому пространству.\n\nДоступно токену для чтения. Изменения настроек, справочников и складских документов выполняются в кабинете.\n\nПосле окончания бесплатного месяца API-токены приостановлены (402 TRIAL_EXPIRED). Кабинет доступен для просмотра и экспорта; новые изменения требуют платного тарифа."
+      }
+    },
+    "/api/v1/procurement/documents/{documentId}": {
+      "patch": {
+        "operationId": "procurement.update",
+        "summary": "Изменить черновик",
+        "tags": [
+          "Закупки"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "documentId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "examples": [
+                "replace-with-id"
+              ],
+              "description": "ID товара из каталога этого пространства."
+            },
+            "description": "ID связанной записи из ответа API этого пространства."
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "description": "Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ.",
+            "schema": {
+              "type": "string",
+              "examples": [
+                "replace-with-unique-key"
+              ],
+              "minLength": 8,
+              "maxLength": 120
+            }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal"
+              ]
+            },
+            "description": "Токен всегда получает result + revision. Полное состояние пространства не возвращается."
+          },
+          {
+            "in": "header",
+            "name": "X-Bistrysklad-Company",
+            "required": false,
+            "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "note": {
+                    "type": "string",
+                    "examples": [
+                      "Примечание"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "productId",
+                        "quantity",
+                        "unitCost"
+                      ],
+                      "properties": {
+                        "productId": {
+                          "type": "string",
+                          "examples": [
+                            "replace-with-id"
+                          ],
+                          "description": "ID товара из каталога этого пространства."
+                        },
+                        "quantity": {
+                          "type": "number",
+                          "minimum": 0.001,
+                          "examples": [
+                            1
+                          ],
+                          "multipleOf": 0.001,
+                          "description": "Количество товара в его единице измерения."
+                        },
+                        "unitCost": {
+                          "type": "number",
+                          "minimum": 0,
+                          "examples": [
+                            800
+                          ],
+                          "description": "Стоимость единицы партии в основных денежных единицах."
+                        },
+                        "vatRate": {
+                          "type": [
+                            "number",
+                            "null"
+                          ],
+                          "minimum": 0,
+                          "examples": [
+                            20
+                          ]
+                        },
+                        "damaged": {
+                          "type": "number",
+                          "minimum": 0,
+                          "examples": [
+                            0
+                          ],
+                          "multipleOf": 0.001
+                        },
+                        "missing": {
+                          "type": "number",
+                          "minimum": 0,
+                          "examples": [
+                            0
+                          ],
+                          "multipleOf": 0.001
+                        },
+                        "sourceLineNo": {
+                          "type": [
+                            "integer",
+                            "null"
+                          ],
+                          "minimum": 1,
+                          "examples": [
+                            1
+                          ]
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "minItems": 1,
+                    "maxItems": 100
+                  }
+                },
+                "additionalProperties": false,
+                "examples": [
+                  {
+                    "note": "Проверено при получении"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Сохранённый результат команды и версия данных пространства (result + revision).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "result",
+                    "revision"
+                  ],
+                  "properties": {
+                    "result": {
+                      "$ref": "#/components/schemas/ReferenceResult"
+                    },
+                    "revision": {
+                      "type": "string",
+                      "description": "Committed workspace revision, distinct from the event cursor"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Исправьте поля, типы и ID связей; повтор без исправления не помогает.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "INVALID_REQUEST": {
+                    "summary": "INVALID_REQUEST",
+                    "description": "Исправьте поля, типы и ID связей; повтор без исправления не помогает.",
+                    "value": {
+                      "error": {
+                        "code": "INVALID_REQUEST",
+                        "message": "Некорректные или связанные данные"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Ожидание после 429 в секундах",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Проверьте токен и адрес сервера; получите действующий токен у владельца.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "UNAUTHORIZED": {
+                    "summary": "UNAUTHORIZED",
+                    "description": "Проверьте токен и адрес сервера; получите действующий токен у владельца.",
+                    "value": {
+                      "error": {
+                        "code": "UNAUTHORIZED",
+                        "message": "Токен не найден или отозван"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Ожидание после 429 в секундах",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Кабинет доступен для просмотра и экспорта. API-токены и новые изменения доступны после подключения платного тарифа. Проверьте доступность нужной функции тарифу пространства.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "TRIAL_EXPIRED": {
+                    "summary": "TRIAL_EXPIRED",
+                    "description": "Кабинет доступен для просмотра и экспорта. API-токены и новые изменения доступны после подключения платного тарифа.",
+                    "value": {
+                      "error": {
+                        "code": "TRIAL_EXPIRED",
+                        "message": "Бесплатный месяц завершён"
+                      }
+                    }
+                  },
+                  "PLAN_FEATURE_REQUIRED": {
+                    "summary": "PLAN_FEATURE_REQUIRED",
+                    "description": "Проверьте доступность нужной функции тарифу пространства.",
+                    "value": {
+                      "error": {
+                        "code": "PLAN_FEATURE_REQUIRED",
+                        "message": "Возможность недоступна в текущем тарифе"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Ожидание после 429 в секундах",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Владелец включает запись товаров или работу с заказами в настройках токена. Закрытые методы кабинета недоступны любому обычному токену. Проверьте пару токена и сгенерированной схемы компании. Для действий владельца используйте приложение и его сессию.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "TOKEN_PERMISSION_DENIED": {
+                    "summary": "TOKEN_PERMISSION_DENIED",
+                    "description": "Владелец включает запись товаров или работу с заказами в настройках токена. Закрытые методы кабинета недоступны любому обычному токену.",
+                    "value": {
+                      "error": {
+                        "code": "TOKEN_PERMISSION_DENIED",
+                        "message": "У токена нет нужного разрешения"
+                      }
+                    }
+                  },
+                  "SCHEMA_COMPANY_MISMATCH": {
+                    "summary": "SCHEMA_COMPANY_MISMATCH",
+                    "description": "Проверьте пару токена и сгенерированной схемы компании.",
+                    "value": {
+                      "error": {
+                        "code": "SCHEMA_COMPANY_MISMATCH",
+                        "message": "Схема SDK относится к другой компании"
+                      }
+                    }
+                  },
+                  "FORBIDDEN": {
+                    "summary": "FORBIDDEN",
+                    "description": "Для действий владельца используйте приложение и его сессию.",
+                    "value": {
+                      "error": {
+                        "code": "FORBIDDEN",
+                        "message": "Доступ запрещён"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Ожидание после 429 в секундах",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проверьте ID и пространство; запись могла быть удалена.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "NOT_FOUND": {
+                    "summary": "NOT_FOUND",
+                    "description": "Проверьте ID и пространство; запись могла быть удалена.",
+                    "value": {
+                      "error": {
+                        "code": "NOT_FOUND",
+                        "message": "Запись не найдена"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Ожидание после 429 в секундах",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Перечитайте запись и устраните конфликт перед новой командой. Одна логическая команда использует неизменный ключ и тело; для изменённой команды создайте новый ключ.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "CONFLICT": {
+                    "summary": "CONFLICT",
+                    "description": "Перечитайте запись и устраните конфликт перед новой командой.",
+                    "value": {
+                      "error": {
+                        "code": "CONFLICT",
+                        "message": "Такая запись уже существует"
+                      }
+                    }
+                  },
+                  "IDEMPOTENCY_CONFLICT": {
+                    "summary": "IDEMPOTENCY_CONFLICT",
+                    "description": "Одна логическая команда использует неизменный ключ и тело; для изменённой команды создайте новый ключ.",
+                    "value": {
+                      "error": {
+                        "code": "IDEMPOTENCY_CONFLICT",
+                        "message": "Ключ использован для другого запроса"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Ожидание после 429 в секундах",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Уменьшите размер тела или файла; допустимый формат и размер указаны в описании загрузки.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "PAYLOAD_TOO_LARGE": {
+                    "summary": "PAYLOAD_TOO_LARGE",
+                    "description": "Уменьшите размер тела или файла; допустимый формат и размер указаны в описании загрузки.",
+                    "value": {
+                      "error": {
+                        "code": "PAYLOAD_TOO_LARGE",
+                        "message": "Слишком большой запрос"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Ожидание после 429 в секундах",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Снизьте параллельность обращений пространства и повторите после Retry-After. Повторите после Retry-After с тем же ключом команды; избегайте неограниченных повторов.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "WORKSPACE_BUSY": {
+                    "summary": "WORKSPACE_BUSY",
+                    "description": "Снизьте параллельность обращений пространства и повторите после Retry-After.",
+                    "value": {
+                      "error": {
+                        "code": "WORKSPACE_BUSY",
+                        "message": "Пространство временно занято"
+                      }
+                    }
+                  },
+                  "SERVICE_BUSY": {
+                    "summary": "SERVICE_BUSY",
+                    "description": "Повторите после Retry-After с тем же ключом команды; избегайте неограниченных повторов.",
+                    "value": {
+                      "error": {
+                        "code": "SERVICE_BUSY",
+                        "message": "Сервис занят. Повторите запрос после паузы."
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Ожидание после 429 в секундах",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "x-sdk-command": true,
+        "x-token-permission": "receiving",
+        "x-sdk-method": "procurement.update",
+        "description": "Изменить черновик\n\nЗаказы поставщикам, документы закупки, распознавание файлов и платежи. Создание черновика само по себе не проводит документ; движение зависит от его вида и подтверждённого статуса.\n\nКоманда подтверждается серверной транзакцией. Передайте Idempotency-Key: повтор с тем же телом и URL возвращает сохранённый результат. Ответ токену содержит result и revision; полное состояние пространства не возвращается.\n\nПередайте Authorization: Bearer <API_TOKEN>. Все ID и связанные записи должны принадлежать этому пространству.\n\nДоступно токену для чтения. Изменения настроек, справочников и складских документов выполняются в кабинете.\n\nПосле окончания бесплатного месяца API-токены приостановлены (402 TRIAL_EXPIRED). Кабинет доступен для просмотра и экспорта; новые изменения требуют платного тарифа."
+      }
+    },
+    "/api/v1/procurement/documents/{documentId}/status": {
+      "patch": {
+        "operationId": "procurement.status",
+        "summary": "Провести, закрыть или отменить документ",
+        "tags": [
+          "Закупки"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "documentId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "examples": [
+                "replace-with-id"
+              ]
+            },
+            "description": "ID связанной записи из ответа API этого пространства."
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "description": "Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ.",
+            "schema": {
+              "type": "string",
+              "examples": [
+                "replace-with-unique-key"
+              ],
+              "minLength": 8,
+              "maxLength": 120
+            }
+          },
+          {
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "return=minimal"
+              ]
+            },
+            "description": "Токен всегда получает result + revision. Полное состояние пространства не возвращается."
+          },
+          {
+            "in": "header",
+            "name": "X-Bistrysklad-Company",
+            "required": false,
+            "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "status"
+                ],
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "posted"
+                    ]
+                  }
+                },
+                "additionalProperties": false,
+                "examples": [
+                  {
+                    "status": "posted"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Сохранённый результат команды и версия данных пространства (result + revision).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "result",
+                    "revision"
+                  ],
+                  "properties": {
+                    "result": {
+                      "$ref": "#/components/schemas/IdResult"
+                    },
+                    "revision": {
+                      "type": "string",
+                      "description": "Committed workspace revision, distinct from the event cursor"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Исправьте поля, типы и ID связей; повтор без исправления не помогает.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "INVALID_REQUEST": {
+                    "summary": "INVALID_REQUEST",
+                    "description": "Исправьте поля, типы и ID связей; повтор без исправления не помогает.",
+                    "value": {
+                      "error": {
+                        "code": "INVALID_REQUEST",
+                        "message": "Некорректные или связанные данные"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Ожидание после 429 в секундах",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Проверьте токен и адрес сервера; получите действующий токен у владельца.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "UNAUTHORIZED": {
+                    "summary": "UNAUTHORIZED",
+                    "description": "Проверьте токен и адрес сервера; получите действующий токен у владельца.",
+                    "value": {
+                      "error": {
+                        "code": "UNAUTHORIZED",
+                        "message": "Токен не найден или отозван"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Ожидание после 429 в секундах",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Кабинет доступен для просмотра и экспорта. API-токены и новые изменения доступны после подключения платного тарифа. Проверьте доступность нужной функции тарифу пространства.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "TRIAL_EXPIRED": {
+                    "summary": "TRIAL_EXPIRED",
+                    "description": "Кабинет доступен для просмотра и экспорта. API-токены и новые изменения доступны после подключения платного тарифа.",
+                    "value": {
+                      "error": {
+                        "code": "TRIAL_EXPIRED",
+                        "message": "Бесплатный месяц завершён"
+                      }
+                    }
+                  },
+                  "PLAN_FEATURE_REQUIRED": {
+                    "summary": "PLAN_FEATURE_REQUIRED",
+                    "description": "Проверьте доступность нужной функции тарифу пространства.",
+                    "value": {
+                      "error": {
+                        "code": "PLAN_FEATURE_REQUIRED",
+                        "message": "Возможность недоступна в текущем тарифе"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Ожидание после 429 в секундах",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Владелец включает запись товаров или работу с заказами в настройках токена. Закрытые методы кабинета недоступны любому обычному токену. Проверьте пару токена и сгенерированной схемы компании. Для действий владельца используйте приложение и его сессию.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "TOKEN_PERMISSION_DENIED": {
+                    "summary": "TOKEN_PERMISSION_DENIED",
+                    "description": "Владелец включает запись товаров или работу с заказами в настройках токена. Закрытые методы кабинета недоступны любому обычному токену.",
+                    "value": {
+                      "error": {
+                        "code": "TOKEN_PERMISSION_DENIED",
+                        "message": "У токена нет нужного разрешения"
+                      }
+                    }
+                  },
+                  "SCHEMA_COMPANY_MISMATCH": {
+                    "summary": "SCHEMA_COMPANY_MISMATCH",
+                    "description": "Проверьте пару токена и сгенерированной схемы компании.",
+                    "value": {
+                      "error": {
+                        "code": "SCHEMA_COMPANY_MISMATCH",
+                        "message": "Схема SDK относится к другой компании"
+                      }
+                    }
+                  },
+                  "FORBIDDEN": {
+                    "summary": "FORBIDDEN",
+                    "description": "Для действий владельца используйте приложение и его сессию.",
+                    "value": {
+                      "error": {
+                        "code": "FORBIDDEN",
+                        "message": "Доступ запрещён"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Ожидание после 429 в секундах",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проверьте ID и пространство; запись могла быть удалена.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "NOT_FOUND": {
+                    "summary": "NOT_FOUND",
+                    "description": "Проверьте ID и пространство; запись могла быть удалена.",
+                    "value": {
+                      "error": {
+                        "code": "NOT_FOUND",
+                        "message": "Запись не найдена"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Ожидание после 429 в секундах",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Перечитайте запись и устраните конфликт перед новой командой. Одна логическая команда использует неизменный ключ и тело; для изменённой команды создайте новый ключ.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "CONFLICT": {
+                    "summary": "CONFLICT",
+                    "description": "Перечитайте запись и устраните конфликт перед новой командой.",
+                    "value": {
+                      "error": {
+                        "code": "CONFLICT",
+                        "message": "Такая запись уже существует"
+                      }
+                    }
+                  },
+                  "IDEMPOTENCY_CONFLICT": {
+                    "summary": "IDEMPOTENCY_CONFLICT",
+                    "description": "Одна логическая команда использует неизменный ключ и тело; для изменённой команды создайте новый ключ.",
+                    "value": {
+                      "error": {
+                        "code": "IDEMPOTENCY_CONFLICT",
+                        "message": "Ключ использован для другого запроса"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Ожидание после 429 в секундах",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Уменьшите размер тела или файла; допустимый формат и размер указаны в описании загрузки.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "PAYLOAD_TOO_LARGE": {
+                    "summary": "PAYLOAD_TOO_LARGE",
+                    "description": "Уменьшите размер тела или файла; допустимый формат и размер указаны в описании загрузки.",
+                    "value": {
+                      "error": {
+                        "code": "PAYLOAD_TOO_LARGE",
+                        "message": "Слишком большой запрос"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Ожидание после 429 в секундах",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Снизьте параллельность обращений пространства и повторите после Retry-After. Повторите после Retry-After с тем же ключом команды; избегайте неограниченных повторов.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "WORKSPACE_BUSY": {
+                    "summary": "WORKSPACE_BUSY",
+                    "description": "Снизьте параллельность обращений пространства и повторите после Retry-After.",
+                    "value": {
+                      "error": {
+                        "code": "WORKSPACE_BUSY",
+                        "message": "Пространство временно занято"
+                      }
+                    }
+                  },
+                  "SERVICE_BUSY": {
+                    "summary": "SERVICE_BUSY",
+                    "description": "Повторите после Retry-After с тем же ключом команды; избегайте неограниченных повторов.",
+                    "value": {
+                      "error": {
+                        "code": "SERVICE_BUSY",
+                        "message": "Сервис занят. Повторите запрос после паузы."
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Ожидание после 429 в секундах",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "x-sdk-command": true,
+        "x-token-permission": "receiving",
+        "x-sdk-method": "procurement.status",
+        "description": "Провести, закрыть или отменить документ\n\nЗаказы поставщикам, документы закупки, распознавание файлов и платежи. Создание черновика само по себе не проводит документ; движение зависит от его вида и подтверждённого статуса.\n\nКоманда подтверждается серверной транзакцией. Передайте Idempotency-Key: повтор с тем же телом и URL возвращает сохранённый результат. Ответ токену содержит result и revision; полное состояние пространства не возвращается.\n\nПередайте Authorization: Bearer <API_TOKEN>. Все ID и связанные записи должны принадлежать этому пространству.\n\nДоступно токену для чтения. Изменения настроек, справочников и складских документов выполняются в кабинете.\n\nПосле окончания бесплатного месяца API-токены приостановлены (402 TRIAL_EXPIRED). Кабинет доступен для просмотра и экспорта; новые изменения требуют платного тарифа."
       }
     },
     "/api/v1/orders": {
@@ -9227,6 +10127,539 @@
         "description": "Возвращает одну запись и её прямые связи. Передайте ID записи из этого пространства; отсутствующая запись возвращает 404.\n\nЗаказы покупателей, время выполнения, резервы и статусные модели. Правила переходов и действий с остатком задаются моделью заказа.\n\nПередайте Authorization: Bearer <API_TOKEN>. Все ID и связанные записи должны принадлежать этому пространству.\n\nНужно отдельно включить «Работа с заказами» у токена в кабинете.\n\nПосле окончания бесплатного месяца API-токены приостановлены (402 TRIAL_EXPIRED). Кабинет доступен для просмотра и экспорта; новые изменения требуют платного тарифа."
       }
     },
+    "/api/v1/workspace/procurementDocuments": {
+      "get": {
+        "operationId": "workspace.procurementDocuments.list",
+        "summary": "Страница документов закупки",
+        "tags": [
+          "Закупки"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            },
+            "description": "Размер страницы; допустимый диапазон указан в схеме этого метода."
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            },
+            "description": "Смещение от начала списка, начиная с нуля."
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "description": "Поисковая строка для выбранного ресурса."
+          },
+          {
+            "in": "query",
+            "name": "tab",
+            "schema": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "description": "Значение параметра; тип и допустимые значения приведены ниже."
+          },
+          {
+            "in": "query",
+            "name": "kind",
+            "schema": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "description": "Значение параметра; тип и допустимые значения приведены ниже."
+          },
+          {
+            "in": "query",
+            "name": "warehouseId",
+            "schema": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "description": "ID склада, на котором выполняется учёт."
+          },
+          {
+            "in": "query",
+            "name": "priceTypeId",
+            "schema": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "description": "ID типа цены; выбирает набор цен товаров."
+          },
+          {
+            "in": "query",
+            "name": "profileId",
+            "schema": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "description": "ID витрины (профиля каталога)."
+          },
+          {
+            "in": "query",
+            "name": "selection",
+            "description": "JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination.",
+            "schema": {
+              "type": "string",
+              "maxLength": 24000
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Bistrysklad-Company",
+            "required": false,
+            "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourcePage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Исправьте поля, типы и ID связей; повтор без исправления не помогает.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "INVALID_REQUEST": {
+                    "summary": "INVALID_REQUEST",
+                    "description": "Исправьте поля, типы и ID связей; повтор без исправления не помогает.",
+                    "value": {
+                      "error": {
+                        "code": "INVALID_REQUEST",
+                        "message": "Некорректные или связанные данные"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Проверьте токен и адрес сервера; получите действующий токен у владельца.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "UNAUTHORIZED": {
+                    "summary": "UNAUTHORIZED",
+                    "description": "Проверьте токен и адрес сервера; получите действующий токен у владельца.",
+                    "value": {
+                      "error": {
+                        "code": "UNAUTHORIZED",
+                        "message": "Токен не найден или отозван"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Бесплатный период завершён. Кабинет доступен для просмотра и экспорта. API-токены и новые изменения доступны после подключения платного тарифа. Проверьте доступность нужной функции тарифу пространства.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "TRIAL_EXPIRED": {
+                    "summary": "TRIAL_EXPIRED",
+                    "description": "Кабинет доступен для просмотра и экспорта. API-токены и новые изменения доступны после подключения платного тарифа.",
+                    "value": {
+                      "error": {
+                        "code": "TRIAL_EXPIRED",
+                        "message": "Бесплатный месяц завершён"
+                      }
+                    }
+                  },
+                  "PLAN_FEATURE_REQUIRED": {
+                    "summary": "PLAN_FEATURE_REQUIRED",
+                    "description": "Проверьте доступность нужной функции тарифу пространства.",
+                    "value": {
+                      "error": {
+                        "code": "PLAN_FEATURE_REQUIRED",
+                        "message": "Возможность недоступна в текущем тарифе"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Токен другой компании или запрет доступа. Владелец включает запись товаров или работу с заказами в настройках токена. Закрытые методы кабинета недоступны любому обычному токену. Проверьте пару токена и сгенерированной схемы компании. Для действий владельца используйте приложение и его сессию.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "TOKEN_PERMISSION_DENIED": {
+                    "summary": "TOKEN_PERMISSION_DENIED",
+                    "description": "Владелец включает запись товаров или работу с заказами в настройках токена. Закрытые методы кабинета недоступны любому обычному токену.",
+                    "value": {
+                      "error": {
+                        "code": "TOKEN_PERMISSION_DENIED",
+                        "message": "У токена нет нужного разрешения"
+                      }
+                    }
+                  },
+                  "SCHEMA_COMPANY_MISMATCH": {
+                    "summary": "SCHEMA_COMPANY_MISMATCH",
+                    "description": "Проверьте пару токена и сгенерированной схемы компании.",
+                    "value": {
+                      "error": {
+                        "code": "SCHEMA_COMPANY_MISMATCH",
+                        "message": "Схема SDK относится к другой компании"
+                      }
+                    }
+                  },
+                  "FORBIDDEN": {
+                    "summary": "FORBIDDEN",
+                    "description": "Для действий владельца используйте приложение и его сессию.",
+                    "value": {
+                      "error": {
+                        "code": "FORBIDDEN",
+                        "message": "Доступ запрещён"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проверьте ID и пространство; запись могла быть удалена.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "NOT_FOUND": {
+                    "summary": "NOT_FOUND",
+                    "description": "Проверьте ID и пространство; запись могла быть удалена.",
+                    "value": {
+                      "error": {
+                        "code": "NOT_FOUND",
+                        "message": "Запись не найдена"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Защита от чрезмерной нагрузки; повтор после Retry-After. Снизьте параллельность обращений пространства и повторите после Retry-After. Повторите после Retry-After с тем же ключом команды; избегайте неограниченных повторов.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "WORKSPACE_BUSY": {
+                    "summary": "WORKSPACE_BUSY",
+                    "description": "Снизьте параллельность обращений пространства и повторите после Retry-After.",
+                    "value": {
+                      "error": {
+                        "code": "WORKSPACE_BUSY",
+                        "message": "Пространство временно занято"
+                      }
+                    }
+                  },
+                  "SERVICE_BUSY": {
+                    "summary": "SERVICE_BUSY",
+                    "description": "Повторите после Retry-After с тем же ключом команды; избегайте неограниченных повторов.",
+                    "value": {
+                      "error": {
+                        "code": "SERVICE_BUSY",
+                        "message": "Сервис занят. Повторите запрос после паузы."
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Ожидание после 429 в секундах",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "x-token-permission": "receiving",
+        "x-sdk-method": "workspace.procurementDocuments.list",
+        "description": "Возвращает ограниченную страницу и прямые связи её записей. Используйте limit/offset и pagination.nextOffset, пока он не станет null. data содержит только выбранную страницу; pagination.total относится ко всему отбору.\n\nЗаказы поставщикам, документы закупки, распознавание файлов и платежи. Создание черновика само по себе не проводит документ; движение зависит от его вида и подтверждённого статуса.\n\nПередайте Authorization: Bearer <API_TOKEN>. Все ID и связанные записи должны принадлежать этому пространству.\n\nДоступно токену для чтения. Изменения настроек, справочников и складских документов выполняются в кабинете.\n\nПосле окончания бесплатного месяца API-токены приостановлены (402 TRIAL_EXPIRED). Кабинет доступен для просмотра и экспорта; новые изменения требуют платного тарифа."
+      }
+    },
+    "/api/v1/workspace/procurementDocuments/{id}": {
+      "get": {
+        "operationId": "workspace.procurementDocuments.get",
+        "summary": "Карточка документов закупки",
+        "tags": [
+          "Закупки"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID записи в этом пространстве; берите из ответа API."
+          },
+          {
+            "in": "header",
+            "name": "X-Bistrysklad-Company",
+            "required": false,
+            "description": "Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourcePage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Исправьте поля, типы и ID связей; повтор без исправления не помогает.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "INVALID_REQUEST": {
+                    "summary": "INVALID_REQUEST",
+                    "description": "Исправьте поля, типы и ID связей; повтор без исправления не помогает.",
+                    "value": {
+                      "error": {
+                        "code": "INVALID_REQUEST",
+                        "message": "Некорректные или связанные данные"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Проверьте токен и адрес сервера; получите действующий токен у владельца.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "UNAUTHORIZED": {
+                    "summary": "UNAUTHORIZED",
+                    "description": "Проверьте токен и адрес сервера; получите действующий токен у владельца.",
+                    "value": {
+                      "error": {
+                        "code": "UNAUTHORIZED",
+                        "message": "Токен не найден или отозван"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Бесплатный период завершён. Кабинет доступен для просмотра и экспорта. API-токены и новые изменения доступны после подключения платного тарифа. Проверьте доступность нужной функции тарифу пространства.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "TRIAL_EXPIRED": {
+                    "summary": "TRIAL_EXPIRED",
+                    "description": "Кабинет доступен для просмотра и экспорта. API-токены и новые изменения доступны после подключения платного тарифа.",
+                    "value": {
+                      "error": {
+                        "code": "TRIAL_EXPIRED",
+                        "message": "Бесплатный месяц завершён"
+                      }
+                    }
+                  },
+                  "PLAN_FEATURE_REQUIRED": {
+                    "summary": "PLAN_FEATURE_REQUIRED",
+                    "description": "Проверьте доступность нужной функции тарифу пространства.",
+                    "value": {
+                      "error": {
+                        "code": "PLAN_FEATURE_REQUIRED",
+                        "message": "Возможность недоступна в текущем тарифе"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Токен другой компании или запрет доступа. Владелец включает запись товаров или работу с заказами в настройках токена. Закрытые методы кабинета недоступны любому обычному токену. Проверьте пару токена и сгенерированной схемы компании. Для действий владельца используйте приложение и его сессию.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "TOKEN_PERMISSION_DENIED": {
+                    "summary": "TOKEN_PERMISSION_DENIED",
+                    "description": "Владелец включает запись товаров или работу с заказами в настройках токена. Закрытые методы кабинета недоступны любому обычному токену.",
+                    "value": {
+                      "error": {
+                        "code": "TOKEN_PERMISSION_DENIED",
+                        "message": "У токена нет нужного разрешения"
+                      }
+                    }
+                  },
+                  "SCHEMA_COMPANY_MISMATCH": {
+                    "summary": "SCHEMA_COMPANY_MISMATCH",
+                    "description": "Проверьте пару токена и сгенерированной схемы компании.",
+                    "value": {
+                      "error": {
+                        "code": "SCHEMA_COMPANY_MISMATCH",
+                        "message": "Схема SDK относится к другой компании"
+                      }
+                    }
+                  },
+                  "FORBIDDEN": {
+                    "summary": "FORBIDDEN",
+                    "description": "Для действий владельца используйте приложение и его сессию.",
+                    "value": {
+                      "error": {
+                        "code": "FORBIDDEN",
+                        "message": "Доступ запрещён"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проверьте ID и пространство; запись могла быть удалена.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "NOT_FOUND": {
+                    "summary": "NOT_FOUND",
+                    "description": "Проверьте ID и пространство; запись могла быть удалена.",
+                    "value": {
+                      "error": {
+                        "code": "NOT_FOUND",
+                        "message": "Запись не найдена"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Защита от чрезмерной нагрузки; повтор после Retry-After. Снизьте параллельность обращений пространства и повторите после Retry-After. Повторите после Retry-After с тем же ключом команды; избегайте неограниченных повторов.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "WORKSPACE_BUSY": {
+                    "summary": "WORKSPACE_BUSY",
+                    "description": "Снизьте параллельность обращений пространства и повторите после Retry-After.",
+                    "value": {
+                      "error": {
+                        "code": "WORKSPACE_BUSY",
+                        "message": "Пространство временно занято"
+                      }
+                    }
+                  },
+                  "SERVICE_BUSY": {
+                    "summary": "SERVICE_BUSY",
+                    "description": "Повторите после Retry-After с тем же ключом команды; избегайте неограниченных повторов.",
+                    "value": {
+                      "error": {
+                        "code": "SERVICE_BUSY",
+                        "message": "Сервис занят. Повторите запрос после паузы."
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Ожидание после 429 в секундах",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "x-token-permission": "receiving",
+        "x-sdk-method": "workspace.procurementDocuments.get",
+        "description": "Возвращает одну запись и её прямые связи. Передайте ID записи из этого пространства; отсутствующая запись возвращает 404.\n\nЗаказы поставщикам, документы закупки, распознавание файлов и платежи. Создание черновика само по себе не проводит документ; движение зависит от его вида и подтверждённого статуса.\n\nПередайте Authorization: Bearer <API_TOKEN>. Все ID и связанные записи должны принадлежать этому пространству.\n\nДоступно токену для чтения. Изменения настроек, справочников и складских документов выполняются в кабинете.\n\nПосле окончания бесплатного месяца API-токены приостановлены (402 TRIAL_EXPIRED). Кабинет доступен для просмотра и экспорта; новые изменения требуют платного тарифа."
+      }
+    },
     "/api/v1/workspace/salesWorkflows": {
       "get": {
         "operationId": "workspace.salesWorkflows.list",
@@ -11690,6 +13123,22 @@
           "internalId"
         ]
       },
+      "ReferenceResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID записи в этом пространстве; берите из ответа API."
+          },
+          "reference": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "reference"
+        ]
+      },
       "OrderCreateResult": {
         "type": "object",
         "properties": {
@@ -12069,7 +13518,8 @@
             "enum": [
               "products",
               "orders",
-              "salesWorkflows"
+              "salesWorkflows",
+              "procurementDocuments"
             ]
           },
           "revision": {
@@ -12131,6 +13581,12 @@
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/SalesWorkflow"
+                }
+              },
+              "procurementDocuments": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ProcurementDocument"
                 }
               }
             },
@@ -12745,6 +14201,164 @@
           "archived"
         ]
       },
+      "ProcurementDocument": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/EntityId",
+            "description": "ID записи в этом пространстве; берите из ответа API."
+          },
+          "kind": {
+            "$ref": "#/components/schemas/ProcurementKind"
+          },
+          "reference": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "supplierId": {
+            "$ref": "#/components/schemas/Nullable%3CEntityId%3E"
+          },
+          "organizationId": {
+            "$ref": "#/components/schemas/Nullable%3CEntityId%3E"
+          },
+          "contractId": {
+            "$ref": "#/components/schemas/Nullable%3CEntityId%3E"
+          },
+          "warehouseId": {
+            "$ref": "#/components/schemas/Nullable%3CEntityId%3E",
+            "description": "ID склада, на котором выполняется учёт."
+          },
+          "sourceDocumentId": {
+            "$ref": "#/components/schemas/Nullable%3CEntityId%3E"
+          },
+          "sourceImportId": {
+            "$ref": "#/components/schemas/Nullable%3CEntityId%3E"
+          },
+          "issuedAt": {
+            "$ref": "#/components/schemas/Nullable%3Cstring%3E"
+          },
+          "dueAt": {
+            "$ref": "#/components/schemas/Nullable%3Cstring%3E"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "customValues": {
+            "$ref": "#/components/schemas/CustomValues",
+            "x-custom-field-entity": "procurement"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "postedAt": {
+            "$ref": "#/components/schemas/Nullable%3Cstring%3E"
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProcurementLine"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "Общее число подходящих записей, а не размер страницы."
+          },
+          "vatIncluded": {
+            "$ref": "#/components/schemas/Nullable%3Cnumber%3E"
+          },
+          "settlementDocumentId": {
+            "$ref": "#/components/schemas/EntityId"
+          },
+          "paid": {
+            "type": "number"
+          },
+          "outstanding": {
+            "$ref": "#/components/schemas/Nullable%3Cnumber%3E"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "reference",
+          "status",
+          "supplierId",
+          "organizationId",
+          "contractId",
+          "warehouseId",
+          "sourceDocumentId",
+          "sourceImportId",
+          "issuedAt",
+          "dueAt",
+          "currency",
+          "note",
+          "customValues",
+          "createdAt",
+          "postedAt",
+          "lines",
+          "total",
+          "vatIncluded",
+          "settlementDocumentId",
+          "paid",
+          "outstanding"
+        ]
+      },
+      "ProcurementKind": {
+        "type": "string",
+        "enum": [
+          "purchase_order",
+          "supplier_invoice",
+          "receipt",
+          "supplier_return",
+          "internal_order"
+        ]
+      },
+      "ProcurementLine": {
+        "type": "object",
+        "properties": {
+          "lineNo": {
+            "type": "number"
+          },
+          "productId": {
+            "$ref": "#/components/schemas/EntityId",
+            "description": "ID товара из каталога этого пространства."
+          },
+          "quantity": {
+            "type": "number",
+            "description": "Количество товара в его единице измерения."
+          },
+          "unitCost": {
+            "type": "number",
+            "description": "Стоимость единицы партии в основных денежных единицах."
+          },
+          "vatRate": {
+            "$ref": "#/components/schemas/Nullable%3Cnumber%3E"
+          },
+          "damaged": {
+            "type": "number"
+          },
+          "missing": {
+            "type": "number"
+          },
+          "sourceLineNo": {
+            "$ref": "#/components/schemas/Nullable%3Cnumber%3E"
+          }
+        },
+        "required": [
+          "lineNo",
+          "productId",
+          "quantity",
+          "unitCost",
+          "vatRate",
+          "damaged",
+          "missing",
+          "sourceLineNo"
+        ]
+      },
       "ProfileCatalogResponse": {
         "type": "object",
         "properties": {
@@ -13026,16 +14640,6 @@
           "valueType",
           "options",
           "archived"
-        ]
-      },
-      "ProcurementKind": {
-        "type": "string",
-        "enum": [
-          "purchase_order",
-          "supplier_invoice",
-          "receipt",
-          "supplier_return",
-          "internal_order"
         ]
       },
       "Product": {

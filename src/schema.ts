@@ -245,6 +245,66 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/procurement/documents/{documentId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Изменить черновик
+         * @description Изменить черновик
+         *
+         *     Заказы поставщикам, документы закупки, распознавание файлов и платежи. Создание черновика само по себе не проводит документ; движение зависит от его вида и подтверждённого статуса.
+         *
+         *     Команда подтверждается серверной транзакцией. Передайте Idempotency-Key: повтор с тем же телом и URL возвращает сохранённый результат. Ответ токену содержит result и revision; полное состояние пространства не возвращается.
+         *
+         *     Передайте Authorization: Bearer <API_TOKEN>. Все ID и связанные записи должны принадлежать этому пространству.
+         *
+         *     Доступно токену для чтения. Изменения настроек, справочников и складских документов выполняются в кабинете.
+         *
+         *     После окончания бесплатного месяца API-токены приостановлены (402 TRIAL_EXPIRED). Кабинет доступен для просмотра и экспорта; новые изменения требуют платного тарифа.
+         */
+        patch: operations["procurement.update"];
+        trace?: never;
+    };
+    "/api/v1/procurement/documents/{documentId}/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Провести, закрыть или отменить документ
+         * @description Провести, закрыть или отменить документ
+         *
+         *     Заказы поставщикам, документы закупки, распознавание файлов и платежи. Создание черновика само по себе не проводит документ; движение зависит от его вида и подтверждённого статуса.
+         *
+         *     Команда подтверждается серверной транзакцией. Передайте Idempotency-Key: повтор с тем же телом и URL возвращает сохранённый результат. Ответ токену содержит result и revision; полное состояние пространства не возвращается.
+         *
+         *     Передайте Authorization: Bearer <API_TOKEN>. Все ID и связанные записи должны принадлежать этому пространству.
+         *
+         *     Доступно токену для чтения. Изменения настроек, справочников и складских документов выполняются в кабинете.
+         *
+         *     После окончания бесплатного месяца API-токены приостановлены (402 TRIAL_EXPIRED). Кабинет доступен для просмотра и экспорта; новые изменения требуют платного тарифа.
+         */
+        patch: operations["procurement.status"];
+        trace?: never;
+    };
     "/api/v1/orders": {
         parameters: {
             query?: never;
@@ -651,6 +711,62 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/workspace/procurementDocuments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Страница документов закупки
+         * @description Возвращает ограниченную страницу и прямые связи её записей. Используйте limit/offset и pagination.nextOffset, пока он не станет null. data содержит только выбранную страницу; pagination.total относится ко всему отбору.
+         *
+         *     Заказы поставщикам, документы закупки, распознавание файлов и платежи. Создание черновика само по себе не проводит документ; движение зависит от его вида и подтверждённого статуса.
+         *
+         *     Передайте Authorization: Bearer <API_TOKEN>. Все ID и связанные записи должны принадлежать этому пространству.
+         *
+         *     Доступно токену для чтения. Изменения настроек, справочников и складских документов выполняются в кабинете.
+         *
+         *     После окончания бесплатного месяца API-токены приостановлены (402 TRIAL_EXPIRED). Кабинет доступен для просмотра и экспорта; новые изменения требуют платного тарифа.
+         */
+        get: operations["workspace.procurementDocuments.list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspace/procurementDocuments/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Карточка документов закупки
+         * @description Возвращает одну запись и её прямые связи. Передайте ID записи из этого пространства; отсутствующая запись возвращает 404.
+         *
+         *     Заказы поставщикам, документы закупки, распознавание файлов и платежи. Создание черновика само по себе не проводит документ; движение зависит от его вида и подтверждённого статуса.
+         *
+         *     Передайте Authorization: Bearer <API_TOKEN>. Все ID и связанные записи должны принадлежать этому пространству.
+         *
+         *     Доступно токену для чтения. Изменения настроек, справочников и складских документов выполняются в кабинете.
+         *
+         *     После окончания бесплатного месяца API-токены приостановлены (402 TRIAL_EXPIRED). Кабинет доступен для просмотра и экспорта; новые изменения требуют платного тарифа.
+         */
+        get: operations["workspace.procurementDocuments.get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/workspace/salesWorkflows": {
         parameters: {
             query?: never;
@@ -954,6 +1070,11 @@ export interface components {
             externalId: string;
             internalId: string;
         };
+        ReferenceResult: {
+            /** @description ID записи в этом пространстве; берите из ответа API. */
+            id: string;
+            reference: string;
+        };
         OrderCreateResult: {
             /** @description ID записи в этом пространстве; берите из ответа API. */
             id: string;
@@ -1049,7 +1170,7 @@ export interface components {
         CustomValue: string | number | boolean | null;
         ResourcePage: {
             /** @enum {string} */
-            resource: "products" | "orders" | "salesWorkflows";
+            resource: "products" | "orders" | "salesWorkflows" | "procurementDocuments";
             /** @description Версия сохранённых данных пространства; не используйте как курсор событий. */
             revision: string;
             ids: string[];
@@ -1067,6 +1188,7 @@ export interface components {
                 products?: components["schemas"]["IntegrationProduct"][];
                 orders?: components["schemas"]["Order"][];
                 salesWorkflows?: components["schemas"]["SalesWorkflow"][];
+                procurementDocuments?: components["schemas"]["ProcurementDocument"][];
             };
         };
         IntegrationProduct: {
@@ -1224,6 +1346,49 @@ export interface components {
             archived: boolean;
             isPriority?: boolean;
         };
+        ProcurementDocument: {
+            /** @description ID записи в этом пространстве; берите из ответа API. */
+            id: components["schemas"]["EntityId"];
+            kind: components["schemas"]["ProcurementKind"];
+            reference: string;
+            status: string;
+            supplierId: components["schemas"]["Nullable<EntityId>"];
+            organizationId: components["schemas"]["Nullable<EntityId>"];
+            contractId: components["schemas"]["Nullable<EntityId>"];
+            /** @description ID склада, на котором выполняется учёт. */
+            warehouseId: components["schemas"]["Nullable<EntityId>"];
+            sourceDocumentId: components["schemas"]["Nullable<EntityId>"];
+            sourceImportId: components["schemas"]["Nullable<EntityId>"];
+            issuedAt: components["schemas"]["Nullable<string>"];
+            dueAt: components["schemas"]["Nullable<string>"];
+            currency: string;
+            note: string;
+            customValues: components["schemas"]["CustomValues"];
+            createdAt: string;
+            postedAt: components["schemas"]["Nullable<string>"];
+            lines: components["schemas"]["ProcurementLine"][];
+            /** @description Общее число подходящих записей, а не размер страницы. */
+            total: number;
+            vatIncluded: components["schemas"]["Nullable<number>"];
+            settlementDocumentId: components["schemas"]["EntityId"];
+            paid: number;
+            outstanding: components["schemas"]["Nullable<number>"];
+        };
+        /** @enum {string} */
+        ProcurementKind: "purchase_order" | "supplier_invoice" | "receipt" | "supplier_return" | "internal_order";
+        ProcurementLine: {
+            lineNo: number;
+            /** @description ID товара из каталога этого пространства. */
+            productId: components["schemas"]["EntityId"];
+            /** @description Количество товара в его единице измерения. */
+            quantity: number;
+            /** @description Стоимость единицы партии в основных денежных единицах. */
+            unitCost: number;
+            vatRate: components["schemas"]["Nullable<number>"];
+            damaged: number;
+            missing: number;
+            sourceLineNo: components["schemas"]["Nullable<number>"];
+        };
         ProfileCatalogResponse: {
             priceTypes: {
                 /** @description ID записи в этом пространстве; берите из ответа API. */
@@ -1297,8 +1462,6 @@ export interface components {
             options: string[];
             archived: boolean;
         };
-        /** @enum {string} */
-        ProcurementKind: "purchase_order" | "supplier_invoice" | "receipt" | "supplier_return" | "internal_order";
         Product: {
             /** @description ID записи в этом пространстве; берите из ответа API. */
             id: components["schemas"]["EntityId"];
@@ -2676,6 +2839,289 @@ export interface operations {
                 content: {
                     "application/json": {
                         result: components["schemas"]["ExternalLink"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
+                    };
+                };
+            };
+            /** @description Исправьте поля, типы и ID связей; повтор без исправления не помогает. */
+            400: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Проверьте токен и адрес сервера; получите действующий токен у владельца. */
+            401: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Кабинет доступен для просмотра и экспорта. API-токены и новые изменения доступны после подключения платного тарифа. Проверьте доступность нужной функции тарифу пространства. */
+            402: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Владелец включает запись товаров или работу с заказами в настройках токена. Закрытые методы кабинета недоступны любому обычному токену. Проверьте пару токена и сгенерированной схемы компании. Для действий владельца используйте приложение и его сессию. */
+            403: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Проверьте ID и пространство; запись могла быть удалена. */
+            404: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Перечитайте запись и устраните конфликт перед новой командой. Одна логическая команда использует неизменный ключ и тело; для изменённой команды создайте новый ключ. */
+            409: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Уменьшите размер тела или файла; допустимый формат и размер указаны в описании загрузки. */
+            413: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Снизьте параллельность обращений пространства и повторите после Retry-After. Повторите после Retry-After с тем же ключом команды; избегайте неограниченных повторов. */
+            429: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "procurement.update": {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
+                "Idempotency-Key": string;
+                /** @description Токен всегда получает result + revision. Полное состояние пространства не возвращается. */
+                Prefer?: "return=minimal";
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                /** @description ID связанной записи из ответа API этого пространства. */
+                documentId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @example Примечание */
+                    note?: string;
+                    lines?: {
+                        /**
+                         * @description ID товара из каталога этого пространства.
+                         * @example replace-with-id
+                         */
+                        productId: string;
+                        /**
+                         * @description Количество товара в его единице измерения.
+                         * @example 1
+                         */
+                        quantity: number;
+                        /**
+                         * @description Стоимость единицы партии в основных денежных единицах.
+                         * @example 800
+                         */
+                        unitCost: number;
+                        /** @example 20 */
+                        vatRate?: number | null;
+                        /** @example 0 */
+                        damaged?: number;
+                        /** @example 0 */
+                        missing?: number;
+                        /** @example 1 */
+                        sourceLineNo?: number | null;
+                    }[];
+                };
+            };
+        };
+        responses: {
+            /** @description Сохранённый результат команды и версия данных пространства (result + revision). */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        result: components["schemas"]["ReferenceResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
+                    };
+                };
+            };
+            /** @description Исправьте поля, типы и ID связей; повтор без исправления не помогает. */
+            400: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Проверьте токен и адрес сервера; получите действующий токен у владельца. */
+            401: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Кабинет доступен для просмотра и экспорта. API-токены и новые изменения доступны после подключения платного тарифа. Проверьте доступность нужной функции тарифу пространства. */
+            402: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Владелец включает запись товаров или работу с заказами в настройках токена. Закрытые методы кабинета недоступны любому обычному токену. Проверьте пару токена и сгенерированной схемы компании. Для действий владельца используйте приложение и его сессию. */
+            403: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Проверьте ID и пространство; запись могла быть удалена. */
+            404: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Перечитайте запись и устраните конфликт перед новой командой. Одна логическая команда использует неизменный ключ и тело; для изменённой команды создайте новый ключ. */
+            409: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Уменьшите размер тела или файла; допустимый формат и размер указаны в описании загрузки. */
+            413: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Снизьте параллельность обращений пространства и повторите после Retry-After. Повторите после Retry-After с тем же ключом команды; избегайте неограниченных повторов. */
+            429: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "procurement.status": {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
+                "Idempotency-Key": string;
+                /** @description Токен всегда получает result + revision. Полное состояние пространства не возвращается. */
+                Prefer?: "return=minimal";
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                /** @description ID связанной записи из ответа API этого пространства. */
+                documentId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @enum {string} */
+                    status: "posted";
+                };
+            };
+        };
+        responses: {
+            /** @description Сохранённый результат команды и версия данных пространства (result + revision). */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        result: components["schemas"]["IdResult"];
                         /** @description Committed workspace revision, distinct from the event cursor */
                         revision: string;
                     };
@@ -4295,6 +4741,186 @@ export interface operations {
         };
     };
     "workspace.orders.get": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                /** @description ID записи в этом пространстве; берите из ответа API. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Исправьте поля, типы и ID связей; повтор без исправления не помогает. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Проверьте токен и адрес сервера; получите действующий токен у владельца. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Бесплатный период завершён. Кабинет доступен для просмотра и экспорта. API-токены и новые изменения доступны после подключения платного тарифа. Проверьте доступность нужной функции тарифу пространства. */
+            402: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа. Владелец включает запись товаров или работу с заказами в настройках токена. Закрытые методы кабинета недоступны любому обычному токену. Проверьте пару токена и сгенерированной схемы компании. Для действий владельца используйте приложение и его сессию. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Проверьте ID и пространство; запись могла быть удалена. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After. Снизьте параллельность обращений пространства и повторите после Retry-After. Повторите после Retry-After с тем же ключом команды; избегайте неограниченных повторов. */
+            429: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.procurementDocuments.list": {
+        parameters: {
+            query?: {
+                /** @description Размер страницы; допустимый диапазон указан в схеме этого метода. */
+                limit?: number;
+                /** @description Смещение от начала списка, начиная с нуля. */
+                offset?: number;
+                /** @description Поисковая строка для выбранного ресурса. */
+                q?: string;
+                /** @description Значение параметра; тип и допустимые значения приведены ниже. */
+                tab?: string;
+                /** @description Значение параметра; тип и допустимые значения приведены ниже. */
+                kind?: string;
+                /** @description ID склада, на котором выполняется учёт. */
+                warehouseId?: string;
+                /** @description ID типа цены; выбирает набор цен товаров. */
+                priceTypeId?: string;
+                /** @description ID витрины (профиля каталога). */
+                profileId?: string;
+                /** @description JSON ResourceQuery: типизированные conditions, sort, valueIds, match; фильтрация/сортировка выполняются до pagination. */
+                selection?: string;
+            };
+            header?: {
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description ResourcePage: revision, data только выбранной страницы и прямых связей, ids отображаемых строк, pagination с точным total */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourcePage"];
+                };
+            };
+            /** @description Исправьте поля, типы и ID связей; повтор без исправления не помогает. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Проверьте токен и адрес сервера; получите действующий токен у владельца. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Бесплатный период завершён. Кабинет доступен для просмотра и экспорта. API-токены и новые изменения доступны после подключения платного тарифа. Проверьте доступность нужной функции тарифу пространства. */
+            402: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Токен другой компании или запрет доступа. Владелец включает запись товаров или работу с заказами в настройках токена. Закрытые методы кабинета недоступны любому обычному токену. Проверьте пару токена и сгенерированной схемы компании. Для действий владельца используйте приложение и его сессию. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Проверьте ID и пространство; запись могла быть удалена. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Защита от чрезмерной нагрузки; повтор после Retry-After. Снизьте параллельность обращений пространства и повторите после Retry-After. Повторите после Retry-After с тем же ключом команды; избегайте неограниченных повторов. */
+            429: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    "workspace.procurementDocuments.get": {
         parameters: {
             query?: never;
             header?: {

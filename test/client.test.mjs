@@ -343,7 +343,9 @@ test("company custom codes map to IDs; reads preserve history and unknown IDs", 
     client.products.update("id", { customValues: { typo: "Wrong" } }),
     /Unknown product custom/,
   );
-  assert.equal(client.procurement, undefined);
+  assert.deepEqual(Object.keys(client.procurement).sort(), ["status", "update"]);
+  assert.equal(typeof client.workspace.procurementDocuments.list, "function");
+  assert.equal(typeof client.workspace.procurementDocuments.get, "function");
   await assert.rejects(
     client.products.update("id", {customValues:{date:"2026-02-30"}}),
     /Invalid calendar date/,
