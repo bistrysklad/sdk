@@ -1107,6 +1107,8 @@ export interface components {
             /** @description ID записи в этом пространстве; берите из ответа API. */
             id: components["schemas"]["EntityId"];
             kind: components["schemas"]["ProductKind"];
+            /** @description Own quantity tracking for products/variants. Bundles derive limits from their tracked components. */
+            inventoryTracked?: boolean;
             /** @description Артикул товара. */
             sku: components["schemas"]["Nullable<string>"];
             /** @description Название, введённое пользователем. */
@@ -1195,6 +1197,8 @@ export interface components {
             /** @description ID записи в этом пространстве; берите из ответа API. */
             id: components["schemas"]["EntityId"];
             kind: components["schemas"]["ProductKind"];
+            /** @description Own quantity tracking for products/variants. Bundles derive limits from their tracked components. */
+            inventoryTracked?: boolean;
             /** @description Артикул товара. */
             sku: components["schemas"]["Nullable<string>"];
             /** @description Название, введённое пользователем. */
@@ -1466,6 +1470,8 @@ export interface components {
             /** @description ID записи в этом пространстве; берите из ответа API. */
             id: components["schemas"]["EntityId"];
             kind: components["schemas"]["ProductKind"];
+            /** @description Own quantity tracking for products/variants. Bundles derive limits from their tracked components. */
+            inventoryTracked?: boolean;
             /** @description Артикул товара. */
             sku: components["schemas"]["Nullable<string>"];
             /** @description Название, введённое пользователем. */
@@ -1896,6 +1902,8 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
+                    /** @example false */
+                    inventoryTracked?: boolean;
                     /**
                      * @description Артикул товара.
                      * @example SKU-001
@@ -2245,6 +2253,8 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
+                    /** @example false */
+                    inventoryTracked?: boolean;
                     /**
                      * @description Артикул товара.
                      * @example SKU-001

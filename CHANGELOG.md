@@ -1,3 +1,10 @@
+## Unreleased — 2026-11-07
+
+- Add optional `inventoryTracked` to product writes and catalog/integration reads.
+  It controls own quantity tracking for physical products and variants; virtual
+  kits derive their quantity limits from tracked components. Existing servers
+  without this field keep their previous semantics. No npm publication yet.
+
 # 0.2.0
 
 - Typed photo dimensions, contain/cover and lossless WebP/PNG output; legacy image CallOptions remain compatible.

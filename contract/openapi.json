@@ -1129,6 +1129,12 @@
                   "name"
                 ],
                 "properties": {
+                  "inventoryTracked": {
+                    "type": "boolean",
+                    "examples": [
+                      false
+                    ]
+                  },
                   "sku": {
                     "type": "string",
                     "examples": [
@@ -1831,6 +1837,12 @@
                   "name"
                 ],
                 "properties": {
+                  "inventoryTracked": {
+                    "type": "boolean",
+                    "examples": [
+                      false
+                    ]
+                  },
                   "sku": {
                     "type": "string",
                     "examples": [
@@ -13255,6 +13267,10 @@
           "kind": {
             "$ref": "#/components/schemas/ProductKind"
           },
+          "inventoryTracked": {
+            "type": "boolean",
+            "description": "Own quantity tracking for products/variants. Bundles derive limits from their tracked components."
+          },
           "sku": {
             "$ref": "#/components/schemas/Nullable%3Cstring%3E",
             "description": "Артикул товара."
@@ -13611,6 +13627,10 @@
           },
           "kind": {
             "$ref": "#/components/schemas/ProductKind"
+          },
+          "inventoryTracked": {
+            "type": "boolean",
+            "description": "Own quantity tracking for products/variants. Bundles derive limits from their tracked components."
           },
           "sku": {
             "$ref": "#/components/schemas/Nullable%3Cstring%3E",
@@ -14651,6 +14671,10 @@
           },
           "kind": {
             "$ref": "#/components/schemas/ProductKind"
+          },
+          "inventoryTracked": {
+            "type": "boolean",
+            "description": "Own quantity tracking for products/variants. Bundles derive limits from their tracked components."
           },
           "sku": {
             "$ref": "#/components/schemas/Nullable%3Cstring%3E",
