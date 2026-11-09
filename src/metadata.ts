@@ -1,5 +1,71 @@
 /** Generated from the public Bearer routes. */
 export const metadata = {
+  "procurement.receive": {
+    method: "post",
+    path: "/api/v1/procurement/documents/{documentId}/receive",
+    binary: false,
+    "x-sdk-command": true,
+  },
+  "supply_plan.purchase": {
+    method: "post",
+    path: "/api/v1/supply/plan/purchase",
+    binary: false,
+    "x-sdk-command": true,
+  },
+  "supply_profile.create": {
+    method: "post",
+    path: "/api/v1/supply/profiles",
+    binary: false,
+    "x-sdk-command": true,
+  },
+  "supply.profiles": {
+    method: "get",
+    path: "/api/v1/supply/profiles",
+    binary: false,
+    "x-sdk-command": false,
+  },
+  "supply_profile.update": {
+    method: "patch",
+    path: "/api/v1/supply/profiles/{profileId}",
+    binary: false,
+    "x-sdk-command": true,
+  },
+  "stock_policy.save": {
+    method: "patch",
+    path: "/api/v1/supply/policies",
+    binary: false,
+    "x-sdk-command": true,
+  },
+  "supply.policies": {
+    method: "get",
+    path: "/api/v1/supply/policies",
+    binary: false,
+    "x-sdk-command": false,
+  },
+  "procurement.supply": {
+    method: "patch",
+    path: "/api/v1/procurement/documents/{documentId}/supply",
+    binary: false,
+    "x-sdk-command": true,
+  },
+  "supply.confirmation": {
+    method: "get",
+    path: "/api/v1/procurement/documents/{documentId}/supply",
+    binary: false,
+    "x-sdk-command": false,
+  },
+  "supply_plan.refresh": {
+    method: "post",
+    path: "/api/v1/supply/plan/refresh",
+    binary: false,
+    "x-sdk-command": true,
+  },
+  "supply_problem.acknowledge": {
+    method: "patch",
+    path: "/api/v1/supply/problems/{problemId}",
+    binary: false,
+    "x-sdk-command": true,
+  },
   "catalog_profile.list": {
     method: "get",
     path: "/api/v1/catalog-profiles",
@@ -60,6 +126,12 @@ export const metadata = {
     binary: false,
     "x-sdk-command": false,
   },
+  "procurement.create": {
+    method: "post",
+    path: "/api/v1/procurement/documents",
+    binary: false,
+    "x-sdk-command": true,
+  },
   "procurement.update": {
     method: "patch",
     path: "/api/v1/procurement/documents/{documentId}",
@@ -102,11 +174,59 @@ export const metadata = {
     binary: false,
     "x-sdk-command": true,
   },
+  "sales_workflow.cveti_setup": {
+    method: "post",
+    path: "/api/v1/sales-workflows/cveti",
+    binary: false,
+    "x-sdk-command": true,
+  },
+  "order.reopen": {
+    method: "post",
+    path: "/api/v1/orders/{orderId}/reopen",
+    binary: false,
+    "x-sdk-command": true,
+  },
   "order.transition": {
     method: "patch",
     path: "/api/v1/orders/{orderId}/transition",
     binary: false,
     "x-sdk-command": true,
+  },
+  "stock.inventory": {
+    method: "post",
+    path: "/api/v1/stock/inventory",
+    binary: false,
+    "x-sdk-command": true,
+  },
+  "stock.observe": {
+    method: "post",
+    path: "/api/v1/stock/inventory/observe",
+    binary: false,
+    "x-sdk-command": true,
+  },
+  "stock.adjustment": {
+    method: "post",
+    path: "/api/v1/stock/adjustment",
+    binary: false,
+    "x-sdk-command": true,
+  },
+  get_stock_writeoff_reasons: {
+    method: "get",
+    path: "/api/v1/stock/writeoff-reasons",
+    binary: false,
+    "x-sdk-command": false,
+  },
+  "stock.writeoff": {
+    method: "post",
+    path: "/api/v1/stock/writeoff",
+    binary: false,
+    "x-sdk-command": true,
+  },
+  get_stock_inventories: {
+    method: "get",
+    path: "/api/v1/stock/inventories",
+    binary: false,
+    "x-sdk-command": false,
   },
   get_catalog: {
     method: "get",
@@ -144,6 +264,18 @@ export const metadata = {
     binary: false,
     "x-sdk-command": false,
   },
+  "workspace.partners.list": {
+    method: "get",
+    path: "/api/v1/workspace/partners",
+    binary: false,
+    "x-sdk-command": false,
+  },
+  "workspace.partners.get": {
+    method: "get",
+    path: "/api/v1/workspace/partners/{id}",
+    binary: false,
+    "x-sdk-command": false,
+  },
   "workspace.orders.list": {
     method: "get",
     path: "/api/v1/workspace/orders",
@@ -156,6 +288,12 @@ export const metadata = {
     binary: false,
     "x-sdk-command": false,
   },
+  "workspace.lots.list": {
+    method: "get",
+    path: "/api/v1/workspace/lots",
+    binary: false,
+    "x-sdk-command": false,
+  },
   "workspace.procurementDocuments.list": {
     method: "get",
     path: "/api/v1/workspace/procurementDocuments",
@@ -165,6 +303,24 @@ export const metadata = {
   "workspace.procurementDocuments.get": {
     method: "get",
     path: "/api/v1/workspace/procurementDocuments/{id}",
+    binary: false,
+    "x-sdk-command": false,
+  },
+  "workspace.movements.list": {
+    method: "get",
+    path: "/api/v1/workspace/movements",
+    binary: false,
+    "x-sdk-command": false,
+  },
+  "workspace.warehouses.list": {
+    method: "get",
+    path: "/api/v1/workspace/warehouses",
+    binary: false,
+    "x-sdk-command": false,
+  },
+  "workspace.warehouses.get": {
+    method: "get",
+    path: "/api/v1/workspace/warehouses/{id}",
     binary: false,
     "x-sdk-command": false,
   },
@@ -189,6 +345,30 @@ export const metadata = {
   "catalog_profile.product": {
     method: "get",
     path: "/api/v1/catalog-profiles/{profileId}/products/{productId}",
+    binary: false,
+    "x-sdk-command": false,
+  },
+  "supply.receiptSource": {
+    method: "get",
+    path: "/api/v1/procurement/documents/{documentId}/receipt-source",
+    binary: false,
+    "x-sdk-command": false,
+  },
+  "supply.plan": {
+    method: "get",
+    path: "/api/v1/supply/plan",
+    binary: false,
+    "x-sdk-command": false,
+  },
+  "supply.availability": {
+    method: "get",
+    path: "/api/v1/supply/availability",
+    binary: false,
+    "x-sdk-command": false,
+  },
+  "supply.history": {
+    method: "get",
+    path: "/api/v1/supply/orders/{orderId}/history",
     binary: false,
     "x-sdk-command": false,
   },

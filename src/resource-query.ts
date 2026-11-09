@@ -15,6 +15,7 @@ type BuiltinField =
   | "tone"
   | "kind"
   | "archived"
+  | "inventoryTracked"
   | "tags"
   | "barcodes"
   | "price"

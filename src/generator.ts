@@ -92,8 +92,15 @@ type Query<I extends keyof operations> = operations[I]["parameters"]["query"];
     company: "company",
     billing: "billing",
     events: "events",
+    supply: "supply",
+    supply_profile: "supplyProfiles",
+    stock_policy: "stockPolicies",
+    supply_plan: "supplyPlan",
+    supply_problem: "supplyProblems",
   };
   const readMap: Record<string, [string, string]> = {
+    get_stock_inventories: ["stock", "inventories"],
+    get_stock_writeoff_reasons: ["stock", "writeoffReasons"],
     get_bootstrap: ["state", "get"],
     get_catalog: ["catalog", "list"],
     get_audit: ["audit", "list"],
