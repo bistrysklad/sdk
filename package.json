@@ -1,6 +1,6 @@
 {
   "name": "@bistrysklad/sdk",
-  "version": "0.2.0",
+  "version": "0.3.0-stock.20261109.4",
   "description": "Typed client and company schema generator for Bistry Sklad",
   "type": "module",
   "license": "MIT",

@@ -56,6 +56,191 @@ export function createBistryskladClient<
     );
   };
   return {
+    procurement: {
+      receive: (
+        documentId: string,
+        body: SdkBody<S, "procurement.receive">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "procurement.receive", M>> =>
+        invoke(
+          "procurement.receive",
+          { documentId },
+          body,
+          undefined,
+          options,
+        ) as Promise<SdkResponse<S, "procurement.receive", M>>,
+      supply: (
+        documentId: string,
+        body: SdkBody<S, "procurement.supply">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "procurement.supply", M>> =>
+        invoke(
+          "procurement.supply",
+          { documentId },
+          body,
+          undefined,
+          options,
+        ) as Promise<SdkResponse<S, "procurement.supply", M>>,
+      create: (
+        body: SdkBody<S, "procurement.create">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "procurement.create", M>> =>
+        invoke("procurement.create", {}, body, undefined, options) as Promise<
+          SdkResponse<S, "procurement.create", M>
+        >,
+      update: (
+        documentId: string,
+        body: SdkBody<S, "procurement.update">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "procurement.update", M>> =>
+        invoke(
+          "procurement.update",
+          { documentId },
+          body,
+          undefined,
+          options,
+        ) as Promise<SdkResponse<S, "procurement.update", M>>,
+      status: (
+        documentId: string,
+        body: SdkBody<S, "procurement.status">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "procurement.status", M>> =>
+        invoke(
+          "procurement.status",
+          { documentId },
+          body,
+          undefined,
+          options,
+        ) as Promise<SdkResponse<S, "procurement.status", M>>,
+    },
+    supplyPlan: {
+      purchase: (
+        body: SdkBody<S, "supply_plan.purchase">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "supply_plan.purchase", M>> =>
+        invoke("supply_plan.purchase", {}, body, undefined, options) as Promise<
+          SdkResponse<S, "supply_plan.purchase", M>
+        >,
+      refresh: (
+        body: SdkBody<S, "supply_plan.refresh">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "supply_plan.refresh", M>> =>
+        invoke("supply_plan.refresh", {}, body, undefined, options) as Promise<
+          SdkResponse<S, "supply_plan.refresh", M>
+        >,
+    },
+    supplyProfiles: {
+      create: (
+        body: SdkBody<S, "supply_profile.create">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "supply_profile.create", M>> =>
+        invoke(
+          "supply_profile.create",
+          {},
+          body,
+          undefined,
+          options,
+        ) as Promise<SdkResponse<S, "supply_profile.create", M>>,
+      update: (
+        profileId: string,
+        body: SdkBody<S, "supply_profile.update">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "supply_profile.update", M>> =>
+        invoke(
+          "supply_profile.update",
+          { profileId },
+          body,
+          undefined,
+          options,
+        ) as Promise<SdkResponse<S, "supply_profile.update", M>>,
+    },
+    supply: {
+      profiles: (
+        query: SdkQuery<"supply.profiles">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "supply.profiles", M>> =>
+        invoke("supply.profiles", {}, undefined, query, options) as Promise<
+          SdkResponse<S, "supply.profiles", M>
+        >,
+      policies: (
+        query: SdkQuery<"supply.policies">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "supply.policies", M>> =>
+        invoke("supply.policies", {}, undefined, query, options) as Promise<
+          SdkResponse<S, "supply.policies", M>
+        >,
+      confirmation: (
+        documentId: string,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "supply.confirmation", M>> =>
+        invoke(
+          "supply.confirmation",
+          { documentId },
+          undefined,
+          undefined,
+          options,
+        ) as Promise<SdkResponse<S, "supply.confirmation", M>>,
+      receiptSource: (
+        documentId: string,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "supply.receiptSource", M>> =>
+        invoke(
+          "supply.receiptSource",
+          { documentId },
+          undefined,
+          undefined,
+          options,
+        ) as Promise<SdkResponse<S, "supply.receiptSource", M>>,
+      plan: (
+        query: SdkQuery<"supply.plan">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "supply.plan", M>> =>
+        invoke("supply.plan", {}, undefined, query, options) as Promise<
+          SdkResponse<S, "supply.plan", M>
+        >,
+      availability: (
+        query: SdkQuery<"supply.availability">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "supply.availability", M>> =>
+        invoke("supply.availability", {}, undefined, query, options) as Promise<
+          SdkResponse<S, "supply.availability", M>
+        >,
+      history: (
+        orderId: string,
+        query: SdkQuery<"supply.history">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "supply.history", M>> =>
+        invoke(
+          "supply.history",
+          { orderId },
+          undefined,
+          query,
+          options,
+        ) as Promise<SdkResponse<S, "supply.history", M>>,
+    },
+    stockPolicies: {
+      save: (
+        body: SdkBody<S, "stock_policy.save">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "stock_policy.save", M>> =>
+        invoke("stock_policy.save", {}, body, undefined, options) as Promise<
+          SdkResponse<S, "stock_policy.save", M>
+        >,
+    },
+    supplyProblems: {
+      acknowledge: (
+        problemId: string,
+        body: SdkBody<S, "supply_problem.acknowledge">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "supply_problem.acknowledge", M>> =>
+        invoke(
+          "supply_problem.acknowledge",
+          { problemId },
+          body,
+          undefined,
+          options,
+        ) as Promise<SdkResponse<S, "supply_problem.acknowledge", M>>,
+    },
     catalogProfiles: {
       list: (
         query?: SdkQuery<"catalog_profile.list">,
@@ -203,32 +388,6 @@ export function createBistryskladClient<
           SdkResponse<S, "get_external_links", M>
         >,
     },
-    procurement: {
-      update: (
-        documentId: string,
-        body: SdkBody<S, "procurement.update">,
-        options?: CallOptions,
-      ): Promise<SdkResponse<S, "procurement.update", M>> =>
-        invoke(
-          "procurement.update",
-          { documentId },
-          body,
-          undefined,
-          options,
-        ) as Promise<SdkResponse<S, "procurement.update", M>>,
-      status: (
-        documentId: string,
-        body: SdkBody<S, "procurement.status">,
-        options?: CallOptions,
-      ): Promise<SdkResponse<S, "procurement.status", M>> =>
-        invoke(
-          "procurement.status",
-          { documentId },
-          body,
-          undefined,
-          options,
-        ) as Promise<SdkResponse<S, "procurement.status", M>>,
-    },
     orders: {
       create: (
         body: SdkBody<S, "order.create">,
@@ -280,6 +439,13 @@ export function createBistryskladClient<
         invoke("order.delete", { orderId }, {}, undefined, options) as Promise<
           SdkResponse<S, "order.delete", M>
         >,
+      reopen: (
+        orderId: string,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "order.reopen", M>> =>
+        invoke("order.reopen", { orderId }, {}, undefined, options) as Promise<
+          SdkResponse<S, "order.reopen", M>
+        >,
       transition: (
         orderId: string,
         body: SdkBody<S, "order.transition">,
@@ -292,6 +458,68 @@ export function createBistryskladClient<
           undefined,
           options,
         ) as Promise<SdkResponse<S, "order.transition", M>>,
+    },
+    salesWorkflows: {
+      cvetiSetup: (
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "sales_workflow.cveti_setup", M>> =>
+        invoke(
+          "sales_workflow.cveti_setup",
+          {},
+          {},
+          undefined,
+          options,
+        ) as Promise<SdkResponse<S, "sales_workflow.cveti_setup", M>>,
+    },
+    stock: {
+      inventory: (
+        body: SdkBody<S, "stock.inventory">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "stock.inventory", M>> =>
+        invoke("stock.inventory", {}, body, undefined, options) as Promise<
+          SdkResponse<S, "stock.inventory", M>
+        >,
+      observe: (
+        body: SdkBody<S, "stock.observe">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "stock.observe", M>> =>
+        invoke("stock.observe", {}, body, undefined, options) as Promise<
+          SdkResponse<S, "stock.observe", M>
+        >,
+      adjustment: (
+        body: SdkBody<S, "stock.adjustment">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "stock.adjustment", M>> =>
+        invoke("stock.adjustment", {}, body, undefined, options) as Promise<
+          SdkResponse<S, "stock.adjustment", M>
+        >,
+      writeoffReasons: (
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "get_stock_writeoff_reasons", M>> =>
+        invoke(
+          "get_stock_writeoff_reasons",
+          {},
+          undefined,
+          undefined,
+          options,
+        ) as Promise<SdkResponse<S, "get_stock_writeoff_reasons", M>>,
+      writeoff: (
+        body: SdkBody<S, "stock.writeoff">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "stock.writeoff", M>> =>
+        invoke("stock.writeoff", {}, body, undefined, options) as Promise<
+          SdkResponse<S, "stock.writeoff", M>
+        >,
+      inventories: (
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "get_stock_inventories", M>> =>
+        invoke(
+          "get_stock_inventories",
+          {},
+          undefined,
+          undefined,
+          options,
+        ) as Promise<SdkResponse<S, "get_stock_inventories", M>>,
     },
     catalog: {
       list: (
@@ -382,6 +610,30 @@ export function createBistryskladClient<
             options,
           ) as Promise<SdkResponse<S, "workspace.products.get", M>>,
       },
+      partners: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.partners.list", M>> =>
+          invoke(
+            "workspace.partners.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.partners.list", M>>,
+        get: (
+          id: string,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.partners.get", M>> =>
+          invoke(
+            "workspace.partners.get",
+            { id },
+            undefined,
+            undefined,
+            options,
+          ) as Promise<SdkResponse<S, "workspace.partners.get", M>>,
+      },
       orders: {
         list: (
           query?: ResourceQuery,
@@ -405,6 +657,19 @@ export function createBistryskladClient<
             undefined,
             options,
           ) as Promise<SdkResponse<S, "workspace.orders.get", M>>,
+      },
+      lots: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.lots.list", M>> =>
+          invoke(
+            "workspace.lots.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.lots.list", M>>,
       },
       procurementDocuments: {
         list: (
@@ -431,6 +696,43 @@ export function createBistryskladClient<
             undefined,
             options,
           ) as Promise<SdkResponse<S, "workspace.procurementDocuments.get", M>>,
+      },
+      movements: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.movements.list", M>> =>
+          invoke(
+            "workspace.movements.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.movements.list", M>>,
+      },
+      warehouses: {
+        list: (
+          query?: ResourceQuery,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.warehouses.list", M>> =>
+          invoke(
+            "workspace.warehouses.list",
+            {},
+            undefined,
+            { selection: resourceSelection(snapshot, query) },
+            options,
+          ) as Promise<SdkResponse<S, "workspace.warehouses.list", M>>,
+        get: (
+          id: string,
+          options?: CallOptions,
+        ): Promise<SdkResponse<S, "workspace.warehouses.get", M>> =>
+          invoke(
+            "workspace.warehouses.get",
+            { id },
+            undefined,
+            undefined,
+            options,
+          ) as Promise<SdkResponse<S, "workspace.warehouses.get", M>>,
       },
       salesWorkflows: {
         list: (

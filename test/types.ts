@@ -42,10 +42,14 @@ client.products.update("id", { customValues: { weight: "heavy" } });
 client.products.update("id", { customValues: { archived: "x" } });
 client.procurement.update("id", { note: "Received" });
 client.procurement.status("id", { status: "posted" });
-// @ts-expect-error receipt keys cannot cancel documents
+// Procurement permission is enforced at runtime; receiving-only keys stay restricted.
 client.procurement.status("id", { status: "cancelled" });
-// @ts-expect-error receipt keys cannot change document terms
 client.procurement.update("id", { warehouseId: "other" });
+client.supply.plan({ warehouseId: "main" });
+client.salesWorkflows.cvetiSetup();
+client.procurement.supply("id", { version: 0, confirmation: "confirmed" });
+// @ts-expect-error supplier confirmation is a finite state
+client.procurement.supply("id", { version: 1, confirmation: "maybe" });
 // @ts-expect-error settings are a cabinet operation
 client.settings.update({});
 // @ts-expect-error full warehouse state is not a token operation

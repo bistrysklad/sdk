@@ -343,7 +343,7 @@ test("company custom codes map to IDs; reads preserve history and unknown IDs", 
     client.products.update("id", { customValues: { typo: "Wrong" } }),
     /Unknown product custom/,
   );
-  assert.deepEqual(Object.keys(client.procurement).sort(), ["status", "update"]);
+  assert.deepEqual(Object.keys(client.procurement).sort(), ["create", "receive", "status", "supply", "update"]);
   assert.equal(typeof client.workspace.procurementDocuments.list, "function");
   assert.equal(typeof client.workspace.procurementDocuments.get, "function");
   await assert.rejects(
