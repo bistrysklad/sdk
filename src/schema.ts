@@ -2353,6 +2353,24 @@ export interface operations {
                     }[];
                     /** @example false */
                     archived?: boolean;
+                    inventoryTransition?: {
+                        /** @example preview-token */
+                        token: string;
+                        /**
+                         * @example future
+                         * @enum {string}
+                         */
+                        strategy: "future" | "open";
+                        counts?: {
+                            /**
+                             * @description ID товара из каталога этого пространства.
+                             * @example replace-with-id
+                             */
+                            warehouseId: string;
+                            /** @example 0 */
+                            physical: number;
+                        }[];
+                    };
                 };
             };
         };

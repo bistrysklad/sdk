@@ -2150,6 +2150,64 @@
                     "examples": [
                       false
                     ]
+                  },
+                  "inventoryTransition": {
+                    "type": "object",
+                    "required": [
+                      "token",
+                      "strategy"
+                    ],
+                    "properties": {
+                      "token": {
+                        "type": "string",
+                        "examples": [
+                          "preview-token"
+                        ],
+                        "minLength": 64,
+                        "maxLength": 64
+                      },
+                      "strategy": {
+                        "type": "string",
+                        "examples": [
+                          "future"
+                        ],
+                        "enum": [
+                          "future",
+                          "open"
+                        ]
+                      },
+                      "counts": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "warehouseId",
+                            "physical"
+                          ],
+                          "properties": {
+                            "warehouseId": {
+                              "type": "string",
+                              "examples": [
+                                "replace-with-id"
+                              ],
+                              "description": "ID товара из каталога этого пространства."
+                            },
+                            "physical": {
+                              "type": "number",
+                              "minimum": 0,
+                              "examples": [
+                                0
+                              ],
+                              "maximum": 1000000,
+                              "multipleOf": 0.001
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "maxItems": 10000
+                      }
+                    },
+                    "additionalProperties": false
                   }
                 },
                 "additionalProperties": false
