@@ -84,6 +84,12 @@ export const metadata = {
     binary: false,
     "x-sdk-command": false,
   },
+  "product.custom_values": {
+    method: "patch",
+    path: "/api/v1/products/{productId}/custom-values",
+    binary: false,
+    "x-sdk-command": true,
+  },
   "product.create": {
     method: "post",
     path: "/api/v1/products",

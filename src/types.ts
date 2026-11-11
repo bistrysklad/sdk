@@ -9,20 +9,25 @@ export type EntityKind =
   | "supplier_return"
   | "internal_order";
 export type ProcurementKind = Exclude<EntityKind, "product" | "partner">;
-export type CustomValue = string | number | boolean | null;
+export type CustomScalar = string | number | boolean | null;
+export type CustomValue = CustomScalar | string[] | Record<string,CustomScalar>[];
 export type DefaultFields = {
   [K in EntityKind]: {
     read: Record<string, CustomValue>;
     write: Record<string, CustomValue>;
   };
 };
-export type FieldTypes = { [K in EntityKind]: { read: object; write: object } };
+export type FieldTypes = { [K in EntityKind]: { read: object; write: object } } & {catalogProduct?:{read:object;write:object}};
+export type CatalogRead<S> = S extends {catalogProduct:{read:infer R}} ? R : Record<string,CustomValue>;
+export type CatalogWrite<S> = S extends {catalogProduct:{write:infer W}} ? W : Record<string,CustomValue>;
 export interface FieldDefinition {
   id: string;
   code: string;
   entityKind: EntityKind;
   name: string;
-  valueType: "string" | "number" | "boolean" | "date" | "select";
+  valueType: "string" | "number" | "boolean" | "date" | "select" | "string_list" | "table";
+  catalogProfileId?: string | null;
+  columns?: readonly {key:string;name:string;valueType:"string"|"number"|"boolean"}[];
   options: readonly string[];
   archived: boolean;
 }
@@ -53,7 +58,7 @@ export type TypedRead<T, S extends FieldTypes> = T extends Blob
     ? TypedRead<V, S>[]
     : T extends object
       ? {
-          [K in keyof T]: K extends "customValues"
+          [K in keyof T]: K extends "catalogCustomValues" ? Record<string,CatalogRead<S>> : K extends "customValues"
             ? S[Extract<EntityOf<T>, EntityKind>]["read"]
             : TypedRead<T[K], S>;
         }
@@ -89,8 +94,8 @@ type ProcurementBody<T, S extends FieldTypes> = {
 export type SdkBody<
   S extends FieldTypes,
   I extends keyof operations,
-> = I extends "product.create" | "product.update"
-  ? WithCustom<BaseBody<I>, S["product"]["write"]>
+> = I extends "product.create" | "product.update" | "product.custom_values"
+  ? Omit<WithCustom<BaseBody<I>, S["product"]["write"]>,"catalogCustomValues"> & {catalogCustomValues?:Record<string,CatalogWrite<S>>}
   : I extends "partner.create" | "partner.update"
     ? WithCustom<BaseBody<I>, S["partner"]["write"]>
     : I extends "procurement.create"

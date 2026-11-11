@@ -304,6 +304,18 @@ export function createBistryskladClient<
         ) as Promise<SdkResponse<S, "catalog_presentation.get", M>>,
     },
     products: {
+      customValues: (
+        productId: string,
+        body: SdkBody<S, "product.custom_values">,
+        options?: CallOptions,
+      ): Promise<SdkResponse<S, "product.custom_values", M>> =>
+        invoke(
+          "product.custom_values",
+          { productId },
+          body,
+          undefined,
+          options,
+        ) as Promise<SdkResponse<S, "product.custom_values", M>>,
       create: (
         body: SdkBody<S, "product.create">,
         options?: CallOptions,

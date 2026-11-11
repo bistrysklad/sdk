@@ -18,9 +18,10 @@ function fieldTypes(snapshot: CompanySnapshot, spec: Record<string, unknown>) {
     `export const companySchema = ${JSON.stringify(snapshot, null, 2)} as const;`,
     "export interface CompanyFieldTypes {",
   ];
-  for (const kind of entityKinds) {
-    const fields = snapshot.fields.filter((f) => f.entityKind === kind);
+  for (const kind of [...entityKinds,"catalogProduct"] as const) {
+    const fields = snapshot.fields.filter((f) => kind==="catalogProduct" ? Boolean(f.catalogProfileId) : f.entityKind === kind && !f.catalogProfileId);
     const scalar = (f: (typeof fields)[number], write: boolean) =>
+      f.valueType === "string_list" ? "string[]" : f.valueType === "table" ? `{${(f.columns??[]).map(c=>`${quoted(c.key)}:${c.valueType}|null`).join(";")}}[]` :
       f.valueType === "number"
         ? "number"
         : f.valueType === "boolean"
@@ -62,8 +63,9 @@ type Content<T> = T extends { content: infer C } ? C extends { "application/json
 type Response<I extends keyof operations, M extends ResponseMode> = operations[I] extends {responses: infer R} ? TypedRead<SelectResponse<Content<R[Extract<keyof R,200|201|202|204>]>,M>,CompanyFieldTypes> : never;
 type BaseBody<I extends keyof operations> = operations[I] extends {requestBody: infer B} ? B extends {content: {"application/json": infer T}} ? T : Blob | ArrayBuffer | Uint8Array : never;
 type Custom<T,V> = Omit<T,"customValues"> & {customValues?: V};
+type ProductBody<T> = Omit<Custom<T,CompanyFieldTypes["product"]["write"]>,"catalogCustomValues"> & {catalogCustomValues?:Record<string,CompanyFieldTypes["catalogProduct"]["write"]>};
 type Procurement<T> = {[K in ProcurementKind]: Omit<T,"kind"|"customValues"> & {kind: K; customValues?: CompanyFieldTypes[K]["write"]}}[ProcurementKind];
-type Body<I extends keyof operations> = I extends "product.create"|"product.update" ? Custom<BaseBody<I>,CompanyFieldTypes["product"]["write"]> : I extends "partner.create"|"partner.update" ? Custom<BaseBody<I>,CompanyFieldTypes["partner"]["write"]> : I extends "procurement.create" ? Procurement<BaseBody<I>> : I extends "procurement.update" ? (Omit<BaseBody<I>,"customValues"> & {customValues?: never}) | Procurement<BaseBody<I>> : BaseBody<I>;
+type Body<I extends keyof operations> = I extends "product.create"|"product.update"|"product.custom_values" ? ProductBody<BaseBody<I>> : I extends "partner.create"|"partner.update" ? Custom<BaseBody<I>,CompanyFieldTypes["partner"]["write"]> : I extends "procurement.create" ? Procurement<BaseBody<I>> : I extends "procurement.update" ? (Omit<BaseBody<I>,"customValues"> & {customValues?: never}) | Procurement<BaseBody<I>> : BaseBody<I>;
 type Query<I extends keyof operations> = operations[I]["parameters"]["query"];
 `;
   // Get method names from stable operation metadata naming rules, shared with SDK generation.

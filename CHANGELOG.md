@@ -1,3 +1,10 @@
+## 0.3.0-catalog.20261111.3
+
+- Catalog-scoped product definitions and values, separate generated catalogProduct types.
+- Native string lists and typed table rows, preserving false, zero, empty and null.
+- Metadata-only products.customValues command with optimistic customValuesVersion.
+- Source/package candidate; not published to the npm registry.
+
 ## Не выложено — 2026-11-09 · 0.3.0-stock.20261109.4
 
 - Новые типизированные методы закупок, подтверждений поставщиков, частичной

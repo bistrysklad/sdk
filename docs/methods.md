@@ -18,6 +18,7 @@
 | `sklad.catalogProfiles.list()` | `GET /api/v1/catalog-profiles` | Ресурс / страница |
 | `sklad.catalogPresentations.update()` | `PATCH /api/v1/catalog-presentations/{scopeId}` | result + revision в minimal |
 | `sklad.catalogPresentations.get()` | `GET /api/v1/catalog-presentations/{scopeId}` | Ресурс / страница |
+| `sklad.products.customValues()` | `PATCH /api/v1/products/{productId}/custom-values` | result + revision в minimal |
 | `sklad.products.create()` | `POST /api/v1/products` | result + revision в minimal |
 | `sklad.products.update()` | `PATCH /api/v1/products/{productId}` | result + revision в minimal |
 | `sklad.products.delete()` | `DELETE /api/v1/products/{productId}` | result + revision в minimal |

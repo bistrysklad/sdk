@@ -1,4 +1,5 @@
-import type { CompanySnapshot, EntityKind } from "./types.js";
+import type { CompanySnapshot, EntityKind, FieldDefinition } from "./types.js";
+type FieldColumn = NonNullable<FieldDefinition["columns"]>[number];
 export const entityKinds: EntityKind[] = [
   "product",
   "partner",
@@ -34,7 +35,7 @@ export function validateSnapshot(value: unknown): CompanySnapshot {
       ["constructor", "prototype"].includes(f.code) ||
       !entityKinds.includes(f.entityKind) ||
       typeof f.name !== "string" ||
-      !["string", "number", "date", "boolean", "select"].includes(
+      !["string", "number", "date", "boolean", "select", "string_list", "table"].includes(
         f.valueType,
       ) ||
       !Array.isArray(f.options) ||
@@ -44,6 +45,8 @@ export function validateSnapshot(value: unknown): CompanySnapshot {
       (f.valueType === "select" && !f.options.length)
     )
       throw new Error("Invalid custom field metadata");
+    if(f.catalogProfileId != null && (f.entityKind!=="product"||typeof f.catalogProfileId!=="string"||!/^[0-9a-f-]{36}$/i.test(f.catalogProfileId)))throw new Error("Invalid custom field catalog");
+    if(f.valueType==="table"&&(!Array.isArray(f.columns)||!f.columns.length||f.columns.length>12||f.columns.some((c:FieldColumn)=>!c||typeof c.key!=="string"||!/^[a-z][a-zA-Z0-9_]{0,63}$/.test(c.key)||typeof c.name!=="string"||!["string","number","boolean"].includes(c.valueType))||new Set(f.columns.map((c:FieldColumn)=>c.key)).size!==f.columns.length))throw new Error("Invalid table columns");
     const code = `${f.entityKind}:${f.code}`;
     if (ids.has(f.id) || codes.has(code))
       throw new Error("Duplicate custom field ID or code");
@@ -69,6 +72,8 @@ export function validateSnapshot(value: unknown): CompanySnapshot {
         valueType: f.valueType,
         options: [...f.options],
         archived: f.archived,
+        ...(f.catalogProfileId!==undefined?{catalogProfileId:f.catalogProfileId}:{}),
+        ...(f.columns!==undefined?{columns:f.columns.map((c:FieldColumn)=>({...c}))}:{}),
       })),
   };
 }

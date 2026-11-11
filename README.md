@@ -261,3 +261,14 @@ Backend подключается к складу по WebSocket и может в
 [Workflow](https://github.com/bistrysklad/sdk/blob/main/.github/workflows/publish.yml)
 проверяет пакет и публикует тег версии через npm Trusted Publishing. Постоянный
 npm-токен в репозитории не нужен. [Настройка и последовательность выпуска](docs/releases.md).
+
+### Catalog-scoped custom fields
+
+A product field may be shared (`catalogProfileId: null`) or bound to a catalog
+profile. `customValues` holds shared values; `catalogCustomValues[profileId]`
+holds each catalog's values. Omitting a catalog in an update preserves it.
+Native `string_list` and `table` values use ordinary typed arrays, not JSON text.
+The company generator separates shared `product` from `catalogProduct` fields.
+Use `client.products.customValues(id, { customValues, catalogCustomValues,
+expectedCustomValuesVersion: product.customValuesVersion })` to save metadata
+without rewriting product core fields. A stale version returns409.

@@ -345,6 +345,36 @@ export interface paths {
         patch: operations["catalog_presentation.update"];
         trace?: never;
     };
+    "/api/v1/products/{productId}/custom-values": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Сохранить только дополнительные поля товара и каталогов
+         * @description Сохранить только дополнительные поля товара и каталогов
+         *
+         *     Карточки товаров и комплектов: названия, артикулы, состав и связанные данные. Карточка описывает товар; физический остаток меняется отдельными складскими операциями.
+         *
+         *     Команда подтверждается серверной транзакцией. Передайте Idempotency-Key: повтор с тем же телом и URL возвращает сохранённый результат. Ответ токену содержит result и revision; полное состояние пространства не возвращается.
+         *
+         *     Передайте Authorization: Bearer <API_TOKEN>. Все ID и связанные записи должны принадлежать этому пространству.
+         *
+         *     Нужно отдельно включить «Изменение каталога» у токена в кабинете.
+         *
+         *     После окончания бесплатного месяца API-токены приостановлены (402 TRIAL_EXPIRED). Кабинет доступен для просмотра и экспорта; новые изменения требуют платного тарифа.
+         */
+        patch: operations["product.custom_values"];
+        trace?: never;
+    };
     "/api/v1/products": {
         parameters: {
             query?: never;
@@ -2071,6 +2101,8 @@ export interface components {
             filterValueIds: string[];
             images: components["schemas"]["ProductImage"][];
             customValues: components["schemas"]["CustomValues"];
+            catalogCustomValues?: components["schemas"]["Record<string,CustomValues>"];
+            customValuesVersion?: string;
         };
         /** @enum {string} */
         ProductKind: "product" | "variant" | "service" | "bundle";
@@ -2100,7 +2132,14 @@ export interface components {
         "Record<string,CustomValue>": {
             [key: string]: components["schemas"]["CustomValue"];
         };
-        CustomValue: string | number | boolean | null;
+        CustomValue: components["schemas"]["CustomScalar"] | string[] | components["schemas"]["Record<string,CustomScalar>"][];
+        CustomScalar: string | number | boolean | null;
+        "Record<string,CustomScalar>": {
+            [key: string]: components["schemas"]["CustomScalar"];
+        };
+        "Record<string,CustomValues>": {
+            [key: string]: components["schemas"]["CustomValues"];
+        };
         ResourcePage: {
             /** @enum {string} */
             resource: "products" | "orders" | "salesWorkflows" | "procurementDocuments" | "partners" | "warehouses" | "lots" | "movements";
@@ -2166,6 +2205,8 @@ export interface components {
             filterValueIds: string[];
             images: components["schemas"]["ProductImage"][];
             customValues: components["schemas"]["CustomValues"];
+            catalogCustomValues?: components["schemas"]["Record<string,CustomValues>"];
+            customValuesVersion?: string;
             archived: boolean;
             tone: string;
             stock: components["schemas"]["ProductStock"][];
@@ -2618,9 +2659,18 @@ export interface components {
             /** @description Название, введённое пользователем. */
             name: string;
             /** @enum {string} */
-            valueType: "string" | "number" | "boolean" | "date" | "select";
+            valueType: "string" | "number" | "boolean" | "date" | "select" | "string_list" | "table";
+            catalogProfileId?: string | null;
+            columns?: components["schemas"]["CustomFieldColumn"][];
             options: string[];
             archived: boolean;
+        };
+        CustomFieldColumn: {
+            key: string;
+            /** @description Название, введённое пользователем. */
+            name: string;
+            /** @enum {string} */
+            valueType: "string" | "number" | "boolean";
         };
         Product: {
             /** @description ID записи в этом пространстве; берите из ответа API. */
@@ -2660,6 +2710,8 @@ export interface components {
             filterValueIds: string[];
             images: components["schemas"]["ProductImage"][];
             customValues: components["schemas"]["CustomValues"];
+            catalogCustomValues?: components["schemas"]["Record<string,CustomValues>"];
+            customValuesVersion?: string;
             archived: boolean;
             tone: string;
             stock: components["schemas"]["ProductStock"][];
@@ -4492,6 +4544,147 @@ export interface operations {
             };
         };
     };
+    "product.custom_values": {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Уникальный ключ команды (8–120 символов). Повтор с тем же ключом возвращает прежний ответ. */
+                "Idempotency-Key": string;
+                /** @description Токен всегда получает result + revision. Полное состояние пространства не возвращается. */
+                Prefer?: "return=minimal";
+                /** @description Company ID из сгенерированной схемы. Несовпадение отклоняется до записи данных. */
+                "X-Bistrysklad-Company"?: string;
+            };
+            path: {
+                /** @description ID товара из каталога этого пространства. */
+                productId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    customValues?: {
+                        [key: string]: (string | number | boolean | null) | string[] | {
+                            [key: string]: string | number | boolean | null;
+                        }[];
+                    };
+                    catalogCustomValues?: {
+                        [key: string]: {
+                            [key: string]: (string | number | boolean | null) | string[] | {
+                                [key: string]: string | number | boolean | null;
+                            }[];
+                        };
+                    };
+                    /** @example sha256 */
+                    expectedCustomValuesVersion?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Сохранённый результат команды и версия данных пространства (result + revision). */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        result: components["schemas"]["IdResult"];
+                        /** @description Committed workspace revision, distinct from the event cursor */
+                        revision: string;
+                    };
+                };
+            };
+            /** @description Исправьте поля, типы и ID связей; повтор без исправления не помогает. */
+            400: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Проверьте токен и адрес сервера; получите действующий токен у владельца. */
+            401: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Кабинет доступен для просмотра и экспорта. API-токены и новые изменения доступны после подключения платного тарифа. Проверьте доступность нужной функции тарифу пространства. */
+            402: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Владелец включает запись товаров или работу с заказами в настройках токена. Закрытые методы кабинета недоступны любому обычному токену. Проверьте пару токена и сгенерированной схемы компании. Для действий владельца используйте приложение и его сессию. */
+            403: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Проверьте ID и пространство; запись могла быть удалена. */
+            404: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Перечитайте запись и устраните конфликт перед новой командой. Одна логическая команда использует неизменный ключ и тело; для изменённой команды создайте новый ключ. */
+            409: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Уменьшите размер тела или файла; допустимый формат и размер указаны в описании загрузки. */
+            413: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Снизьте параллельность обращений пространства и повторите после Retry-After. Повторите после Retry-After с тем же ключом команды; избегайте неограниченных повторов. */
+            429: {
+                headers: {
+                    /** @description Ожидание после 429 в секундах */
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
     "product.create": {
         parameters: {
             query?: never;
@@ -4576,8 +4769,19 @@ export interface operations {
                     }[];
                     analogIds?: string[];
                     customValues?: {
-                        [key: string]: string | number | boolean | null;
+                        [key: string]: (string | number | boolean | null) | string[] | {
+                            [key: string]: string | number | boolean | null;
+                        }[];
                     };
+                    catalogCustomValues?: {
+                        [key: string]: {
+                            [key: string]: (string | number | boolean | null) | string[] | {
+                                [key: string]: string | number | boolean | null;
+                            }[];
+                        };
+                    };
+                    /** @example sha256 */
+                    expectedCustomValuesVersion?: string;
                     tags?: string[];
                     /** @enum {string} */
                     kind?: "product" | "bundle" | "service" | "variant";
@@ -4927,8 +5131,19 @@ export interface operations {
                     }[];
                     analogIds?: string[];
                     customValues?: {
-                        [key: string]: string | number | boolean | null;
+                        [key: string]: (string | number | boolean | null) | string[] | {
+                            [key: string]: string | number | boolean | null;
+                        }[];
                     };
+                    catalogCustomValues?: {
+                        [key: string]: {
+                            [key: string]: (string | number | boolean | null) | string[] | {
+                                [key: string]: string | number | boolean | null;
+                            }[];
+                        };
+                    };
+                    /** @example sha256 */
+                    expectedCustomValuesVersion?: string;
                     tags?: string[];
                     /** @enum {string} */
                     kind?: "product" | "bundle" | "service" | "variant";
@@ -5616,7 +5831,9 @@ export interface operations {
                     /** @example Примечание */
                     note?: string;
                     customValues?: {
-                        [key: string]: string | number | boolean | null;
+                        [key: string]: (string | number | boolean | null) | string[] | {
+                            [key: string]: string | number | boolean | null;
+                        }[];
                     };
                     lines: {
                         /**
@@ -5800,7 +6017,9 @@ export interface operations {
                     /** @example Примечание */
                     note?: string;
                     customValues?: {
-                        [key: string]: string | number | boolean | null;
+                        [key: string]: (string | number | boolean | null) | string[] | {
+                            [key: string]: string | number | boolean | null;
+                        }[];
                     };
                     lines?: {
                         /**
